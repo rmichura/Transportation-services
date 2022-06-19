@@ -28,6 +28,7 @@ const userSchema = new mongoose.Schema({
         minlength: [4],
     },
     apiToken: String,
+    role: String,
 });
 
 userSchema.pre('save', function (next) {
@@ -51,6 +52,7 @@ userSchema.pre('save', function (next) {
     const user = this;
     if (user.isNew) {
         user.apiToken = randomstring.generate(50);
+        user.role = "user";
     }
     next();
 })

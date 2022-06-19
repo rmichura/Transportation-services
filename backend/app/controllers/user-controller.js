@@ -23,6 +23,7 @@ class UserController {
                     email: result.email,
                     password: result.password,
                     apiToken: result.apiToken,
+                    role: result.role,
                 }
             })
         }).catch(err => {
@@ -54,6 +55,7 @@ class UserController {
                     email: result.email,
                     password: result.password,
                     apiToken: result.apiToken,
+                    role: result.role,
                 }
             })
         }).catch(err => {
@@ -99,6 +101,7 @@ class UserController {
                         email: doc.email,
                         password: doc.password,
                         apiToken: doc.apiToken,
+                        role: doc.role,
                     }
                 })
             }
