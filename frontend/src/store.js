@@ -11,18 +11,22 @@ export default new Vuex.Store({
     state: {
         token: null,
         userId: null,
+        role: null,
     },
     getters: {
         isAuth: state => state.token !== null,
+        yourRole: state => state.role,
     },
     mutations: {
         auth(state, payload) {
             state.token = payload.token;
             state.userId = payload.userId;
+            state.role = payload.role;
         },
         clearAuth(state) {
             state.token = null;
             state.userId = null;
+            state.role = null;
         },
     },
     actions: {
@@ -31,13 +35,15 @@ export default new Vuex.Store({
                 let response = await axios.post(`${API}login`, payload)
                 commit('auth', {
                     token: response.data.apiToken,
-                    userId: response.data._id
+                    userId: response.data._id,
+                    role: response.data.role
                 })
 
                 const now = new Date();
                 const endDate = new Date(now.getTime() + 30 * 60000);
                 localStorage.setItem('token', response.data.apiToken);
                 localStorage.setItem('userId', response.data._id);
+                localStorage.setItem('role', response.data.role);
                 localStorage.setItem('expires', endDate);
             } catch (e) {
                 console.log(e)
@@ -53,17 +59,23 @@ export default new Vuex.Store({
             if (!userId) {
                 return;
             }
+            const role = localStorage.getItem('role');
+            if (!role) {
+                return;
+            }
             const expirationDate = new Date(localStorage.getItem('expires'));
             const now = new Date();
             if (now >= expirationDate) {
                 localStorage.removeItem('token');
                 localStorage.removeItem('userId');
+                localStorage.removeItem('role');
                 localStorage.removeItem('expires');
                 return;
             }
             commit('auth', {
                 token,
-                userId
+                userId,
+                role
             })
 
             setTimeout(() => {
@@ -75,6 +87,7 @@ export default new Vuex.Store({
             commit('clearAuth')
             localStorage.removeItem('token');
             localStorage.removeItem('userId');
+            localStorage.removeItem('role');
             localStorage.removeItem('expires');
             router.push('/')
         },

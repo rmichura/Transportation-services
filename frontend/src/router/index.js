@@ -1,18 +1,21 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import TheMain from "@/views/Home";
+import Home from "@/views/Home";
 import Login from "@/views/Login";
 import Register from "@/views/Register";
 
 import store from "@/store";
-import Customer from "@/views/Customer";
+import Customer from "@/views/user/Customer";
+import Admin from "@/views/admin/Admin";
+import Employee from "@/views/employee/Employee";
+import NotFound from "@/views/NotFound";
 
 Vue.use(VueRouter)
 
 store.dispatch('autoLogin')
 
-const authGuard = (to, from, next) => {
-    if (store.getters.isAuth) {
+const userGuard = (to, from, next) => {
+    if (store.getters.yourRole === 'user' && store.getters.isAuth) {
         next();
     } else {
         next({name: 'login'});
@@ -27,11 +30,27 @@ const notAuthGuard = (to, from, next) => {
     }
 }
 
+const adminGuard = (to, from, next) => {
+    if (store.getters.yourRole === "admin" && store.getters.isAuth) {
+        next();
+    } else {
+        next({name: 'admin'})
+    }
+}
+
+const employeeGuard = (to, from, next) => {
+    if (store.getters.yourRole === "employee" && store.getters.isAuth) {
+        next();
+    } else {
+        next({name: 'employee'})
+    }
+}
+
 const routes = [
     {
         path: '/',
-        name: 'TheMain',
-        component: TheMain,
+        name: 'Home',
+        component: Home,
         beforeEnter: notAuthGuard
     },
     {
@@ -50,8 +69,25 @@ const routes = [
         path: '/customer',
         name: 'Customer',
         component: Customer,
-        beforeEnter: authGuard
+        beforeEnter: userGuard
     },
+    {
+        path: '/admin',
+        name: 'Admin',
+        component: Admin,
+        beforeEnter: adminGuard
+    },
+    {
+        path: '/employee',
+        name: 'employee',
+        component: Employee,
+        beforeEnter: employeeGuard
+    },
+    {
+        path: '*',
+        name: 'NotFound',
+        component: NotFound
+    }
 ]
 
 const router = new VueRouter({

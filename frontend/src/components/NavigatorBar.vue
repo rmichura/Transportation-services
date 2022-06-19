@@ -16,7 +16,25 @@
     <router-link to="/customer" class="teal--text">
       <v-btn
           text
-          v-if="auth"
+          v-if="auth && role === 'user'"
+      >
+        <span class="mr-2">Transportation services</span>
+      </v-btn>
+    </router-link>
+
+    <router-link to="/employee" class="teal--text">
+      <v-btn
+          text
+          v-if="auth && role === 'employee'"
+      >
+        <span class="mr-2">Transportation services</span>
+      </v-btn>
+    </router-link>
+
+    <router-link to="/admin" class="teal--text">
+      <v-btn
+          text
+          v-if="auth && role === 'admin'"
       >
         <span class="mr-2">Transportation services</span>
       </v-btn>
@@ -54,6 +72,9 @@ export default {
   computed: {
     auth() {
       return this.$store.getters.isAuth;
+    },
+    role() {
+      return this.$store.getters.yourRole;
     }
   },
 
