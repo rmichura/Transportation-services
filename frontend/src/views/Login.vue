@@ -93,7 +93,7 @@ export default {
       }
     },
     goTo() {
-      if (this.$store.getters.yourRole === "employee"){
+      if (this.$store.getters.yourRole === "employee") {
         router.push('/employee')
       } else if (this.$store.getters.yourRole === "admin") {
         router.push('/admin');

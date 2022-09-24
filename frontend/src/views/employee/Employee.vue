@@ -6,7 +6,10 @@
 
 <script>
 export default {
-  name: "Employee"
+  name: "Employee",
+  data() {
+    return {}
+  },
 }
 </script>
 

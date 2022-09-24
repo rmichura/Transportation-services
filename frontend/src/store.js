@@ -12,10 +12,12 @@ export default new Vuex.Store({
         token: null,
         userId: null,
         role: null,
+        user: [],
     },
     getters: {
         isAuth: state => state.token !== null,
         yourRole: state => state.role,
+        currentUser: state => state.user,
     },
     mutations: {
         auth(state, payload) {
@@ -27,10 +29,14 @@ export default new Vuex.Store({
             state.token = null;
             state.userId = null;
             state.role = null;
+            state.user = [];
         },
+        user(state, payload) {
+            state.user = payload.user
+        }
     },
     actions: {
-        async login({commit, dispatch}, payload) {
+        async login({commit, dispatch, state}, payload) {
             try {
                 let response = await axios.post(`${API}login`, payload)
                 commit('auth', {
@@ -45,6 +51,7 @@ export default new Vuex.Store({
                 localStorage.setItem('userId', response.data._id);
                 localStorage.setItem('role', response.data.role);
                 localStorage.setItem('expires', endDate);
+                dispatch('getCurrentUser')
             } catch (e) {
                 console.log(e)
             }
@@ -63,6 +70,10 @@ export default new Vuex.Store({
             if (!role) {
                 return;
             }
+            const user = localStorage.getItem('user');
+            if (!user) {
+                return;
+            }
             const expirationDate = new Date(localStorage.getItem('expires'));
             const now = new Date();
             if (now >= expirationDate) {
@@ -70,12 +81,13 @@ export default new Vuex.Store({
                 localStorage.removeItem('userId');
                 localStorage.removeItem('role');
                 localStorage.removeItem('expires');
+                localStorage.removeItem('user')
                 return;
             }
             commit('auth', {
                 token,
                 userId,
-                role
+                role,
             })
 
             setTimeout(() => {
@@ -89,6 +101,7 @@ export default new Vuex.Store({
             localStorage.removeItem('userId');
             localStorage.removeItem('role');
             localStorage.removeItem('expires');
+            localStorage.removeItem('user')
             router.push('/')
         },
 
@@ -99,5 +112,27 @@ export default new Vuex.Store({
                 console.log(e)
             }
         },
+
+        async updateUser({commit}, payload) {
+            let id = localStorage.getItem('userId')
+            try {
+                await axios.put(`${API}user/${id}`, payload)
+            } catch (e) {
+                console.log(e)
+            }
+        },
+
+        async getCurrentUser({commit}) {
+            try {
+                let id = localStorage.getItem('userId')
+                let response = await axios.get(`${API}user/${id}`)
+                commit('user', {
+                    user: response.data.user
+                })
+                localStorage.setItem('user', JSON.stringify(response.data.user))
+            } catch (e) {
+                console.log(e)
+            }
+        }
     }
 })

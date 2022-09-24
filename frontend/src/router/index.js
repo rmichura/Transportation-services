@@ -9,6 +9,7 @@ import Customer from "@/views/user/Customer";
 import Admin from "@/views/admin/Admin";
 import Employee from "@/views/employee/Employee";
 import NotFound from "@/views/NotFound";
+import Account from "@/views/employee/Account";
 
 Vue.use(VueRouter)
 
@@ -81,6 +82,12 @@ const routes = [
         path: '/employee',
         name: 'employee',
         component: Employee,
+        beforeEnter: employeeGuard
+    },
+    {
+        path: '/employee/account',
+        name: 'account',
+        component: Account,
         beforeEnter: employeeGuard
     },
     {

@@ -52,6 +52,16 @@
       </v-btn>
     </router-link>
 
+    <router-link to="/employee/account" class="teal--text">
+      <v-btn
+          text
+          v-if="auth"
+      >
+        <span class="mr-2">Moje konto</span>
+        <v-icon>mdi-account</v-icon>
+      </v-btn>
+    </router-link>
+
     <router-link to="/" class="teal--text">
       <v-btn
           text
@@ -81,7 +91,7 @@ export default {
   methods: {
     logOut() {
       this.$store.dispatch('logout')
-    }
+    },
   }
 }
 </script>
