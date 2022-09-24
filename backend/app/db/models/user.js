@@ -31,19 +31,21 @@ const userSchema = new mongoose.Schema({
     role: String,
 });
 
-userSchema.pre('save', function (next) {
-    const user = this
-    const salt = bcrypt.genSaltSync(10);
-    const hash = bcrypt.hashSync(user.password, salt);
-    user.password = hash;
-    next();
-});
+// userSchema.pre('save', function (next) {
+//     const user = this
+//     const salt = bcrypt.genSaltSync(10);
+//     const hash = bcrypt.hashSync(user.password, salt);
+//     user.password = hash;
+//     next();
+// });
 
 userSchema.post('save', function (error, doc, next) {
     if (error.code === 11000) {
-        error.errors = { email: {
+        error.errors = {
+            email: {
                 message: 'We already have such an e-mail'
-            }};
+            }
+        };
     }
     next(error);
 })

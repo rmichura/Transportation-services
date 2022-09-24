@@ -14,6 +14,6 @@ router.post('/user', userController.createUser)
 
 router.get('/users', userController.getUserAll)
 
-router.put('/user/:email', userController.editUser)
+router.put('/user/:id', userController.editUser)
 
 module.exports = router

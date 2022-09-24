@@ -1,15 +1,18 @@
 const User = require('../db/models/user')
 const mongoose = require('mongoose')
+const bcrypt = require('bcrypt');
 
 class UserController {
     async createUser(req, res) {
+        const salt = bcrypt.genSaltSync(10);
+        const hash = bcrypt.hashSync(req.body.password, salt);
         const user = new User({
             _id: new mongoose.Types.ObjectId(),
             name: req.body.name,
             lastName: req.body.lastName,
             address: req.body.address,
             email: req.body.email,
-            password: req.body.password,
+            password: req.body.password = hash,
         });
         await user.save().then(result => {
             console.log(result);
@@ -35,13 +38,17 @@ class UserController {
     }
 
     async editUser(req, res) {
-        const {email} = req.params;
-        const user = await User.findOne({email})
+        const id = req.params.id
+        const user = await User.findOne({_id: id})
         if (req.body.name) user.name = req.body.name;
         if (req.body.lastName) user.lastName = req.body.lastName;
         if (req.body.address) user.address = req.body.address;
         if (req.body.email) user.email = req.body.email;
-        if (req.body.password) user.password = req.body.password;
+        if (req.body.password !== '') {
+            const salt = bcrypt.genSaltSync(10);
+            const hash = bcrypt.hashSync(req.body.password, salt);
+            user.password = hash
+        }
 
         await user.save().then(result => {
             console.log(result);
