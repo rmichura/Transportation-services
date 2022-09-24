@@ -17,10 +17,12 @@
                 v-model="email"
                 :rules="emailRules"
                 label="E-mail"
+                color="teal"
                 required
             ></v-text-field>
             <v-text-field
                 v-model="password"
+                color="teal"
                 :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
                 :type="show ? 'text' : 'password'"
                 :rules="[rules.required, rules.min]"
@@ -30,6 +32,7 @@
             ></v-text-field>
             <v-text-field
                 v-model="confirmPassword"
+                color="teal"
                 :append-icon="showConfirm ? 'mdi-eye' : 'mdi-eye-off'"
                 :type="showConfirm ? 'text' : 'password'"
                 :rules="[rules.required, rules.min]"

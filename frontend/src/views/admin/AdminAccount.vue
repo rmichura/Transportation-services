@@ -7,13 +7,14 @@
           width="220"
           color="teal"
       >
-        <v-row class="justify-center marginTop">
+        <v-row class="justify-center margin-top-4em">
           <v-icon size="70" color="white">mdi-account</v-icon>
           <div>
             <v-text-field
                 v-model="user.email"
                 solo
-                class="marginTextField"
+                label="E-mail"
+                class="margin-top-2em"
                 readonly
             ></v-text-field>
           </div>
@@ -23,20 +24,20 @@
           elevation="8"
           height="420"
           width="500"
-          class="marginLeft"
+          class="margin-left-2em"
       >
         <v-container>
           <v-row>
             <v-text-field
                 label="Name"
                 v-model="user.name"
-                class="ma-2"
+                class="ma-5"
                 color="teal"
             ></v-text-field>
             <v-text-field
                 label="Surname"
                 v-model="user.lastName"
-                class="ma-2"
+                class="ma-5"
                 color="teal"
             ></v-text-field>
           </v-row>
@@ -83,7 +84,7 @@
 
 <script>
 export default {
-  name: "Account",
+  name: "AdminAccount",
   data() {
     return {
       user: '',
@@ -121,15 +122,15 @@ export default {
 </script>
 
 <style scoped>
-.marginLeft {
+.margin-left-2em {
   margin-left: 2em;
 }
 
-.marginTop {
+.margin-top-4em {
   margin-top: 4em;
 }
 
-.marginTextField {
+.margin-top-2em {
   margin-top: 2em;
 }
 </style>

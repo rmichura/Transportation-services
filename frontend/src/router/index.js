@@ -9,7 +9,9 @@ import Customer from "@/views/user/Customer";
 import Admin from "@/views/admin/Admin";
 import Employee from "@/views/employee/Employee";
 import NotFound from "@/views/NotFound";
-import Account from "@/views/employee/Account";
+import EmployeeAccount from "@/views/employee/EmployeeAccount";
+import CustomerAccount from "@/views/user/CustomerAccount";
+import AdminAccount from "@/views/admin/AdminAccount";
 
 Vue.use(VueRouter)
 
@@ -73,9 +75,21 @@ const routes = [
         beforeEnter: userGuard
     },
     {
+        path: '/customer/account',
+        name: 'CustomerAccount',
+        component: CustomerAccount,
+        beforeEnter: userGuard
+    },
+    {
         path: '/admin',
         name: 'Admin',
         component: Admin,
+        beforeEnter: adminGuard
+    },
+    {
+        path: '/admin/account',
+        name: 'adminAccount',
+        component: AdminAccount,
         beforeEnter: adminGuard
     },
     {
@@ -86,8 +100,8 @@ const routes = [
     },
     {
         path: '/employee/account',
-        name: 'account',
-        component: Account,
+        name: 'EmployeeAccount',
+        component: EmployeeAccount,
         beforeEnter: employeeGuard
     },
     {

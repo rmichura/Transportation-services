@@ -52,10 +52,30 @@
       </v-btn>
     </router-link>
 
-    <router-link to="/employee/account" class="teal--text">
+    <router-link :to="`/employee/account`" class="teal--text">
       <v-btn
           text
-          v-if="auth"
+          v-if="auth && role === 'employee'"
+      >
+        <span class="mr-2">Moje konto</span>
+        <v-icon>mdi-account</v-icon>
+      </v-btn>
+    </router-link>
+
+    <router-link to="/customer/account" class="teal--text">
+      <v-btn
+          text
+          v-if="auth && role === 'user'"
+      >
+        <span class="mr-2">Moje konto</span>
+        <v-icon>mdi-account</v-icon>
+      </v-btn>
+    </router-link>
+
+    <router-link to="/admin/account" class="teal--text">
+      <v-btn
+          text
+          v-if="auth && role === 'admin'"
       >
         <span class="mr-2">Moje konto</span>
         <v-icon>mdi-account</v-icon>
@@ -78,6 +98,11 @@
 <script>
 export default {
   name: "NavigatorBar",
+  data() {
+    return {
+
+    }
+  },
 
   computed: {
     auth() {

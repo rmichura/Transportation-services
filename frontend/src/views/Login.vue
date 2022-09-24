@@ -18,9 +18,11 @@
                 :rules="emailRules"
                 label="E-mail"
                 required
+                color="teal"
             ></v-text-field>
             <v-text-field
                 v-model="password"
+                color="teal"
                 :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
                 :type="show ? 'text' : 'password'"
                 :rules="[rules.required, rules.min]"
