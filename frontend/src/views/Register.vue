@@ -23,22 +23,20 @@
             <v-text-field
                 v-model="password"
                 color="teal"
-                :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
                 :type="show ? 'text' : 'password'"
                 :rules="[rules.required, rules.min]"
                 name="input-10-1"
                 label="Password"
-                @click:append="show = !show"
             ></v-text-field>
             <v-text-field
                 v-model="confirmPassword"
                 color="teal"
-                :append-icon="showConfirm ? 'mdi-eye' : 'mdi-eye-off'"
-                :type="showConfirm ? 'text' : 'password'"
+                :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
+                :type="show ? 'text' : 'password'"
                 :rules="[rules.required, rules.min]"
                 name="input-10-1"
                 label="Confirm Password"
-                @click:append="showConfirm = !showConfirm"
+                @click:append="show = !show"
                 @keyup.enter="creatUser"
             ></v-text-field>
             <v-row class="justify-center ma-10">
@@ -55,6 +53,16 @@
           </v-col>
         </v-sheet>
       </v-row>
+      <v-snackbar
+          v-model="snackBarError"
+          right
+          height="100"
+          color="error"
+          rounded
+          elevation="8"
+      >
+        Błąd! Poprawnie wpisz e-mail lub hasło!
+      </v-snackbar>
     </v-container>
   </v-form>
 </template>
@@ -68,10 +76,10 @@ export default {
   data() {
     return {
       show: false,
-      showConfirm: false,
       email: '',
       password: '',
       confirmPassword: '',
+      snackBarError: false,
       valid: true,
       emailRules: [
         v => !!v || 'E-mail jest wymagany',
@@ -93,7 +101,7 @@ export default {
         })
         this.goToLogin()
       } else {
-        alert('Coś poszło nie tak')
+        this.snackBarError = true;
       }
     },
     goToLogin() {

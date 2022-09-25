@@ -51,6 +51,26 @@
           </v-col>
         </v-sheet>
       </v-row>
+      <v-snackbar
+          v-model="snackBarError"
+          right
+          height="100"
+          color="error"
+          rounded
+          elevation="8"
+      >
+        Błąd! Nie istnieje takie konto!
+      </v-snackbar>
+      <v-snackbar
+          v-model="snackBarErrorData"
+          right
+          height="100"
+          color="error"
+          rounded
+          elevation="8"
+      >
+        Błąd! Poprawnie wpisz e-mail lub hasło!
+      </v-snackbar>
     </v-container>
   </v-form>
 </template>
@@ -67,6 +87,8 @@ export default {
       email: '',
       password: '',
       valid: true,
+      snackBarError: false,
+      snackBarErrorData: false,
       emailRules: [
         v => !!v || 'E-mail jest wymagany',
         v => /.+@.+\..+/.test(v) || 'E-mail musi być poprawny',
@@ -88,10 +110,10 @@ export default {
         if (localStorage.getItem('token')) {
           this.goTo()
         } else {
-          alert('Nie mamy takiego konta')
+          this.snackBarError = true;
         }
       } else {
-        alert('Coś poszło nie tak')
+        this.snackBarErrorData = true;
       }
     },
     goTo() {

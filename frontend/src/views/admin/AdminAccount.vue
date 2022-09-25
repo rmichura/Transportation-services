@@ -79,6 +79,26 @@
         </v-container>
       </v-sheet>
     </v-row>
+    <v-snackbar
+        v-model="snackbarSuccess"
+        right
+        height="100"
+        color="success"
+        rounded
+        elevation="8"
+    >
+      Gratulacje! Poprawnie zaktualizowałeś dane.
+    </v-snackbar>
+    <v-snackbar
+        v-model="snackBarError"
+        right
+        height="100"
+        color="error"
+        rounded
+        elevation="8"
+    >
+      Błąd! Poprawnie wpisz hasło!
+    </v-snackbar>
   </v-container>
 </template>
 
@@ -91,7 +111,8 @@ export default {
       newPassword: '',
       confirmPassword: '',
       show: false,
-      showConfirm: false,
+      snackbarSuccess: false,
+      snackBarError: false,
       rules: {
         min: v => v.length >= 8 || 'Min 8 znaków'
       }
@@ -114,6 +135,9 @@ export default {
         })
         this.newPassword = '';
         this.confirmPassword = '';
+        this.snackbarSuccess = true;
+      } else {
+        this.snackBarError = true;
       }
       await this.$store.dispatch('getCurrentUser')
     }
