@@ -1,15 +1,135 @@
 <template>
-  <v-container>
-    Hello
+  <v-container class="fill-height">
+    <v-row class="justify-center">
+      <v-sheet
+          elevation="8"
+          height="420"
+          width="300"
+          class="sheet-order"
+      >
+        <p><span>Z</span>łóż nowe zamówienie<span>!</span></p>
+        <v-row class="justify-center margin-top-6em">
+          <v-btn
+              class="white--text"
+              color="teal"
+              elevation="7"
+              large
+              @click="goToOrder"
+          >
+            Złóż zamówienie
+          </v-btn>
+        </v-row>
+      </v-sheet>
+      <v-sheet
+          elevation="8"
+          height="420"
+          width="300"
+          class="sheet-current-order"
+      >
+        <p><span>S</span>prawdź jaki masz stan twojego zamówienie<span>!</span></p>
+        <v-row class="justify-center margin-top-6em">
+          <v-btn
+              class="black--text"
+              color="grey"
+              elevation="7"
+              large
+              @click="goToOrderState"
+          >
+            Sprawdź zamówienie
+          </v-btn>
+        </v-row>
+      </v-sheet>
+      <v-sheet
+          elevation="8"
+          height="420"
+          width="300"
+          class="sheet-order-history"
+      >
+        <p><span>Z</span>oabcz historię swoich zamówień<span>!</span></p>
+        <v-row class="justify-center margin-top-6em">
+          <v-btn
+              class="white--text"
+              color="teal"
+              elevation="7"
+              large
+              @click="goToOrderHistory"
+          >
+            Zobacz historię
+          </v-btn>
+        </v-row>
+      </v-sheet>
+    </v-row>
   </v-container>
 </template>
 
 <script>
+import router from "@/router";
+
 export default {
-  name: "Customer"
+  name: "Customer",
+  data() {
+    return {}
+  },
+  methods: {
+    goToOrder() {
+      router.push('customer/order')
+    },
+    goToOrderState() {
+      router.push('customer/order/state')
+    },
+    goToOrderHistory() {
+      router.push('customer/order/history')
+    }
+  }
 }
 </script>
 
 <style scoped>
+.sheet-order {
+  border: grey 3px solid;
+  margin: 1em 3em 1em 0;
+  background-color: #fafafa;
+}
+
+.sheet-order p {
+  font-size: 2em;
+  font-family: Arial, serif;
+  text-align: center;
+  margin-top: 2.5em;
+}
+
+.sheet-current-order {
+  border: teal 3px solid;
+  margin: 1em 3em 1em 0;
+  background-color: #fafafa;
+}
+
+.sheet-current-order p {
+  font-size: 2em;
+  font-family: Arial, serif;
+  text-align: center;
+  margin-top: 2.5em;
+}
+
+.sheet-order-history {
+  border: grey 3px solid;
+  margin: 1em 3em 1em 0;
+  background-color: #fafafa;
+}
+
+.sheet-order-history p {
+  font-size: 2em;
+  font-family: Arial, serif;
+  text-align: center;
+  margin-top: 2.5em;
+}
+
+.margin-top-6em {
+  margin-top: 6em;
+}
+
+span {
+  color: teal;
+}
 
 </style>

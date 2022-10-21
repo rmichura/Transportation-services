@@ -12,6 +12,9 @@ import NotFound from "@/views/NotFound";
 import EmployeeAccount from "@/views/employee/EmployeeAccount";
 import CustomerAccount from "@/views/user/CustomerAccount";
 import AdminAccount from "@/views/admin/AdminAccount";
+import CustomerOrder from "@/views/user/CustomerOrder";
+import CustomerOrderState from "@/views/user/CustomerOrderState";
+import CustomerOrderHistory from "@/views/user/CustomerOrderHistory";
 
 Vue.use(VueRouter)
 
@@ -72,6 +75,24 @@ const routes = [
         path: '/customer',
         name: 'Customer',
         component: Customer,
+        beforeEnter: userGuard
+    },
+    {
+        path: '/customer/order',
+        name: 'CustomerOrder',
+        component: CustomerOrder,
+        beforeEnter: userGuard
+    },
+    {
+        path: '/customer/order/state',
+        name: 'CustomerOrderState',
+        component: CustomerOrderState,
+        beforeEnter: userGuard
+    },
+    {
+        path: '/customer/order/history',
+        name: 'CustomerOrderHistory',
+        component: CustomerOrderHistory,
         beforeEnter: userGuard
     },
     {
