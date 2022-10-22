@@ -1,12 +1,12 @@
 <template>
-  <v-container>
-    Hello order
-  </v-container>
+    <the-order/>
 </template>
 
 <script>
+import TheOrder from "@/components/TheOrder";
 export default {
-  name: "CustomerOrder"
+  name: "CustomerOrder",
+  components: {TheOrder}
 }
 </script>
 
