@@ -1,5 +1,5 @@
 <template>
-  <v-container class="fill-height">
+  <v-container class="fill-height color-container">
     <v-row class="justify-center">
       <v-sheet
           elevation="8"
@@ -26,10 +26,10 @@
           width="300"
           class="sheet-current-order"
       >
-        <p><span>S</span>prawdź jaki masz stan twojego zamówienie<span>!</span></p>
+        <p><span>S</span>prawdź jaki masz status zamówienia<span>!</span></p>
         <v-row class="justify-center margin-top-6em">
           <v-btn
-              class="black--text"
+              class="white--text"
               color="grey"
               elevation="7"
               large
@@ -86,9 +86,8 @@ export default {
 
 <style scoped>
 .sheet-order {
-  border: grey 3px solid;
   margin: 1em 3em 1em 0;
-  background-color: #fafafa;
+  background-color: #eeeeee;
 }
 
 .sheet-order p {
@@ -99,7 +98,6 @@ export default {
 }
 
 .sheet-current-order {
-  border: teal 3px solid;
   margin: 1em 3em 1em 0;
   background-color: #fafafa;
 }
@@ -112,9 +110,8 @@ export default {
 }
 
 .sheet-order-history {
-  border: grey 3px solid;
   margin: 1em 3em 1em 0;
-  background-color: #fafafa;
+  background-color: #eeeeee;
 }
 
 .sheet-order-history p {
@@ -130,6 +127,10 @@ export default {
 
 span {
   color: teal;
+}
+
+.color-container {
+  background-color: #fafafa;
 }
 
 </style>

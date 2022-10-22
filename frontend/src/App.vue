@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <navigator-bar/>
-    <v-main>
+    <v-main class="color-main">
       <router-view/>
     </v-main>
     <the-footer/>
@@ -26,3 +26,8 @@ export default {
   }),
 };
 </script>
+<style scoped>
+.color-main {
+  background-color: #fafafa;
+}
+</style>
