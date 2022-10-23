@@ -15,7 +15,6 @@ class UserController {
             password: req.body.password = hash,
         });
         await user.save().then(result => {
-            console.log(result);
             res.status(201).json({
                 message: 'Created user successfully',
                 createdUser: {
@@ -30,7 +29,6 @@ class UserController {
                 }
             })
         }).catch(err => {
-            console.log(err)
             res.status(500).json({
                 error: err
             })
@@ -51,7 +49,6 @@ class UserController {
         }
 
         await user.save().then(result => {
-            console.log(result);
             res.status(200).json({
                 message: 'Edited user successfully',
                 editedUser: {
@@ -66,7 +63,6 @@ class UserController {
                 }
             })
         }).catch(err => {
-            console.log(err)
             res.status(422).json({
                 error: err
             })
@@ -76,7 +72,6 @@ class UserController {
     async getUserId(req, res) {
         const id = req.params.id;
         await User.findById(id).then(doc => {
-            console.log(doc);
             if (doc) {
                 res.status(200).json({
                     user: doc,
@@ -88,7 +83,6 @@ class UserController {
             }
         })
             .catch(err => {
-                console.log(err)
                 res.status(500).json({
                     error: err
                 })
@@ -115,7 +109,6 @@ class UserController {
             res.status(200).json(response);
         })
             .catch(err => {
-                console.log(err);
                 res.status(500).json({
                     error: err
                 })
