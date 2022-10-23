@@ -133,6 +133,14 @@ export default new Vuex.Store({
             } catch (e) {
                 console.log(e)
             }
-        }
+        },
+
+        async saveOrder({commit}, payload) {
+            try {
+                await axios.post(`${API}order`, payload)
+            } catch (e) {
+                console.log(e)
+            }
+        },
     }
 })
