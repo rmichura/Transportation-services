@@ -4,6 +4,7 @@ const e = require("express");
 
 class OrderController {
     async createOrder(req, res) {
+        const generateNumber = Math.floor(Math.random()*90000) + 10000;
         const order = new Order({
             _id: new mongoose.Types.ObjectId(),
             productType: req.body.productType,
@@ -14,6 +15,7 @@ class OrderController {
             destination: req.body.destination,
             status: req.body.status,
             deadline: req.body.deadline,
+            numberOrder: req.body.numberOrder = generateNumber,
             user: req.body.user
         });
         await order.save().then(result => {
@@ -29,6 +31,7 @@ class OrderController {
                     destination: result.destination,
                     status: result.status,
                     deadline: result.deadline,
+                    numberOrder: result.numberOrder,
                     user: result.user
                 }
             })
@@ -64,7 +67,8 @@ class OrderController {
                     receptionVenue: result.receptionVenue,
                     destination: result.destination,
                     status: result.status,
-                    deadline: result.deadline
+                    deadline: result.deadline,
+                    numberOrder: result.numberOrder,
                 }
             })
         })
@@ -110,6 +114,7 @@ class OrderController {
                         destination: doc.destination,
                         status: doc.status,
                         deadline: doc.deadline,
+                        numberOrder: doc.numberOrder,
                         user: doc.user
                     }
                 })
