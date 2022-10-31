@@ -167,7 +167,7 @@ export default {
           productHeight: this.productHeight,
           receptionVenue: this.receptionVenue,
           destination: this.destination,
-          status: "Rozpoczęte",
+          status: "created",
           deadline: this.date,
           user: currentUser
         })
