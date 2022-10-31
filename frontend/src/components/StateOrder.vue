@@ -376,7 +376,7 @@ export default {
 }
 
 .text-dialog {
-  margin-left: 15em
+  margin-left: 25vw
 }
 
 .text-dialog span {
