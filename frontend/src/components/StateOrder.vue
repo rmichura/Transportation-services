@@ -96,8 +96,8 @@
           max-width="700"
       >
         <v-card>
-          <v-card-title class="text-dialog">
-            <span class="text-h5">{{ this.editedOrder.numberOrder }}</span>
+          <v-card-title>
+            <p class="text-dialog">Zamówienie: <span>{{ this.editedOrder.numberOrder }}</span></p>
           </v-card-title>
 
           <v-card-text>
@@ -376,7 +376,8 @@ export default {
 }
 
 .text-dialog {
-  margin-left: 25vw
+  font-size: 1.1em;
+  margin-left: 0.5em;
 }
 
 .text-dialog span {
