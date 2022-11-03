@@ -1,12 +1,14 @@
 <template>
   <v-container>
-    Hello history
+    <the-history/>
   </v-container>
 </template>
 
 <script>
+import TheHistory from "@/components/TheHistory";
 export default {
-  name: "CustomerOrderHistory"
+  name: "CustomerOrderHistory",
+  components: {TheHistory}
 }
 </script>
 
