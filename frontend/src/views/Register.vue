@@ -26,7 +26,7 @@
                 :type="show ? 'text' : 'password'"
                 :rules="[rules.required, rules.min]"
                 name="input-10-1"
-                label="Password"
+                label="Hasło"
             ></v-text-field>
             <v-text-field
                 v-model="confirmPassword"
@@ -35,7 +35,7 @@
                 :type="show ? 'text' : 'password'"
                 :rules="[rules.required, rules.min]"
                 name="input-10-1"
-                label="Confirm Password"
+                label="Powtórz hasło"
                 @click:append="show = !show"
                 @keyup.enter="creatUser"
             ></v-text-field>

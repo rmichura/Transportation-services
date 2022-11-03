@@ -29,26 +29,26 @@
         <v-container>
           <v-row>
             <v-text-field
-                label="Name"
+                label="Imię"
                 v-model="user.name"
                 class="ma-5"
                 color="teal"
             ></v-text-field>
             <v-text-field
-                label="Surname"
+                label="Nazwisko"
                 v-model="user.lastName"
                 class="ma-5"
                 color="teal"
             ></v-text-field>
           </v-row>
           <v-text-field
-              label="Address"
+              label="Adres zamieszkania"
               v-model="user.address"
               class="ma-2"
               color="teal"
           ></v-text-field>
           <v-text-field
-              label="New Password"
+              label="Nowe hasło"
               v-model="newPassword"
               class="ma-2"
               color="teal"
@@ -56,7 +56,7 @@
               :rules="[rules.min]"
           ></v-text-field>
           <v-text-field
-              label="Confirm Password"
+              label="Powtórz hasło"
               v-model="confirmPassword"
               class="ma-2"
               color="teal"
