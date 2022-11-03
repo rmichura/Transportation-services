@@ -16,6 +16,7 @@ class OrderController {
             status: req.body.status,
             deadline: req.body.deadline,
             numberOrder: req.body.numberOrder = generateNumber,
+            orderPrice: 0,
             user: req.body.user
         });
         await order.save().then(result => {
@@ -32,6 +33,7 @@ class OrderController {
                     status: result.status,
                     deadline: result.deadline,
                     numberOrder: result.numberOrder,
+                    orderPrice: result.orderPrice,
                     user: result.user
                 }
             })
@@ -53,6 +55,7 @@ class OrderController {
         if (req.body.receptionVenue) order.receptionVenue = req.body.receptionVenue;
         if (req.body.destination) order.destination = req.body.destination;
         if (req.body.status) order.status = req.body.status;
+        if (req.body.orderPrice) order.orderPrice = req.body.orderPrice;
         if (req.body.deadline) order.deadline = req.body.deadline;
 
         await order.save().then(result => {
@@ -69,6 +72,7 @@ class OrderController {
                     status: result.status,
                     deadline: result.deadline,
                     numberOrder: result.numberOrder,
+                    orderPrice: result.orderPrice
                 }
             })
         })
@@ -115,6 +119,7 @@ class OrderController {
                         status: doc.status,
                         deadline: doc.deadline,
                         numberOrder: doc.numberOrder,
+                        orderPrice: doc.orderPrice,
                         user: doc.user
                     }
                 })

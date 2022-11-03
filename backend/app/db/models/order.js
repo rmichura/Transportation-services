@@ -38,6 +38,9 @@ const orderSchema = new mongoose.Schema({
         type: Number,
         required: true,
     },
+    orderPrice: {
+        type: Number
+    },
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
