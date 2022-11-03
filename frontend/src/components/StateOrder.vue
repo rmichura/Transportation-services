@@ -29,11 +29,21 @@
         <v-divider></v-divider>
 
         <v-stepper-step
+            v-if="isCancel"
+            step="3"
+            color="red"
+            :complete="step > 2"
+        >
+          Wycena transportu
+        </v-stepper-step>
+
+        <v-stepper-step
+            v-else
             step="3"
             color="green"
             :complete="step > 2"
         >
-          Zamówienie realizowane
+          Wycena transportu
         </v-stepper-step>
 
         <v-divider></v-divider>
@@ -42,6 +52,16 @@
             step="4"
             color="green"
             :complete="step > 3"
+        >
+          Zamówienie realizowane
+        </v-stepper-step>
+
+        <v-divider></v-divider>
+
+        <v-stepper-step
+            step="5"
+            color="green"
+            :complete="step > 4"
         >
           Zamówienie dostarczone
         </v-stepper-step>
@@ -77,6 +97,14 @@
                 @click="removeOrder(index)"
             >
               <v-icon>mdi-delete</v-icon>
+            </v-btn>
+          </td>
+          <td v-else-if="order.status === 'priced'">
+            <v-btn
+                icon
+                @click="openDialog(index)"
+            >
+              <v-icon>mdi-check</v-icon>
             </v-btn>
           </td>
           <td v-else-if="action"></td>
@@ -237,8 +265,173 @@
             </div>
           </v-card-actions>
         </v-card>
-
       </v-dialog>
+
+
+      <v-dialog
+          v-model="dialogAccept"
+          max-width="700"
+      >
+        <v-card>
+          <v-card-title>
+            <p class="text-dialog">Zamówienie: <span>{{ this.currentOrder.numberOrder }}</span></p>
+
+            <v-spacer></v-spacer>
+
+            <v-btn
+                icon
+                @click="dialogAccept = false"
+            >
+              <v-icon>mdi-close</v-icon>
+            </v-btn>
+          </v-card-title>
+
+          <v-card-text>
+            <v-container>
+              <v-row>
+                <v-col
+                    cols="12"
+                    sm="6"
+                    md="4"
+                >
+                  <v-text-field
+                      v-model="currentOrder.productType"
+                      color="teal"
+                      label="Rodzaj towaru"
+                      readonly
+                  ></v-text-field>
+                </v-col>
+                <v-col
+                    cols="12"
+                    sm="6"
+                    md="4"
+                >
+                  <v-text-field
+                      v-model="currentOrder.productWeight"
+                      color="teal"
+                      type="number"
+                      label="Waga towaru - kg"
+                      readonly
+                  ></v-text-field>
+                </v-col>
+                <v-col
+                    cols="12"
+                    sm="6"
+                    md="4"
+                >
+                  <v-text-field
+                      v-model="currentOrder.receptionVenue"
+                      color="teal"
+                      label="Miejsce odbioru"
+                      readonly
+                  ></v-text-field>
+                </v-col>
+                <v-col
+                    cols="12"
+                    sm="6"
+                    md="4"
+                >
+                  <v-text-field
+                      v-model="currentOrder.destination"
+                      color="teal"
+                      label="Miejsce docelowe"
+                      readonly
+                  ></v-text-field>
+                </v-col>
+                <v-col
+                    cols="12"
+                    sm="6"
+                    md="4"
+                >
+                  <v-text-field
+                      v-model="currentOrder.productWidth"
+                      color="teal"
+                      type="number"
+                      label="Szerokość towaru - cm"
+                      readonly
+                  ></v-text-field>
+                </v-col>
+                <v-col
+                    cols="12"
+                    sm="6"
+                    md="4"
+                >
+                  <v-text-field
+                      v-model="currentOrder.productHeight"
+                      color="teal"
+                      type="number"
+                      label="Wysokość towaru - cm"
+                      readonly
+                  ></v-text-field>
+                </v-col>
+                <v-col
+                    cols="12"
+                    sm="6"
+                    md="4"
+                >
+                  <v-menu
+                      v-model="menu"
+                      :close-on-content-click="false"
+                      :nudge-right="40"
+                      transition="scale-transition"
+                      offset-y
+                      min-width="auto"
+                  >
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-text-field
+                          v-model="currentOrder.deadline"
+                          label="Termin dostarczenia"
+                          prepend-icon="mdi-calendar"
+                          readonly
+                          color="teal"
+                      ></v-text-field>
+                    </template>
+                  </v-menu>
+                </v-col>
+                <v-col
+                    cols="12"
+                    sm="6"
+                    md="4"
+                    class="priceField"
+                >
+                  <v-text-field
+                      dark
+                      v-model="currentOrder.orderPrice"
+                      color="white"
+                      class="white--text"
+                      type="number"
+                      label="Cena za usługę - zł"
+                      readonly
+                  ></v-text-field>
+                </v-col>
+              </v-row>
+            </v-container>
+          </v-card-text>
+
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <div class="buttons-dialog">
+              <v-btn
+                  text
+                  color="teal"
+                  @click="orderCanceled"
+              >
+                Anuluj zamówienie
+              </v-btn>
+              <v-btn
+                  class="white--text ma-2"
+                  color="teal"
+                  elevation="3"
+                  large
+                  @click="orderAccepted"
+              >
+                Ackeptuj
+              </v-btn>
+            </div>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+
       <v-snackbar
           v-model="snackBarError"
           right
@@ -259,6 +452,7 @@
       >
         Gratulacje! Poprawnie edytowałeś zamówienie!
       </v-snackbar>
+
     </v-form>
   </v-container>
 </template>
@@ -268,16 +462,19 @@ export default {
   name: "StateOrder",
   data() {
     return {
-      step: 1,
+      step: 0,
       orders: [],
       action: false,
       selectedRow: null,
       dialog: false,
+      dialogAccept: false,
       editedOrder: '',
       menu: false,
       valid: true,
+      currentOrder: [],
       snackBarError: false,
       snackbarSuccess: false,
+      isCancel: false,
       numberOrder: '',
       headers: [
         {text: 'Rodzaj towaru', value: 'productType'},
@@ -324,15 +521,29 @@ export default {
         this.step = 2
         this.selectedRow = index;
         this.numberOrder = this.orders[index].numberOrder
-      } else {
+      } else if (this.orders[index].status === 'priced') {
         this.step = 3
+        this.selectedRow = index;
+        this.numberOrder = this.orders[index].numberOrder
+      } else if (this.orders[index].status === 'canceled') {
+        this.step = 3
+        this.selectedRow = index;
+        this.numberOrder = this.orders[index].numberOrder
+        this.isCancel = true
+      } else {
+        this.step = 4
         this.selectedRow = index;
         this.numberOrder = this.orders[index].numberOrder
       }
     },
     openDialog(index) {
       this.editedOrder = this.orders[index]
-      this.dialog = true
+      this.currentOrder = this.orders[index]
+      if (this.orders[index].status === 'priced') {
+        this.dialogAccept = true
+      } else {
+        this.dialog = true
+      }
     },
     removeOrder(index) {
       this.$store.dispatch('removeOrder', index)
@@ -345,6 +556,17 @@ export default {
       } else {
         this.snackBarError = true
       }
+    },
+    orderCanceled() {
+      this.isCancel = true
+      this.currentOrder.status = 'canceled'
+      this.$store.dispatch('updateOrder', [this.currentOrder._id, this.currentOrder])
+      this.dialogAccept = false
+    },
+    orderAccepted() {
+      this.currentOrder.status = 'in_progress'
+      this.$store.dispatch('updateOrder', [this.currentOrder._id, this.currentOrder])
+      this.dialogAccept = false
     }
   }
 }
@@ -378,10 +600,16 @@ export default {
 .text-dialog {
   font-size: 1.1em;
   margin-left: 0.5em;
+  font-family: Arial, serif;
 }
 
 .text-dialog span {
   color: teal;
+}
+
+.priceField {
+  background-color: teal;
+  border-radius: 8px;
 }
 
 .buttons-dialog {

@@ -169,7 +169,7 @@
               <v-col
                   cols="12"
                   sm="6"
-                  md="6"
+                  md="4"
               >
                 <v-menu
                     v-model="menu"
@@ -182,15 +182,29 @@
                   <template v-slot:activator="{ on, attrs }">
                     <v-text-field
                         v-model="currentOrder.deadline"
-                        label="Wstępny termin dostarczenia"
+                        label="Termin dostarczenia"
                         prepend-icon="mdi-calendar"
                         readonly
                         color="teal"
-                        v-bind="attrs"
-                        v-on="on"
                     ></v-text-field>
                   </template>
                 </v-menu>
+              </v-col>
+              <v-col
+                  cols="12"
+                  sm="6"
+                  md="4"
+                  class="priceField"
+              >
+                <v-text-field
+                    dark
+                    v-model="currentOrder.orderPrice"
+                    color="white"
+                    class="white--text"
+                    type="number"
+                    label="Cena za usługę - zł"
+                    readonly
+                ></v-text-field>
               </v-col>
             </v-row>
           </v-container>
@@ -309,5 +323,10 @@ export default {
   margin-right: 1em;
   margin-bottom: 1em;
   margin-top: -1em;
+}
+
+.priceField {
+  background-color: teal;
+  border-radius: 8px;
 }
 </style>
