@@ -113,353 +113,20 @@
       </template>
     </v-data-table>
 
-    <v-form
-        ref="form"
-        v-model="valid"
-        lazy-validation
-        class="fill-height"
-    >
-      <v-dialog
-          v-model="dialog"
-          max-width="700"
-      >
-        <v-card>
-          <v-card-title>
-            <p class="text-dialog">Zamówienie: <span>{{ this.editedOrder.numberOrder }}</span></p>
-          </v-card-title>
+    <edit-order :dialog.sync="dialog" :edited-order="editedOrder"/>
 
-          <v-card-text>
-            <v-container>
-              <v-row>
-                <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
-                >
-                  <v-text-field
-                      v-model="editedOrder.productType"
-                      color="teal"
-                      :rules="required"
-                      label="Rodzaj towaru"
-                  ></v-text-field>
-                </v-col>
-                <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
-                >
-                  <v-text-field
-                      v-model="editedOrder.productWeight"
-                      color="teal"
-                      :rules="required"
-                      type="number"
-                      label="Waga towaru - kg"
-                  ></v-text-field>
-                </v-col>
-                <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
-                >
-                  <v-text-field
-                      v-model="editedOrder.receptionVenue"
-                      color="teal"
-                      :rules="required"
-                      label="Miejsce odbioru"
-                  ></v-text-field>
-                </v-col>
-                <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
-                >
-                  <v-text-field
-                      v-model="editedOrder.destination"
-                      color="teal"
-                      :rules="required"
-                      label="Miejsce docelowe"
-                  ></v-text-field>
-                </v-col>
-                <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
-                >
-                  <v-text-field
-                      v-model="editedOrder.productWidth"
-                      color="teal"
-                      :rules="required"
-                      type="number"
-                      label="Szerokość towaru - cm"
-                  ></v-text-field>
-                </v-col>
-                <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
-                >
-                  <v-text-field
-                      v-model="editedOrder.productHeight"
-                      color="teal"
-                      :rules="required"
-                      type="number"
-                      label="Wysokość towaru - cm"
-                  ></v-text-field>
-                </v-col>
-                <v-col
-                    cols="12"
-                    sm="6"
-                    md="6"
-                >
-                  <v-menu
-                      v-model="menu"
-                      :close-on-content-click="false"
-                      :nudge-right="40"
-                      transition="scale-transition"
-                      offset-y
-                      min-width="auto"
-                  >
-                    <template v-slot:activator="{ on, attrs }">
-                      <v-text-field
-                          v-model="editedOrder.deadline"
-                          label="Wstępny termin dostarczenia"
-                          prepend-icon="mdi-calendar"
-                          readonly
-                          :rules="required"
-                          color="teal"
-                          v-bind="attrs"
-                          v-on="on"
-                      ></v-text-field>
-                    </template>
-                    <v-date-picker
-                        v-model="editedOrder.deadline"
-                        @input="menu = false"
-                        color="teal"
-                    ></v-date-picker>
-                  </v-menu>
-                </v-col>
-              </v-row>
-            </v-container>
-          </v-card-text>
+    <accept-or-cancel :current-order="currentOrder" :dialog-accept.sync="dialogAccept"/>
 
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <div class="buttons-dialog">
-              <v-btn
-                  text
-                  color="teal"
-                  @click="dialog = false"
-              >
-                Anuluj
-              </v-btn>
-              <v-btn
-                  class="white--text ma-2"
-                  color="teal"
-                  elevation="3"
-                  large
-                  :disabled="!valid"
-                  @click="editOrder"
-              >
-                Zapisz
-              </v-btn>
-            </div>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-
-
-      <v-dialog
-          v-model="dialogAccept"
-          max-width="700"
-      >
-        <v-card>
-          <v-card-title>
-            <p class="text-dialog">Zamówienie: <span>{{ this.currentOrder.numberOrder }}</span></p>
-
-            <v-spacer></v-spacer>
-
-            <v-btn
-                icon
-                @click="dialogAccept = false"
-            >
-              <v-icon>mdi-close</v-icon>
-            </v-btn>
-          </v-card-title>
-
-          <v-card-text>
-            <v-container>
-              <v-row>
-                <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
-                >
-                  <v-text-field
-                      v-model="currentOrder.productType"
-                      color="teal"
-                      label="Rodzaj towaru"
-                      readonly
-                  ></v-text-field>
-                </v-col>
-                <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
-                >
-                  <v-text-field
-                      v-model="currentOrder.productWeight"
-                      color="teal"
-                      type="number"
-                      label="Waga towaru - kg"
-                      readonly
-                  ></v-text-field>
-                </v-col>
-                <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
-                >
-                  <v-text-field
-                      v-model="currentOrder.receptionVenue"
-                      color="teal"
-                      label="Miejsce odbioru"
-                      readonly
-                  ></v-text-field>
-                </v-col>
-                <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
-                >
-                  <v-text-field
-                      v-model="currentOrder.destination"
-                      color="teal"
-                      label="Miejsce docelowe"
-                      readonly
-                  ></v-text-field>
-                </v-col>
-                <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
-                >
-                  <v-text-field
-                      v-model="currentOrder.productWidth"
-                      color="teal"
-                      type="number"
-                      label="Szerokość towaru - cm"
-                      readonly
-                  ></v-text-field>
-                </v-col>
-                <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
-                >
-                  <v-text-field
-                      v-model="currentOrder.productHeight"
-                      color="teal"
-                      type="number"
-                      label="Wysokość towaru - cm"
-                      readonly
-                  ></v-text-field>
-                </v-col>
-                <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
-                >
-                  <v-menu
-                      v-model="menu"
-                      :close-on-content-click="false"
-                      :nudge-right="40"
-                      transition="scale-transition"
-                      offset-y
-                      min-width="auto"
-                  >
-                    <template v-slot:activator="{ on, attrs }">
-                      <v-text-field
-                          v-model="currentOrder.deadline"
-                          label="Termin dostarczenia"
-                          prepend-icon="mdi-calendar"
-                          readonly
-                          color="teal"
-                      ></v-text-field>
-                    </template>
-                  </v-menu>
-                </v-col>
-                <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
-                    class="priceField"
-                >
-                  <v-text-field
-                      dark
-                      v-model="currentOrder.orderPrice"
-                      color="white"
-                      class="white--text"
-                      type="number"
-                      label="Cena za usługę - zł"
-                      readonly
-                  ></v-text-field>
-                </v-col>
-              </v-row>
-            </v-container>
-          </v-card-text>
-
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <div class="buttons-dialog">
-              <v-btn
-                  text
-                  color="teal"
-                  @click="orderCanceled"
-              >
-                Anuluj zamówienie
-              </v-btn>
-              <v-btn
-                  class="white--text ma-2"
-                  color="teal"
-                  elevation="3"
-                  large
-                  @click="orderAccepted"
-              >
-                Ackeptuj
-              </v-btn>
-            </div>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-
-      <v-snackbar
-          v-model="snackBarError"
-          right
-          height="100"
-          color="error"
-          rounded
-          elevation="8"
-      >
-        Błąd! Wypełnij wszystkie pola poprawnie!
-      </v-snackbar>
-      <v-snackbar
-          v-model="snackbarSuccess"
-          right
-          height="100"
-          color="green"
-          rounded
-          elevation="8"
-      >
-        Gratulacje! Poprawnie edytowałeś zamówienie!
-      </v-snackbar>
-
-    </v-form>
   </v-container>
 </template>
 
 <script>
+import AcceptOrCancel from "@/dialogs/AcceptOrCancel";
+import EditOrder from "@/dialogs/EditOrder";
+
 export default {
   name: "StateOrder",
+  components: {EditOrder, AcceptOrCancel},
   data() {
     return {
       step: 0,
@@ -468,12 +135,8 @@ export default {
       selectedRow: null,
       dialog: false,
       dialogAccept: false,
-      editedOrder: '',
-      menu: false,
-      valid: true,
+      editedOrder: [],
       currentOrder: [],
-      snackBarError: false,
-      snackbarSuccess: false,
       isCancel: false,
       numberOrder: '',
       headers: [
@@ -488,9 +151,6 @@ export default {
         {text: 'Miejsce docelowe', value: 'destination'},
         {text: 'Termin dostarczenia', value: 'deadline'},
         {text: 'Edytuj/Usuń'}
-      ],
-      required: [
-        v => !!v || 'Pole jest wymagane',
       ],
     }
   },
@@ -524,6 +184,7 @@ export default {
       } else if (this.orders[index].status === 'priced') {
         this.step = 3
         this.selectedRow = index;
+        this.isCancel = false
         this.numberOrder = this.orders[index].numberOrder
       } else if (this.orders[index].status === 'canceled') {
         this.step = 3
@@ -548,26 +209,6 @@ export default {
     removeOrder(index) {
       this.$store.dispatch('removeOrder', index)
     },
-    editOrder() {
-      if (this.$refs.form.validate()) {
-        this.$store.dispatch('updateOrder', [this.editedOrder._id, this.editedOrder])
-        this.dialog = false
-        this.snackbarSuccess = true
-      } else {
-        this.snackBarError = true
-      }
-    },
-    orderCanceled() {
-      this.isCancel = true
-      this.currentOrder.status = 'canceled'
-      this.$store.dispatch('updateOrder', [this.currentOrder._id, this.currentOrder])
-      this.dialogAccept = false
-    },
-    orderAccepted() {
-      this.currentOrder.status = 'in_progress'
-      this.$store.dispatch('updateOrder', [this.currentOrder._id, this.currentOrder])
-      this.dialogAccept = false
-    }
   }
 }
 </script>
@@ -595,27 +236,6 @@ export default {
 
 .v-data-table::v-deep th {
   font-size: 0.5em !important;
-}
-
-.text-dialog {
-  font-size: 1.1em;
-  margin-left: 0.5em;
-  font-family: Arial, serif;
-}
-
-.text-dialog span {
-  color: teal;
-}
-
-.priceField {
-  background-color: teal;
-  border-radius: 8px;
-}
-
-.buttons-dialog {
-  margin-right: 1em;
-  margin-bottom: 1em;
-  margin-top: -1em;
 }
 
 </style>
