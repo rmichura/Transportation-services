@@ -5,9 +5,9 @@
           elevation="8"
           height="420"
           width="300"
-          class="sheet-orders"
+          class="sheet"
       >
-        <p><span>Z</span>arządzanie zamówieniami<span>!</span></p>
+        <p><span>Z</span>arządzaj zamówieniami<span>!</span></p>
         <v-row class="justify-center margin-top-6em">
           <v-btn
               class="white--text"
@@ -16,7 +16,7 @@
               large
               @click="goToOrdersManagement"
           >
-            Zamówienia
+            Obsługa zamówień
           </v-btn>
         </v-row>
       </v-sheet>
@@ -24,9 +24,9 @@
           elevation="8"
           height="420"
           width="300"
-          class="sheet-management-orders"
+          class="sheet-white"
       >
-        <p><span>Z</span>arządzanie użytkownikami<span>!</span></p>
+        <p><span>Z</span>arządzaj użytkownikami aplikacji<span>!</span></p>
         <v-row class="justify-center margin-top-6em">
           <v-btn
               class="white--text"
@@ -35,7 +35,7 @@
               large
               @click="goToUsersManagement"
           >
-            Użytkownicy
+            Obsługa użytkowników
           </v-btn>
         </v-row>
       </v-sheet>
@@ -43,9 +43,9 @@
           elevation="8"
           height="420"
           width="300"
-          class="sheet-management-orders"
+          class="sheet-white"
       >
-        <p><span>Z</span>arządzanie pracownikami<span>!</span></p>
+        <p><span>Z</span>arządzaj swoimi pracownikami<span>!</span></p>
         <v-row class="justify-center margin-top-6em">
           <v-btn
               class="white--text"
@@ -54,7 +54,7 @@
               large
               @click="goToEmployeesManagement"
           >
-            Pracownicy
+            Obsługa pracowników
           </v-btn>
         </v-row>
       </v-sheet>
@@ -62,9 +62,9 @@
           elevation="8"
           height="420"
           width="300"
-          class="sheet-management-cars"
+          class="sheet"
       >
-        <p><span>Z</span>arządzanie samochodami<span>!</span></p>
+        <p><span>D</span>odaj nowe samochody<span>!</span></p>
         <v-row class="justify-center margin-top-6em">
           <v-btn
               class="white--text"
@@ -73,7 +73,7 @@
               large
               @click="goToCarsManagement"
           >
-            Samochody
+            Dodawanie samochodu
           </v-btn>
         </v-row>
       </v-sheet>
@@ -107,36 +107,24 @@ export default {
 </script>
 
 <style scoped>
-.sheet-orders {
+.sheet {
   margin: 1em 3em 1em 0;
   background-color: #eeeeee;
 }
 
-.sheet-orders p {
+.sheet p {
   font-size: 2em;
   font-family: Arial, serif;
   text-align: center;
   margin-top: 2.5em;
 }
 
-.sheet-management-orders {
+.sheet-white {
   margin: 1em 3em 1em 0;
   background-color: #fafafa;
 }
 
-.sheet-management-orders p {
-  font-size: 2em;
-  font-family: Arial, serif;
-  text-align: center;
-  margin-top: 2.5em;
-}
-
-.sheet-management-cars {
-  margin: 1em 3em 1em 0;
-  background-color: #eeeeee;
-}
-
-.sheet-management-cars p {
+.sheet-white p {
   font-size: 2em;
   font-family: Arial, serif;
   text-align: center;

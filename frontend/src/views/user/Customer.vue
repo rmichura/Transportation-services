@@ -5,7 +5,7 @@
           elevation="8"
           height="420"
           width="300"
-          class="sheet-orders"
+          class="sheet"
       >
         <p><span>Z</span>łóż nowe zamówienie<span>!</span></p>
         <v-row class="justify-center margin-top-6em">
@@ -24,7 +24,7 @@
           elevation="8"
           height="420"
           width="300"
-          class="sheet-management-orders"
+          class="sheet-white"
       >
         <p><span>S</span>prawdź jaki masz status zamówienia<span>!</span></p>
         <v-row class="justify-center margin-top-6em">
@@ -43,7 +43,7 @@
           elevation="8"
           height="420"
           width="300"
-          class="sheet-management-cars"
+          class="sheet"
       >
         <p><span>Z</span>oabcz historię swoich zamówień<span>!</span></p>
         <v-row class="justify-center margin-top-6em">
@@ -54,7 +54,7 @@
               large
               @click="goToOrderHistory"
           >
-            Zobacz historię
+            Sprawdź historię
           </v-btn>
         </v-row>
       </v-sheet>
@@ -85,36 +85,24 @@ export default {
 </script>
 
 <style scoped>
-.sheet-orders {
+.sheet {
   margin: 1em 3em 1em 0;
   background-color: #eeeeee;
 }
 
-.sheet-orders p {
+.sheet p {
   font-size: 2em;
   font-family: Arial, serif;
   text-align: center;
   margin-top: 2.5em;
 }
 
-.sheet-management-orders {
+.sheet-white {
   margin: 1em 3em 1em 0;
   background-color: #fafafa;
 }
 
-.sheet-management-orders p {
-  font-size: 2em;
-  font-family: Arial, serif;
-  text-align: center;
-  margin-top: 2.5em;
-}
-
-.sheet-management-cars {
-  margin: 1em 3em 1em 0;
-  background-color: #eeeeee;
-}
-
-.sheet-management-cars p {
+.sheet-white p {
   font-size: 2em;
   font-family: Arial, serif;
   text-align: center;
