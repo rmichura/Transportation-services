@@ -15,6 +15,10 @@ import AdminAccount from "@/views/admin/AdminAccount";
 import CustomerOrder from "@/views/user/CustomerOrder";
 import CustomerOrderState from "@/views/user/CustomerOrderState";
 import CustomerOrderHistory from "@/views/user/CustomerOrderHistory";
+import OrdersManagement from "@/views/admin/OrdersManagement";
+import UsersManagement from "@/views/admin/UsersManagement";
+import EmployeesManagement from "@/views/admin/EmployeesManagement";
+import CarsManagement from "@/views/admin/CarsManagement";
 
 Vue.use(VueRouter)
 
@@ -111,6 +115,30 @@ const routes = [
         path: '/admin/account',
         name: 'adminAccount',
         component: AdminAccount,
+        beforeEnter: adminGuard
+    },
+    {
+        path: '/admin/management/orders',
+        name: 'AdminManagementOrders',
+        component: OrdersManagement,
+        beforeEnter: adminGuard
+    },
+    {
+        path: '/admin/management/users',
+        name: 'AdminManagementUsers',
+        component: UsersManagement,
+        beforeEnter: adminGuard
+    },
+    {
+        path: '/admin/management/employees',
+        name: 'AdminManagementEmployees',
+        component: EmployeesManagement,
+        beforeEnter: adminGuard
+    },
+    {
+        path: '/admin/management/cars',
+        name: 'AdminManagementCars',
+        component: CarsManagement,
         beforeEnter: adminGuard
     },
     {
