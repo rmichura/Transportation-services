@@ -158,7 +158,7 @@ export default {
   },
   methods: {
     async saveOrder() {
-      let currentUser = this.$store.getters.currentUser._id
+      let currentUser = this.$store.getters.currentUser
       if (this.$refs.form.validate()) {
         await this.$store.dispatch('saveOrder', {
           productType: this.productType,

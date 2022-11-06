@@ -18,7 +18,7 @@ export default new Vuex.Store({
     getters: {
         isAuth: state => state.token !== null,
         yourRole: state => state.role,
-        currentUser: state => state.user,
+        currentUser: state => state.userId,
         orderOfCustomer: state => state.orders,
     },
     mutations: {
