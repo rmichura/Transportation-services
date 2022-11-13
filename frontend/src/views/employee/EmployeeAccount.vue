@@ -128,12 +128,8 @@ export default {
   methods: {
     async updateUser() {
       if (this.newPassword === this.confirmPassword) {
-        await this.$store.dispatch("updateUser", {
-          name: this.user.name,
-          lastName: this.user.lastName,
-          address: this.user.address,
-          password: this.newPassword
-        })
+        this.user.password = this.newPassword
+        await this.$store.dispatch("updateUser", this.user)
         this.newPassword = '';
         this.confirmPassword = '';
         this.snackbarSuccess = true;
