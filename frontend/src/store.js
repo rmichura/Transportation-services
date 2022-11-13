@@ -14,12 +14,14 @@ export default new Vuex.Store({
         role: null,
         user: [],
         orders: [],
+        users: [],
     },
     getters: {
         isAuth: state => state.token !== null,
         yourRole: state => state.role,
         currentUser: state => state.userId,
         orderOfCustomer: state => state.orders,
+        users: state => state.users
     },
     mutations: {
         auth(state, payload) {
@@ -32,12 +34,16 @@ export default new Vuex.Store({
             state.userId = null;
             state.role = null;
             state.user = [];
+            state.users = [];
         },
         user(state, payload) {
             state.user = payload.user
         },
         orders(state, payload) {
             state.orders = payload.orders
+        },
+        users(state, payload) {
+            state.users = payload.users
         }
     },
     actions: {
@@ -88,6 +94,7 @@ export default new Vuex.Store({
                 localStorage.removeItem('expires');
                 localStorage.removeItem('user');
                 localStorage.removeItem('orders');
+                localStorage.removeItem('users');
                 return;
             }
             commit('auth', {
@@ -109,6 +116,7 @@ export default new Vuex.Store({
             localStorage.removeItem('expires');
             localStorage.removeItem('user');
             localStorage.removeItem('orders');
+            localStorage.removeItem('users');
             router.push('/')
         },
 
@@ -121,7 +129,7 @@ export default new Vuex.Store({
         },
 
         async updateUser({commit}, payload) {
-            let id = localStorage.getItem('userId')
+            let id = payload._id
             try {
                 await axios.put(`${API}user/${id}`, payload)
             } catch (e) {
@@ -181,6 +189,30 @@ export default new Vuex.Store({
         async updateOrder({commit}, [id, payload]) {
             try {
                 await axios.put(`${API}order/${id}`, payload)
+            } catch (e) {
+                console.log(e)
+            }
+        },
+
+        async getUsers({commit}) {
+            try {
+                let response = await axios.get(`${API}users`)
+                commit('users', {
+                    users: response.data.users
+                })
+            } catch (e) {
+                console.log(e)
+            }
+        },
+
+        async removeUser({state}, user) {
+            try {
+                await axios.delete(`${API}user/${user._id}`)
+                state.users.forEach((data, value) => {
+                    if (user._id === data._id) {
+                        state.users.splice(value, 1)
+                    }
+                })
             } catch (e) {
                 console.log(e)
             }

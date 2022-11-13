@@ -22,6 +22,8 @@ import CarsManagement from "@/views/admin/CarsManagement";
 import EmployeeOrder from "@/views/employee/EmployeeOrder";
 import EmployeeOrderHistory from "@/views/employee/EmployeeOrderHistory";
 import EmployeeOrderState from "@/views/employee/EmployeeOrderState";
+import EmployeeUsersManagement from "@/views/employee/EmployeeUsersManagement";
+import EmployeeOrdersManagement from "@/views/employee/EmployeeOrdersManagement";
 
 Vue.use(VueRouter)
 
@@ -177,13 +179,13 @@ const routes = [
     {
         path: '/employee/management/orders',
         name: 'EmployeeManagementOrders',
-        component: OrdersManagement,
+        component: EmployeeOrdersManagement,
         beforeEnter: employeeGuard
     },
     {
         path: '/employee/management/users',
         name: 'EmployeeManagementUsers',
-        component: UsersManagement,
+        component: EmployeeUsersManagement,
         beforeEnter: employeeGuard
     },
     {
