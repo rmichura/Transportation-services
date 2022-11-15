@@ -26,8 +26,8 @@
                   <v-text-field
                       v-model="currentUser.email"
                       color="teal"
-                      :rules="[rules.required]"
                       label="Email"
+                      readonly
                   ></v-text-field>
                 </v-col>
                 <v-col
@@ -159,7 +159,6 @@ export default {
       snackBarError: false,
       rules: {
         min: v => v.length >= 8 || 'Min 8 znaków',
-        required: v => !!v || 'Pole jest wymagane',
       }
     }
   },

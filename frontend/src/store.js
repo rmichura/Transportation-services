@@ -33,6 +33,7 @@ export default new Vuex.Store({
             state.token = null;
             state.userId = null;
             state.role = null;
+            state.orders = [];
             state.user = [];
             state.users = [];
         },
