@@ -47,6 +47,7 @@ class UserController {
             const hash = bcrypt.hashSync(req.body.password, salt);
             user.password = hash
         }
+        if (req.body.role) user.role = req.body.role;
 
         await user.save().then(result => {
             res.status(200).json({
