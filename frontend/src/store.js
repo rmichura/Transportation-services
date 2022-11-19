@@ -15,13 +15,15 @@ export default new Vuex.Store({
         user: [],
         orders: [],
         users: [],
+        allOrders: [],
     },
     getters: {
         isAuth: state => state.token !== null,
         yourRole: state => state.role,
         currentUser: state => state.userId,
         orderOfCustomer: state => state.orders,
-        users: state => state.users
+        users: state => state.users,
+        allOrders: state => state.allOrders
     },
     mutations: {
         auth(state, payload) {
@@ -36,6 +38,7 @@ export default new Vuex.Store({
             state.orders = [];
             state.user = [];
             state.users = [];
+            state.allOrders = [];
         },
         user(state, payload) {
             state.user = payload.user
@@ -45,6 +48,9 @@ export default new Vuex.Store({
         },
         users(state, payload) {
             state.users = payload.users
+        },
+        allOrders(state, payload) {
+            state.allOrders = payload.allOrders
         }
     },
     actions: {
@@ -58,7 +64,7 @@ export default new Vuex.Store({
                 })
 
                 const now = new Date();
-                const endDate = new Date(now.getTime() + 30 * 60000);
+                const endDate = new Date(now.getTime() + 30 * 600000);
                 localStorage.setItem('token', response.data.apiToken);
                 localStorage.setItem('userId', response.data._id);
                 localStorage.setItem('role', response.data.role);
@@ -96,6 +102,7 @@ export default new Vuex.Store({
                 localStorage.removeItem('user');
                 localStorage.removeItem('orders');
                 localStorage.removeItem('users');
+                localStorage.removeItem('allOrders');
                 return;
             }
             commit('auth', {
@@ -171,6 +178,17 @@ export default new Vuex.Store({
                 })
                 commit('orders', {
                     orders: order
+                })
+            } catch (e) {
+                console.log(e)
+            }
+        },
+
+        async getAllOrders({commit}) {
+            try {
+                let response = await axios.get(`${API}orders`)
+                commit('allOrders', {
+                    allOrders: response.data.orders
                 })
             } catch (e) {
                 console.log(e)
