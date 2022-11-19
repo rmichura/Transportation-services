@@ -211,4 +211,14 @@ export default {
   background-color: teal;
   border-radius: 8px;
 }
+
+.text-dialog {
+  font-size: 1.1em;
+  margin-left: 0.5em;
+  font-family: Arial, serif;
+}
+
+.text-dialog span {
+  color: teal;
+}
 </style>
