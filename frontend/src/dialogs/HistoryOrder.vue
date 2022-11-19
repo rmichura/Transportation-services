@@ -6,6 +6,15 @@
     <v-card>
       <v-card-title>
         <p class="text-dialog">Zamówienie: <span>{{ this.currentOrder.numberOrder }}</span></p>
+
+        <v-spacer></v-spacer>
+
+        <v-btn
+            icon
+            @click="this.closeDialog"
+        >
+          <v-icon>mdi-close</v-icon>
+        </v-btn>
       </v-card-title>
 
       <v-card-text>

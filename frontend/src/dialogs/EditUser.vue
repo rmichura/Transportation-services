@@ -13,6 +13,15 @@
         <v-card>
           <v-card-title>
             <p class="text-dialog">Edycja użytownika</p>
+
+            <v-spacer></v-spacer>
+
+            <v-btn
+                icon
+                @click="this.closeDialog"
+            >
+              <v-icon>mdi-close</v-icon>
+            </v-btn>
           </v-card-title>
 
           <v-card-text>
