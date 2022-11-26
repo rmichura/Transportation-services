@@ -1,6 +1,7 @@
 <template>
   <v-dialog
       v-model="dialogAccept"
+      persistent
       max-width="700"
   >
     <v-card>
