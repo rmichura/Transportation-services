@@ -34,7 +34,7 @@
                     md="4"
                 >
                   <v-text-field
-
+                      v-model="car.brand"
                       color="teal"
                       label="Marka"
                       :rules="required"
@@ -46,7 +46,7 @@
                     md="4"
                 >
                   <v-text-field
-
+                      v-model="car.type"
                       color="teal"
                       label="Typ"
                       :rules="required"
@@ -58,7 +58,7 @@
                     md="4"
                 >
                   <v-text-field
-
+                      v-model="car.capacity"
                       color="teal"
                       label="Ładowność - t"
                       type="number"
@@ -71,7 +71,7 @@
                     md="4"
                 >
                   <v-text-field
-
+                      v-model="car.numberCar"
                       color="teal"
                       label="Tablica rejestracyjna"
                       :rules="required"
@@ -83,7 +83,7 @@
                     md="4"
                 >
                   <v-text-field
-
+                      v-model="car.maxWidth"
                       color="teal"
                       label="Dopuszczalna szerokość - cm"
                       type="number"
@@ -96,12 +96,25 @@
                     md="4"
                 >
                   <v-text-field
-
+                      v-model="car.maxHeight"
                       color="teal"
                       label="Dopuszczalna wysokość - cm"
                       type="number"
                       :rules="required"
                   ></v-text-field>
+                </v-col>
+                <v-col
+                    cols="12"
+                    sm="6"
+                    md="4"
+                >
+                  <v-file-input
+                      v-model="car.img"
+                      truncate-length="15"
+                      label="Zdjęcie"
+                      :rules="required"
+                      color="teal"
+                  ></v-file-input>
                 </v-col>
               </v-row>
             </v-container>
@@ -123,6 +136,7 @@
                   elevation="3"
                   large
                   :disabled="!valid"
+                  @click="addNewCar"
               >
                 Zapisz
               </v-btn>
@@ -164,6 +178,7 @@ export default {
       dialogValue: this.dialog,
       snackbarSuccess: false,
       snackBarError: false,
+      car: {},
       required: [
         v => !!v || 'Pole jest wymagane',
       ],
@@ -175,6 +190,25 @@ export default {
       this.$emit('update:dialog', this.dialogValue)
       this.$refs.form.resetValidation()
     },
+    addNewCar() {
+      const formData = new FormData();
+      formData.append('img', this.car.img, this.car.img.name)
+      formData.append('brand', this.car.brand)
+      formData.append('type', this.car.type)
+      formData.append('numberCar', this.car.numberCar)
+      formData.append('capacity', this.car.capacity)
+      formData.append('maxWidth', this.car.maxWidth)
+      formData.append('maxHeight', this.car.maxHeight)
+      formData.append('status', 'free')
+
+      if (this.$refs.form.validate()) {
+        this.$store.dispatch('saveCar', formData)
+        this.closeDialog()
+        this.snackbarSuccess = true
+      } else {
+        this.snackBarError = true
+      }
+    }
   }
 }
 </script>

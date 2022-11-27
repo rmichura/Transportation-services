@@ -236,5 +236,17 @@ export default new Vuex.Store({
                 console.log(e)
             }
         },
+
+        async saveCar({commit}, payload) {
+            try {
+                await axios.post(`${API}car`, payload, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                })
+            } catch (e) {
+                console.log(e)
+            }
+        }
     }
 })
