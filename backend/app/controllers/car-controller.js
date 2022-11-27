@@ -11,8 +11,8 @@ class CarController {
             type: req.body.type,
             capacity: req.body.capacity,
             maxWidth: req.body.maxWidth,
-            maxWeight: req.body.maxWeight,
-            status: 'free',
+            maxHeight: req.body.maxHeight,
+            status: req.body.status,
             numberCar: req.body.numberCar,
             img: req.file.path
         });
@@ -25,7 +25,7 @@ class CarController {
                     type: result.type,
                     capacity: result.capacity,
                     maxWidth: result.maxWidth,
-                    maxWeight: result.maxWeight,
+                    maxHeight: result.maxHeight,
                     status: result.status,
                     numberCar: result.numberCar,
                     img: result.img
@@ -46,13 +46,14 @@ class CarController {
         if (req.body.type) car.type = req.body.type;
         if (req.body.capacity) car.capacity = req.body.capacity;
         if (req.body.maxWidth) car.maxWidth = req.body.maxWidth;
-        if (req.body.maxWeight) car.maxWeight = req.body.maxWeight;
+        if (req.body.maxHeight) car.maxHeight = req.body.maxHeight;
         if (req.body.status) car.status = req.body.status;
         if (req.body.numberCar) car.numberCar = req.body.numberCar;
         if (req.file) {
             const __dirname = path.resolve()
             const filePath = path.join(__dirname, car.img)
-            fs.unlink(filePath, () => {})
+            fs.unlink(filePath, () => {
+            })
             car.img = req.file.path;
         }
 
@@ -65,7 +66,7 @@ class CarController {
                     type: result.type,
                     capacity: result.capacity,
                     maxWidth: result.maxWidth,
-                    maxWeight: result.maxWeight,
+                    maxHeight: result.maxHeight,
                     status: result.status,
                     numberCar: result.numberCar,
                     img: result.img
@@ -109,7 +110,7 @@ class CarController {
                         brand: doc.brand,
                         capacity: doc.capacity,
                         maxWidth: doc.maxWidth,
-                        maxWeight: doc.maxWeight,
+                        maxHeight: doc.maxHeight,
                         status: doc.status,
                         numberCar: doc.numberCar,
                         img: doc.img

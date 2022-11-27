@@ -19,7 +19,7 @@ const carSchema = new mongoose.Schema({
         type: Number,
         required: true,
     },
-    maxWeight: {
+    maxHeight: {
         type: Number,
         required: true,
     },
