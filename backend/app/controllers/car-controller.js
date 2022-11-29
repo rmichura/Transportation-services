@@ -108,6 +108,7 @@ class CarController {
                     return {
                         _id: doc._id,
                         brand: doc.brand,
+                        type: doc.type,
                         capacity: doc.capacity,
                         maxWidth: doc.maxWidth,
                         maxHeight: doc.maxHeight,
