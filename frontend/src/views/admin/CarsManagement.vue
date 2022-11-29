@@ -183,11 +183,13 @@ export default {
   font-family: Arial, serif;
   text-align: center;
   margin-top: 2em;
+  background-color: teal;
+  color: white;
 }
 
 .sheet:hover {
-  background-color: gainsboro;
-  border: teal solid;
+  background-color: #eeeeee;
+  border: #eeeeee solid;
 }
 
 .margin-left-2em {
