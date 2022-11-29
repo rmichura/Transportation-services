@@ -276,5 +276,18 @@ export default new Vuex.Store({
             }
         },
 
+        async removeCar({state}, id) {
+            try {
+                await axios.delete(`${API}car/${id}`)
+                state.cars.forEach((data, value) => {
+                    if (id === data._id) {
+                        state.cars.splice(value, 1)
+                    }
+                })
+            } catch (e) {
+                console.log(e)
+            }
+        },
+
     }
 })

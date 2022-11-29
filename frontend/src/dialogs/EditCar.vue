@@ -136,6 +136,15 @@
           </v-card-text>
 
           <v-card-actions>
+            <v-btn
+                class="button-remove"
+                color="red"
+                elevation="3"
+                large
+                @click="removeCar"
+            >
+              Usuń
+            </v-btn>
             <v-spacer></v-spacer>
             <div class="buttons-dialog">
               <v-btn
@@ -230,6 +239,10 @@ export default {
       } else {
         this.snackBarError = true;
       }
+    },
+    removeCar() {
+      this.$store.dispatch('removeCar', this.currentCar._id)
+      this.closeDialog()
     }
   }
 }
@@ -250,6 +263,11 @@ export default {
   margin-right: 1em;
   margin-bottom: 1em;
   margin-top: -1em;
+}
+
+.button-remove {
+  margin: -1em 1em 1em 1.5em;
+  color: white;
 }
 
 .margin-select {
