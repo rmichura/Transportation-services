@@ -16,6 +16,7 @@ export default new Vuex.Store({
         orders: [],
         users: [],
         allOrders: [],
+        cars: [],
     },
     getters: {
         isAuth: state => state.token !== null,
@@ -23,7 +24,8 @@ export default new Vuex.Store({
         currentUser: state => state.userId,
         orderOfCustomer: state => state.orders,
         users: state => state.users,
-        allOrders: state => state.allOrders
+        allOrders: state => state.allOrders,
+        cars: state => state.cars,
     },
     mutations: {
         auth(state, payload) {
@@ -39,6 +41,7 @@ export default new Vuex.Store({
             state.user = [];
             state.users = [];
             state.allOrders = [];
+            state.cars = [];
         },
         user(state, payload) {
             state.user = payload.user
@@ -51,6 +54,9 @@ export default new Vuex.Store({
         },
         allOrders(state, payload) {
             state.allOrders = payload.allOrders
+        },
+        cars(state, payload) {
+            state.cars = payload.cars
         }
     },
     actions: {
@@ -103,6 +109,7 @@ export default new Vuex.Store({
                 localStorage.removeItem('orders');
                 localStorage.removeItem('users');
                 localStorage.removeItem('allOrders');
+                localStorage.removeItem('cars');
                 return;
             }
             commit('auth', {
@@ -125,6 +132,7 @@ export default new Vuex.Store({
             localStorage.removeItem('user');
             localStorage.removeItem('orders');
             localStorage.removeItem('users');
+            localStorage.removeItem('cars');
             router.push('/')
         },
 
@@ -247,6 +255,26 @@ export default new Vuex.Store({
             } catch (e) {
                 console.log(e)
             }
-        }
+        },
+
+        async getCars({commit}) {
+            try {
+                let response = await axios.get(`${API}cars`)
+                commit('cars', {
+                    cars: response.data.cars
+                })
+            } catch (e) {
+                console.log(e)
+            }
+        },
+
+        async updateCar({commit}, [id, payload]) {
+            try {
+                await axios.put(`${API}car/${id}`, payload)
+            } catch (e) {
+                console.log(e)
+            }
+        },
+
     }
 })

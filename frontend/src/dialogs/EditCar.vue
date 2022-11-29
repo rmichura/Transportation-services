@@ -7,13 +7,13 @@
         class="fill-height"
     >
       <v-dialog
-          v-model="dialog"
-          persistent
+          v-model="dialogCar"
           max-width="700"
+          persistent
       >
         <v-card>
           <v-card-title>
-            <p class="text-dialog">Dodawanie samochodu</p>
+            <p class="text-dialog">Edycja samochodu<span></span></p>
 
             <v-spacer></v-spacer>
 
@@ -34,10 +34,10 @@
                     md="4"
                 >
                   <v-text-field
-                      v-model="car.brand"
+                      v-model="currentCar.brand"
                       color="teal"
+                      :rules="required"
                       label="Marka"
-                      :rules="required"
                   ></v-text-field>
                 </v-col>
                 <v-col
@@ -46,10 +46,10 @@
                     md="4"
                 >
                   <v-text-field
-                      v-model="car.type"
+                      v-model="currentCar.type"
                       color="teal"
+                      :rules="required"
                       label="Typ"
-                      :rules="required"
                   ></v-text-field>
                 </v-col>
                 <v-col
@@ -58,11 +58,11 @@
                     md="4"
                 >
                   <v-text-field
-                      v-model="car.capacity"
+                      v-model="currentCar.capacity"
                       color="teal"
-                      label="Ładowność - t"
+                      :rules="required"
                       type="number"
-                      :rules="required"
+                      label="Ładowność - kg"
                   ></v-text-field>
                 </v-col>
                 <v-col
@@ -71,23 +71,11 @@
                     md="4"
                 >
                   <v-text-field
-                      v-model="car.numberCar"
+                      v-model="currentCar.maxWidth"
                       color="teal"
-                      label="Tablica rejestracyjna"
                       :rules="required"
-                  ></v-text-field>
-                </v-col>
-                <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
-                >
-                  <v-text-field
-                      v-model="car.maxWidth"
-                      color="teal"
-                      label="Dopuszczalna szerokość - cm"
                       type="number"
-                      :rules="required"
+                      label="Dopuszczlna szerokość - cm"
                   ></v-text-field>
                 </v-col>
                 <v-col
@@ -96,11 +84,39 @@
                     md="4"
                 >
                   <v-text-field
-                      v-model="car.maxHeight"
+                      v-model="currentCar.maxHeight"
                       color="teal"
+                      :rules="required"
+                      type="number"
                       label="Dopuszczalna wysokość - cm"
-                      type="number"
+                  ></v-text-field>
+                </v-col>
+                <v-col
+                    cols="12"
+                    sm="6"
+                    md="4"
+                >
+                  <v-select
+                      dense
+                      class="margin-select"
+                      v-model="currentCar.status"
+                      color="teal"
                       :rules="required"
+                      label="Status"
+                      :items="items"
+                      item-color="teal"
+                  ></v-select>
+                </v-col>
+                <v-col
+                    cols="12"
+                    sm="6"
+                    md="4"
+                >
+                  <v-text-field
+                      v-model="currentCar.numberCar"
+                      color="teal"
+                      :rules="required"
+                      label="Rejstracja samochodu"
                   ></v-text-field>
                 </v-col>
                 <v-col
@@ -109,10 +125,9 @@
                     md="4"
                 >
                   <v-file-input
-                      v-model="car.img"
+                      v-model="newImg"
                       truncate-length="15"
                       label="Zdjęcie"
-                      :rules="required"
                       color="teal"
                   ></v-file-input>
                 </v-col>
@@ -136,7 +151,7 @@
                   elevation="3"
                   large
                   :disabled="!valid"
-                  @click="addNewCar"
+                  @click="editCar"
               >
                 Zapisz
               </v-btn>
@@ -146,16 +161,6 @@
       </v-dialog>
     </v-form>
     <v-snackbar
-        v-model="snackbarSuccess"
-        right
-        height="100"
-        color="success"
-        rounded
-        elevation="8"
-    >
-      Gratulacje! Poprawnie dodałeś samochód.
-    </v-snackbar>
-    <v-snackbar
         v-model="snackBarError"
         right
         height="100"
@@ -163,53 +168,67 @@
         rounded
         elevation="8"
     >
-      Błąd! Poprawnie wpisz dane!
+      Błąd! Wypełnij wszystkie pola poprawnie!
+    </v-snackbar>
+    <v-snackbar
+        v-model="snackbarSuccess"
+        right
+        height="100"
+        color="green"
+        rounded
+        elevation="8"
+    >
+      Gratulacje! Poprawnie edytowałeś samochód!
     </v-snackbar>
   </v-container>
 </template>
 
 <script>
 export default {
-  name: "AddCar",
-  props: ['dialog'],
+  name: "EditCar",
+  props: ['dialogCar', 'currentCar'],
   data() {
     return {
       valid: true,
-      dialogValue: this.dialog,
-      snackbarSuccess: false,
+      menu: false,
       snackBarError: false,
-      car: {},
+      snackbarSuccess: false,
+      dialogValue: this.dialogCar,
+      items: ['wolny', 'zajęty'],
+      newImg: null,
       required: [
         v => !!v || 'Pole jest wymagane',
-      ],
+      ]
     }
   },
   methods: {
     closeDialog() {
       this.dialogValue = false
-      this.$emit('update:dialog', this.dialogValue)
+      this.$emit('update:dialogCar', this.dialogValue)
       this.$refs.form.resetValidation()
-      this.car = {};
     },
-    addNewCar() {
-      const formData = new FormData();
-      formData.append('img', this.car.img, this.car.img.name)
-      formData.append('brand', this.car.brand)
-      formData.append('type', this.car.type)
-      formData.append('numberCar', this.car.numberCar)
-      formData.append('capacity', this.car.capacity)
-      formData.append('maxWidth', this.car.maxWidth)
-      formData.append('maxHeight', this.car.maxHeight)
-      formData.append('status', 'wolny')
-
+    editCar() {
       if (this.$refs.form.validate()) {
-        this.$store.dispatch('saveCar', formData).then(() => {
-          this.$store.dispatch('getCars')
-        })
+        const formData = new FormData();
+        if (this.newImg !== null) {
+          formData.append('img', this.newImg, this.newImg.name)
+        }
+        formData.append('brand', this.currentCar.brand)
+        formData.append('type', this.currentCar.type)
+        formData.append('numberCar', this.currentCar.numberCar)
+        formData.append('capacity', this.currentCar.capacity)
+        formData.append('maxWidth', this.currentCar.maxWidth)
+        formData.append('maxHeight', this.currentCar.maxHeight)
+        formData.append('status', this.currentCar.status)
+        this.$store.dispatch('updateCar', [this.currentCar._id, formData])
+            .then(() => {
+              this.$store.dispatch('getCars')
+            })
+        this.newImg = null;
         this.closeDialog()
-        this.snackbarSuccess = true
+        this.snackbarSuccess = true;
       } else {
-        this.snackBarError = true
+        this.snackBarError = true;
       }
     }
   }
@@ -231,5 +250,9 @@ export default {
   margin-right: 1em;
   margin-bottom: 1em;
   margin-top: -1em;
+}
+
+.margin-select {
+  margin-top: 1.4em
 }
 </style>
