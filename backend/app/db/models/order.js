@@ -46,6 +46,10 @@ const orderSchema = new mongoose.Schema({
         ref: 'User',
         required: true,
     },
+    car: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Car',
+    },
 });
 const Order = mongoose.model('Order', orderSchema)
 

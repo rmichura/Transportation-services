@@ -57,6 +57,7 @@ class OrderController {
         if (req.body.status) order.status = req.body.status;
         if (req.body.orderPrice) order.orderPrice = req.body.orderPrice;
         if (req.body.deadline) order.deadline = req.body.deadline;
+        if (req.body.car) order.car = req.body.car;
 
         await order.save().then(result => {
             res.status(200).json({
@@ -72,7 +73,8 @@ class OrderController {
                     status: result.status,
                     deadline: result.deadline,
                     numberOrder: result.numberOrder,
-                    orderPrice: result.orderPrice
+                    orderPrice: result.orderPrice,
+                    car: result.car
                 }
             })
         })
@@ -120,7 +122,8 @@ class OrderController {
                         deadline: doc.deadline,
                         numberOrder: doc.numberOrder,
                         orderPrice: doc.orderPrice,
-                        user: doc.user
+                        user: doc.user,
+                        car: doc.car
                     }
                 })
             }
