@@ -129,8 +129,15 @@ class CarController {
 
     async deleteCar(req, res) {
         const id = req.params.id;
+        const car = await Car.findOne({_id: id})
+        if (car.img) {
+            const __dirname = path.resolve()
+            const filePath = path.join(__dirname, car.img)
+            console.log(filePath)
+            fs.unlink(filePath, () => {
+            })
+        }
         await Car.deleteOne({_id: id})
-
         res.sendStatus(204);
     }
 }
