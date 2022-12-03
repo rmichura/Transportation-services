@@ -3,7 +3,7 @@
       cycle
       hide-delimiter-background
       show-arrows-on-hover
-      height="100vh"
+      height="90vh"
   >
     <v-carousel-item
         v-for="(item, i) in items"
@@ -37,13 +37,13 @@ export default {
     return {
       items: [
         {
-          src: 'https://cdn.pixabay.com/photo/2017/08/24/16/07/truck-2677373_960_720.jpg',
+          src: 'http://127.0.0.1:8887/frontend/src/assets/truck-2677373_960_7202.jpg'
         },
         {
-          src: 'https://cdn.pixabay.com/photo/2017/09/16/11/11/truck-2755172_960_720.jpg',
+          src: 'http://127.0.0.1:8887/frontend/src/assets/truck-2755172_960_7202.jpg',
         },
         {
-          src: 'https://cdn.pixabay.com/photo/2016/11/29/01/36/cloudy-1866581_960_720.jpg',
+          src: 'http://127.0.0.1:8887/frontend/src/assets/cloudy-1866581_960_7202.jpg',
         },
       ],
     }
