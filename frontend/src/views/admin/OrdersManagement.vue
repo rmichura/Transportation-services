@@ -36,12 +36,19 @@
       </tbody>
 
       <template v-slot:item.actions="{ item }">
-        <v-btn
-            icon
-            @click="openDialog(item)"
-        >
-          <v-icon>mdi-pencil</v-icon>
-        </v-btn>
+        <v-tooltip top>
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+                icon
+                @click="openDialog(item)"
+                v-bind="attrs"
+                v-on="on"
+            >
+              <v-icon>mdi-calculator-variant-outline </v-icon>
+            </v-btn>
+          </template>
+          <span>Wyceń zamówienie</span>
+        </v-tooltip>
       </template>
     </v-data-table>
 
@@ -59,6 +66,7 @@
 
 <script>
 import OrderValuation from "@/dialogs/OrderValuation";
+
 export default {
   name: "OrdersManagement",
   components: {OrderValuation},

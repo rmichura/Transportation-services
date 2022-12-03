@@ -47,18 +47,32 @@
       </tbody>
 
       <template v-slot:item.actions="{ item }">
-        <v-btn
-            icon
-            @click="openDialog(item)"
-        >
-          <v-icon>mdi-pencil</v-icon>
-        </v-btn>
-        <v-btn
-            icon
-            @click="removeUser(item)"
-        >
-          <v-icon>mdi-delete</v-icon>
-        </v-btn>
+        <v-tooltip top>
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+                icon
+                @click="openDialog(item)"
+                v-bind="attrs"
+                v-on="on"
+            >
+              <v-icon>mdi-pencil</v-icon>
+            </v-btn>
+          </template>
+          <span>Edytuj użytkownika</span>
+        </v-tooltip>
+        <v-tooltip top>
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+                icon
+                @click="removeUser(item)"
+                v-bind="attrs"
+                v-on="on"
+            >
+              <v-icon>mdi-delete</v-icon>
+            </v-btn>
+          </template>
+          <span>Usuń użytkownika</span>
+        </v-tooltip>
       </template>
     </v-data-table>
 

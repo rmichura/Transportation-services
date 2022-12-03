@@ -86,26 +86,47 @@
           <td>{{ order.destination }}</td>
           <td>{{ order.deadline }}</td>
           <td v-if="order.status === 'created'" v-bind:show="action = true">
-            <v-btn
-                icon
-                @click="openDialog(index)"
-            >
-              <v-icon>mdi-pencil</v-icon>
-            </v-btn>
-            <v-btn
-                icon
-                @click="removeOrder(index)"
-            >
-              <v-icon>mdi-delete</v-icon>
-            </v-btn>
+            <v-tooltip top>
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                    icon
+                    @click="openDialog(index)"
+                    v-bind="attrs"
+                    v-on="on"
+                >
+                  <v-icon>mdi-pencil</v-icon>
+                </v-btn>
+              </template>
+              <span>Edytuj zamówienie</span>
+            </v-tooltip>
+            <v-tooltip top>
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                    icon
+                    @click="removeOrder(index)"
+                    v-bind="attrs"
+                    v-on="on"
+                >
+                  <v-icon>mdi-delete</v-icon>
+                </v-btn>
+              </template>
+              <span>Usuń zamówienie</span>
+            </v-tooltip>
           </td>
           <td v-else-if="order.status === 'priced'">
-            <v-btn
-                icon
-                @click="openDialog(index)"
-            >
-              <v-icon>mdi-check</v-icon>
-            </v-btn>
+            <v-tooltip top>
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                    icon
+                    @click="openDialog(index)"
+                    v-bind="attrs"
+                    v-on="on"
+                >
+                  <v-icon>mdi-check</v-icon>
+                </v-btn>
+              </template>
+              <span>Akceptuj zamówienie</span>
+            </v-tooltip>
           </td>
           <td v-else-if="action"></td>
         </tr>

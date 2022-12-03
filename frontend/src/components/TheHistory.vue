@@ -66,12 +66,19 @@
           <td>{{ order.destination }}</td>
           <td>{{ order.deadline }}</td>
           <td>
-            <v-btn
-                icon
-                @click="openDialog(index)"
-            >
-              <v-icon>mdi-dots-horizontal</v-icon>
-            </v-btn>
+            <v-tooltip top>
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                    icon
+                    @click="openDialog(index)"
+                    v-bind="attrs"
+                    v-on="on"
+                >
+                  <v-icon>mdi-dots-horizontal</v-icon>
+                </v-btn>
+              </template>
+              <span>Szczegóły</span>
+            </v-tooltip>
           </td>
         </tr>
         </tbody>

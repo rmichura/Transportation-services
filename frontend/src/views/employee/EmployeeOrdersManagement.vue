@@ -33,20 +33,34 @@
           <td>{{ order.receptionVenue }}</td>
           <td>{{ order.destination }}</td>
           <td v-if="order.status === 'in_progress'">
-            <v-btn
-                icon
-                @click="openDialog(index)"
-            >
-              <v-icon>mdi-dots-horizontal</v-icon>
-            </v-btn>
+            <v-tooltip top>
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                    icon
+                    @click="openDialog(index)"
+                    v-bind="attrs"
+                    v-on="on"
+                >
+                  <v-icon>mdi-dots-horizontal</v-icon>
+                </v-btn>
+              </template>
+              <span>Obsługa zamówienia</span>
+            </v-tooltip>
           </td>
           <td v-else>
-            <v-btn
-                icon
-                @click="orderFinish(index)"
-            >
-              <v-icon>mdi-clipboard-check-outline</v-icon>
-            </v-btn>
+            <v-tooltip top>
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                    icon
+                    @click="orderFinish(index)"
+                    v-bind="attrs"
+                    v-on="on"
+                >
+                  <v-icon>mdi-clipboard-check-outline</v-icon>
+                </v-btn>
+              </template>
+              <span>Zakończ zamówienie</span>
+            </v-tooltip>
           </td>
         </tr>
         </tbody>
