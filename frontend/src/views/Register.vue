@@ -63,6 +63,16 @@
       >
         Błąd! Poprawnie wpisz e-mail lub hasło!
       </v-snackbar>
+      <v-snackbar
+          v-model="snackBarErrorEmail"
+          right
+          height="100"
+          color="error"
+          rounded
+          elevation="8"
+      >
+        Błąd! Taki email już istnieje!
+      </v-snackbar>
     </v-container>
   </v-form>
 </template>
@@ -80,6 +90,7 @@ export default {
       password: '',
       confirmPassword: '',
       snackBarError: false,
+      snackBarErrorEmail: false,
       valid: true,
       emailRules: [
         v => !!v || 'E-mail jest wymagany',
@@ -94,6 +105,8 @@ export default {
   methods: {
     async creatUser() {
       if (this.email !== '' && this.password === this.confirmPassword) {
+        this.checkTheSameEmail()
+        this.$store.state.users = []
         this.$refs.form.validate()
         await this.$store.dispatch('register', {
           email: this.email,
@@ -106,6 +119,15 @@ export default {
     },
     goToLogin() {
       router.push('/login')
+    },
+    checkTheSameEmail() {
+      this.$store.dispatch('getUsers')
+      let users = this.$store.getters.users
+      users.forEach(data => {
+        if (data.email === this.email) {
+          this.snackBarErrorEmail = true;
+        }
+      })
     }
   },
 }
