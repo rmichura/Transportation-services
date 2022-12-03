@@ -3,10 +3,6 @@ const mongoose = require("mongoose");
 
 const carSchema = new mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
-    brand: {
-        type: String,
-        required: true,
-    },
     type: {
         type: String,
         required: true,
@@ -20,6 +16,10 @@ const carSchema = new mongoose.Schema({
         required: true,
     },
     maxHeight: {
+        type: Number,
+        required: true,
+    },
+    maxLength: {
         type: Number,
         required: true,
     },

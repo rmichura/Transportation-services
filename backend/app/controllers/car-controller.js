@@ -7,11 +7,11 @@ class CarController {
     async createCar(req, res) {
         const car = new Car({
             _id: new mongoose.Types.ObjectId(),
-            brand: req.body.brand,
             type: req.body.type,
             capacity: req.body.capacity,
             maxWidth: req.body.maxWidth,
             maxHeight: req.body.maxHeight,
+            maxLength: req.body.maxLength,
             status: req.body.status,
             numberCar: req.body.numberCar,
             img: req.file.path
@@ -21,11 +21,11 @@ class CarController {
                 message: 'Created car successfully',
                 createCar: {
                     _id: new mongoose.Types.ObjectId(),
-                    brand: result.brand,
                     type: result.type,
                     capacity: result.capacity,
                     maxWidth: result.maxWidth,
                     maxHeight: result.maxHeight,
+                    maxLength: result.maxLength,
                     status: result.status,
                     numberCar: result.numberCar,
                     img: result.img
@@ -42,11 +42,11 @@ class CarController {
     async editCar(req, res) {
         const id = req.params.id;
         const car = await Car.findOne({_id: id})
-        if (req.body.brand) car.brand = req.body.brand;
         if (req.body.type) car.type = req.body.type;
         if (req.body.capacity) car.capacity = req.body.capacity;
         if (req.body.maxWidth) car.maxWidth = req.body.maxWidth;
         if (req.body.maxHeight) car.maxHeight = req.body.maxHeight;
+        if (req.body.maxLength) car.maxLength = req.body.maxLength;
         if (req.body.status) car.status = req.body.status;
         if (req.body.numberCar) car.numberCar = req.body.numberCar;
         if (req.file) {
@@ -62,11 +62,11 @@ class CarController {
                 message: 'Edited order successfully',
                 editCar: {
                     _id: result._id,
-                    brand: result.brand,
                     type: result.type,
                     capacity: result.capacity,
                     maxWidth: result.maxWidth,
                     maxHeight: result.maxHeight,
+                    maxLength: result.maxLength,
                     status: result.status,
                     numberCar: result.numberCar,
                     img: result.img
@@ -107,11 +107,11 @@ class CarController {
                 cars: docs.map(doc => {
                     return {
                         _id: doc._id,
-                        brand: doc.brand,
                         type: doc.type,
                         capacity: doc.capacity,
                         maxWidth: doc.maxWidth,
                         maxHeight: doc.maxHeight,
+                        maxLength: doc.maxLength,
                         status: doc.status,
                         numberCar: doc.numberCar,
                         img: doc.img
