@@ -29,9 +29,9 @@
           v-for="(order, index) in orders" :key="order.name">
         <td>{{ order.numberOrder }}</td>
         <td>{{ order.productType }}</td>
-        <td>{{ order.receptionVenue }}</td>
-        <td>{{ order.destination }}</td>
-        <td>{{ order.deadline }}</td>
+        <td>{{ order.receptionPlace }}</td>
+        <td>{{ order.deliveryPlace }}</td>
+        <td>{{ order.receptionDate }}</td>
       </tr>
       </tbody>
 
@@ -44,7 +44,7 @@
                 v-bind="attrs"
                 v-on="on"
             >
-              <v-icon>mdi-calculator-variant-outline </v-icon>
+              <v-icon>mdi-calculator-variant-outline</v-icon>
             </v-btn>
           </template>
           <span>Wyceń zamówienie</span>
@@ -82,9 +82,9 @@ export default {
       headers: [
         {text: 'Numer zamówienia', value: 'numberOrder'},
         {text: 'Rodzaj towaru', value: 'productType'},
-        {text: 'Miejsce odbioru', value: 'receptionVenue'},
-        {text: 'Miejsce docelowe', value: 'destination'},
-        {text: 'Termin', value: 'deadline'},
+        {text: 'Miejsce odbioru', value: 'receptionPlace'},
+        {text: 'Miejsce docelowe', value: 'deliveryPlace'},
+        {text: 'Termin odbioru', value: 'receptionDate'},
         {text: 'Wyceń', value: 'actions'}
       ],
     }
@@ -97,8 +97,9 @@ export default {
       let allOrders = this.$store.getters.allOrders
       this.orders = []
       allOrders.forEach(data => {
-        if (data.status === 'created' && data.deadline) {
-          data.deadline = data.deadline.toString().split('T')[0]
+        if (data.status === 'created' && data.receptionDate && data.deliveryDate) {
+          data.receptionDate = data.receptionDate.toString().split('T')[0]
+          data.deliveryDate = data.deliveryDate.toString().split('T')[0]
           this.orders.push(data)
         }
       })

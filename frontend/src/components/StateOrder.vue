@@ -82,9 +82,9 @@
         <tr :class="index === selectedRow ? 'custom-highlight-row' : ''" @click="checkStatus(index)"
             v-for="(order, index) in orders" :key="order.name">
           <td>{{ order.productType }}</td>
-          <td>{{ order.receptionVenue }}</td>
-          <td>{{ order.destination }}</td>
-          <td>{{ order.deadline }}</td>
+          <td>{{ order.receptionPlace }}</td>
+          <td>{{ order.deliveryPlace }}</td>
+          <td>{{ order.receptionDate }}</td>
           <td v-if="order.status === 'created'" v-bind:show="action = true">
             <v-tooltip top>
               <template v-slot:activator="{ on, attrs }">
@@ -162,15 +162,15 @@ export default {
       numberOrder: '',
       headers: [
         {text: 'Rodzaj towaru', value: 'productType'},
-        {text: 'Miejsce odbioru', value: 'receptionVenue'},
-        {text: 'Miejsce docelowe', value: 'destination'},
-        {text: 'Termin dostarczenia', value: 'deadline'},
+        {text: 'Miejsce odbioru', value: 'receptionPlace'},
+        {text: 'Miejsce docelowe', value: 'deliveryPlace'},
+        {text: 'Termin odbioru', value: 'receptionDate'},
       ],
       headersAction: [
         {text: 'Rodzaj towaru', value: 'productType'},
-        {text: 'Miejsce odbioru', value: 'receptionVenue'},
-        {text: 'Miejsce docelowe', value: 'destination'},
-        {text: 'Termin dostarczenia', value: 'deadline'},
+        {text: 'Miejsce odbioru', value: 'receptionPlace'},
+        {text: 'Miejsce docelowe', value: 'deliveryPlace'},
+        {text: 'Termin odbioru', value: 'receptionDate'},
         {text: 'Edytuj/Usuń'}
       ],
     }
@@ -183,8 +183,9 @@ export default {
       let allOrder = this.$store.getters.orderOfCustomer
       this.orders = []
       allOrder.forEach(data => {
-        if (data.status !== 'finished' && data.deadline) {
-          data.deadline = data.deadline.toString().split('T')[0]
+        if (data.status !== 'finished' && data.receptionDate && data.deliveryDate) {
+          data.receptionDate = data.receptionDate.toString().split('T')[0]
+          data.deliveryDate = data.deliveryDate.toString().split('T')[0]
           this.orders.push(data)
         }
       })

@@ -59,30 +59,6 @@
                     md="4"
                 >
                   <v-text-field
-                      v-model="editedOrder.receptionVenue"
-                      color="teal"
-                      :rules="required"
-                      label="Miejsce odbioru"
-                  ></v-text-field>
-                </v-col>
-                <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
-                >
-                  <v-text-field
-                      v-model="editedOrder.destination"
-                      color="teal"
-                      :rules="required"
-                      label="Miejsce docelowe"
-                  ></v-text-field>
-                </v-col>
-                <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
-                >
-                  <v-text-field
                       v-model="editedOrder.productWidth"
                       color="teal"
                       :rules="required"
@@ -106,10 +82,35 @@
                 <v-col
                     cols="12"
                     sm="6"
-                    md="6"
+                    md="4"
+                >
+                  <v-text-field
+                      v-model="editedOrder.productLength"
+                      color="teal"
+                      :rules="required"
+                      type="number"
+                      label="Długość towaru - cm"
+                  ></v-text-field>
+                </v-col>
+                <v-col
+                    cols="12"
+                    sm="6"
+                    md="4"
+                >
+                  <v-text-field
+                      v-model="editedOrder.receptionPlace"
+                      color="teal"
+                      :rules="required"
+                      label="Miejsce odbioru"
+                  ></v-text-field>
+                </v-col>
+                <v-col
+                    cols="12"
+                    sm="6"
+                    md="4"
                 >
                   <v-menu
-                      v-model="menu"
+                      v-model="menuReceipt"
                       :close-on-content-click="false"
                       :nudge-right="40"
                       transition="scale-transition"
@@ -118,8 +119,8 @@
                   >
                     <template v-slot:activator="{ on, attrs }">
                       <v-text-field
-                          v-model="editedOrder.deadline"
-                          label="Wstępny termin dostarczenia"
+                          v-model="editedOrder.receptionDate"
+                          label="Termin odbioru"
                           prepend-icon="mdi-calendar"
                           readonly
                           :rules="required"
@@ -129,8 +130,52 @@
                       ></v-text-field>
                     </template>
                     <v-date-picker
-                        v-model="editedOrder.deadline"
-                        @input="menu = false"
+                        v-model="editedOrder.receptionDate"
+                        @input="menuReceipt = false"
+                        color="teal"
+                    ></v-date-picker>
+                  </v-menu>
+                </v-col>
+                <v-col
+                    cols="12"
+                    sm="6"
+                    md="4"
+                >
+                  <v-text-field
+                      v-model="editedOrder.deliveryPlace"
+                      color="teal"
+                      :rules="required"
+                      label="Miejsce docelowe"
+                  ></v-text-field>
+                </v-col>
+                <v-col
+                    cols="12"
+                    sm="6"
+                    md="4"
+                >
+                  <v-menu
+                      v-model="menuDelivery"
+                      :close-on-content-click="false"
+                      :nudge-right="40"
+                      transition="scale-transition"
+                      offset-y
+                      min-width="auto"
+                  >
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-text-field
+                          v-model="editedOrder.deliveryDate"
+                          label="Termin dostarczenia"
+                          prepend-icon="mdi-calendar"
+                          readonly
+                          :rules="required"
+                          color="teal"
+                          v-bind="attrs"
+                          v-on="on"
+                      ></v-text-field>
+                    </template>
+                    <v-date-picker
+                        v-model="editedOrder.deliveryDate"
+                        @input="menuDelivery = false"
                         color="teal"
                     ></v-date-picker>
                   </v-menu>
@@ -194,7 +239,8 @@ export default {
   data() {
     return {
       valid: true,
-      menu: false,
+      menuDelivery: false,
+      menuReceipt: false,
       snackBarError: false,
       snackbarSuccess: false,
       dialogValue: this.dialog,

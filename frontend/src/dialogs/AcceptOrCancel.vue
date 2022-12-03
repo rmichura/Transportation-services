@@ -52,30 +52,6 @@
                 md="4"
             >
               <v-text-field
-                  v-model="currentOrder.receptionVenue"
-                  color="teal"
-                  label="Miejsce odbioru"
-                  readonly
-              ></v-text-field>
-            </v-col>
-            <v-col
-                cols="12"
-                sm="6"
-                md="4"
-            >
-              <v-text-field
-                  v-model="currentOrder.destination"
-                  color="teal"
-                  label="Miejsce docelowe"
-                  readonly
-              ></v-text-field>
-            </v-col>
-            <v-col
-                cols="12"
-                sm="6"
-                md="4"
-            >
-              <v-text-field
                   v-model="currentOrder.productWidth"
                   color="teal"
                   type="number"
@@ -101,8 +77,45 @@
                 sm="6"
                 md="4"
             >
+              <v-text-field
+                  v-model="currentOrder.productLength"
+                  color="teal"
+                  type="number"
+                  label="Długość towaru - cm"
+                  readonly
+              ></v-text-field>
+            </v-col>
+            <v-col
+                cols="12"
+                sm="6"
+                md="4"
+            >
+              <v-text-field
+                  v-model="currentOrder.receptionPlace"
+                  color="teal"
+                  label="Miejsce odbioru"
+                  readonly
+              ></v-text-field>
+            </v-col>
+            <v-col
+                cols="12"
+                sm="6"
+                md="4"
+            >
+              <v-text-field
+                  v-model="currentOrder.deliveryPlace"
+                  color="teal"
+                  label="Miejsce docelowe"
+                  readonly
+              ></v-text-field>
+            </v-col>
+            <v-col
+                cols="12"
+                sm="6"
+                md="4"
+            >
               <v-menu
-                  v-model="menu"
+                  v-model="menuReceipt"
                   :close-on-content-click="false"
                   :nudge-right="40"
                   transition="scale-transition"
@@ -111,7 +124,31 @@
               >
                 <template v-slot:activator="{ on, attrs }">
                   <v-text-field
-                      v-model="currentOrder.deadline"
+                      v-model="currentOrder.receptionDate"
+                      label="Termin odbioru"
+                      prepend-icon="mdi-calendar"
+                      readonly
+                      color="teal"
+                  ></v-text-field>
+                </template>
+              </v-menu>
+            </v-col>
+            <v-col
+                cols="12"
+                sm="6"
+                md="4"
+            >
+              <v-menu
+                  v-model="menuDelivery"
+                  :close-on-content-click="false"
+                  :nudge-right="40"
+                  transition="scale-transition"
+                  offset-y
+                  min-width="auto"
+              >
+                <template v-slot:activator="{ on, attrs }">
+                  <v-text-field
+                      v-model="currentOrder.deliveryDate"
                       label="Termin dostarczenia"
                       prepend-icon="mdi-calendar"
                       readonly
@@ -171,7 +208,8 @@ export default {
   props: ['currentOrder', 'dialogAccept'],
   data() {
     return {
-      menu: false,
+      menuDelivery: false,
+      menuReceipt: false,
       dialogAcceptValue: this.dialogAccept,
     }
   },

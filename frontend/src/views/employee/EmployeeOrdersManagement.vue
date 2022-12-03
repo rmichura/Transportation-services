@@ -30,8 +30,8 @@
             v-for="(order, index) in orders" :key="order.name">
           <td>{{ order.numberOrder }}</td>
           <td>{{ order.productType }}</td>
-          <td>{{ order.receptionVenue }}</td>
-          <td>{{ order.destination }}</td>
+          <td>{{ order.receptionPlace }}</td>
+          <td>{{ order.deliveryPlace }}</td>
           <td v-if="order.status === 'in_progress'">
             <v-tooltip top>
               <template v-slot:activator="{ on, attrs }">
@@ -97,8 +97,8 @@ export default {
       headers: [
         {text: 'Numer zamówienia', value: 'numberOrder'},
         {text: 'Rodzaj towaru', value: 'productType'},
-        {text: 'Miejsce odbioru', value: 'receptionVenue'},
-        {text: 'Miejsce docelowe', value: 'destination'},
+        {text: 'Miejsce odbioru', value: 'receptionPlace'},
+        {text: 'Miejsce docelowe', value: 'deliveryPlace'},
         {text: 'Więcej'}
       ],
     }
@@ -111,8 +111,9 @@ export default {
       let allOrder = this.$store.getters.allOrders
       this.orders = []
       allOrder.forEach(data => {
-        if (data.status === 'in_progress' || data.status === 'in_road' && data.deadline) {
-          data.deadline = data.deadline.toString().split('T')[0]
+        if (data.status === 'in_progress' || data.status === 'in_road' && data.receptionDate && data.deliveryDate) {
+          data.receptionDate = data.receptionDate.toString().split('T')[0]
+          data.deliveryDate = data.deliveryDate.toString().split('T')[0]
           this.orders.push(data)
         }
       })
