@@ -262,6 +262,16 @@
       Błąd! Wypełnij wszystkie pola poprawnie!
     </v-snackbar>
     <v-snackbar
+        v-model="snackBarErrorValidation"
+        right
+        height="100"
+        color="error"
+        rounded
+        elevation="8"
+    >
+      Błąd! Auto nie zmieści zamówienia!
+    </v-snackbar>
+    <v-snackbar
         v-model="snackbarSuccess"
         right
         height="100"
@@ -284,6 +294,7 @@ export default {
       valid: true,
       menu: false,
       snackBarError: false,
+      snackBarErrorValidation: false,
       snackbarSuccess: false,
       dialogValue: this.dialog,
       select: null,
@@ -313,16 +324,18 @@ export default {
   methods: {
     editOrder() {
       if (this.$refs.form.validate()) {
-        const formData = new FormData();
-        this.currentOrder.car = this.currentCar._id
-        this.currentOrder.status = 'in_road'
-        formData.append('status', 'zajęty')
-        this.$store.dispatch('updateOrder', [this.currentOrder._id, this.currentOrder])
-        this.$store.dispatch('updateCar', [this.currentCar._id, formData]).then(() => {
-          this.$store.dispatch('getCars')
-        })
-        this.closeDialog()
-        this.snackbarSuccess = true
+        if (this.validationsOrderToCar()) {
+          const formData = new FormData();
+          this.currentOrder.car = this.currentCar._id
+          this.currentOrder.status = 'in_road'
+          formData.append('status', 'zajęty')
+          this.$store.dispatch('updateOrder', [this.currentOrder._id, this.currentOrder])
+          this.$store.dispatch('updateCar', [this.currentCar._id, formData]).then(() => {
+            this.$store.dispatch('getCars')
+          })
+          this.closeDialog()
+          this.snackbarSuccess = true
+        }
       } else {
         this.snackBarError = true
       }
@@ -343,6 +356,17 @@ export default {
         }
       })
     },
+    validationsOrderToCar() {
+      if (this.currentCar.capacity >= this.currentOrder.productWeight &&
+          this.currentCar.maxWidth >= this.currentOrder.productWidth &&
+          this.currentCar.maxHeight >= this.currentOrder.productHeight) {
+        console.log(this.currentCar.capacity)
+        return true
+      } else {
+        this.snackBarErrorValidation = true
+        return false
+      }
+    }
   }
 }
 </script>
