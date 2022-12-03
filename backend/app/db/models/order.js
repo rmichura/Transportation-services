@@ -18,11 +18,15 @@ const orderSchema = new mongoose.Schema({
         type: Number,
         required: true,
     },
-    receptionVenue: {
+    productLength: {
+        type: Number,
+        required: true,
+    },
+    receptionPlace: {
         type: String,
         required: true,
     },
-    destination: {
+    deliveryPlace: {
         type: String,
         required: true,
     },
@@ -30,7 +34,11 @@ const orderSchema = new mongoose.Schema({
       type: String,
         required: true,
     },
-    deadline: {
+    deliveryDate: {
+        type: Date,
+        required: true,
+    },
+    receptionDate: {
         type: Date,
         required: true,
     },

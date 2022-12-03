@@ -11,10 +11,12 @@ class OrderController {
             productWeight: req.body.productWeight,
             productWidth: req.body.productWidth,
             productHeight: req.body.productHeight,
-            receptionVenue: req.body.receptionVenue,
-            destination: req.body.destination,
+            productLength: req.body.productLength,
+            receptionPlace: req.body.receptionPlace,
+            deliveryPlace: req.body.deliveryPlace,
             status: req.body.status,
-            deadline: req.body.deadline,
+            deliveryDate: req.body.deliveryDate,
+            receptionDate: req.body.receptionDate,
             numberOrder: req.body.numberOrder = generateNumber,
             orderPrice: 0,
             user: req.body.user
@@ -28,10 +30,12 @@ class OrderController {
                     productWeight: result.productWeight,
                     productWidth: result.productWidth,
                     productHeight: req.body.productHeight,
-                    receptionVenue: result.receptionVenue,
-                    destination: result.destination,
+                    productLength: req.body.productLength,
+                    receptionPlace: result.receptionPlace,
+                    deliveryPlace: result.deliveryPlace,
                     status: result.status,
-                    deadline: result.deadline,
+                    deliveryDate: result.deliveryDate,
+                    receptionDate: result.receptionDate,
                     numberOrder: result.numberOrder,
                     orderPrice: result.orderPrice,
                     user: result.user
@@ -52,11 +56,13 @@ class OrderController {
         if (req.body.productWeight) order.productWeight = req.body.productWeight;
         if (req.body.productWidth) order.productWidth = req.body.productWidth;
         if (req.body.productHeight) order.productHeight = req.body.productHeight;
-        if (req.body.receptionVenue) order.receptionVenue = req.body.receptionVenue;
-        if (req.body.destination) order.destination = req.body.destination;
+        if (req.body.productLength) order.productLength = req.body.productLength;
+        if (req.body.receptionPlace) order.receptionPlace = req.body.receptionPlace;
+        if (req.body.deliveryPlace) order.deliveryPlace = req.body.deliveryPlace;
         if (req.body.status) order.status = req.body.status;
         if (req.body.orderPrice) order.orderPrice = req.body.orderPrice;
-        if (req.body.deadline) order.deadline = req.body.deadline;
+        if (req.body.deliveryDate) order.deliveryDate = req.body.deliveryDate;
+        if (req.body.receptionDate) order.receptionDate = req.body.receptionDate;
         if (req.body.car) order.car = req.body.car;
 
         await order.save().then(result => {
@@ -68,10 +74,12 @@ class OrderController {
                     productWeight: result.productWeight,
                     productWidth: result.productWidth,
                     productHeight: result.productHeight,
-                    receptionVenue: result.receptionVenue,
-                    destination: result.destination,
+                    productLength: result.productLength,
+                    receptionPlace: result.receptionPlace,
+                    deliveryPlace: result.deliveryPlace,
                     status: result.status,
-                    deadline: result.deadline,
+                    deliveryDate: result.deliveryDate,
+                    receptionDate: result.receptionDate,
                     numberOrder: result.numberOrder,
                     orderPrice: result.orderPrice,
                     car: result.car
@@ -116,10 +124,12 @@ class OrderController {
                         productWeight: doc.productWeight,
                         productWidth: doc.productWidth,
                         productHeight: doc.productHeight,
-                        receptionVenue: doc.receptionVenue,
-                        destination: doc.destination,
+                        productLength: doc.productLength,
+                        receptionPlace: doc.receptionPlace,
+                        deliveryPlace: doc.deliveryPlace,
                         status: doc.status,
-                        deadline: doc.deadline,
+                        deliveryDate: doc.deliveryDate,
+                        receptionDate: doc.receptionDate,
                         numberOrder: doc.numberOrder,
                         orderPrice: doc.orderPrice,
                         user: doc.user,

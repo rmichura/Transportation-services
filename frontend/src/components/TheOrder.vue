@@ -8,7 +8,7 @@
     <v-container class="fill-height">
       <v-row class="justify-center">
         <v-sheet
-            height="500"
+            height="570"
             width="800"
             class="sheet"
             elevation="7"
@@ -35,24 +35,77 @@
                   prepend-icon="mdi-weight-kilogram"
               ></v-text-field>
               <v-text-field
-                  v-model="receptionVenue"
+                  v-model="receptionPlace"
                   color="teal"
                   :rules="required"
                   label="Miejsce odbioru"
                   prepend-icon="mdi-map-marker"
               ></v-text-field>
+              <v-menu
+                  v-model="menuReceipt"
+                  :close-on-content-click="false"
+                  :nudge-right="40"
+                  transition="scale-transition"
+                  offset-y
+                  min-width="auto"
+              >
+                <template v-slot:activator="{ on, attrs }">
+                  <v-text-field
+                      v-model="receptionDate"
+                      label="Termin odbioru"
+                      prepend-icon="mdi-calendar"
+                      readonly
+                      :rules="required"
+                      color="teal"
+                      v-bind="attrs"
+                      v-on="on"
+                  ></v-text-field>
+                </template>
+                <v-date-picker
+                    v-model="receptionDate"
+                    @input="menuReceipt = false"
+                    color="teal"
+                ></v-date-picker>
+              </v-menu>
               <v-text-field
-                  v-model="destination"
+                  v-model="deliveryPlace"
                   color="teal"
                   :rules="required"
                   label="Miejsce docelowe"
                   prepend-icon="mdi-map-marker-outline"
               ></v-text-field>
             </v-col>
+
             <v-col
                 cols="5"
                 class="ma-2"
             >
+              <v-menu
+                  v-model="menuDelivery"
+                  :close-on-content-click="false"
+                  :nudge-right="40"
+                  transition="scale-transition"
+                  offset-y
+                  min-width="auto"
+              >
+                <template v-slot:activator="{ on, attrs }">
+                  <v-text-field
+                      v-model="deliveryDate"
+                      label="Termin dostawy"
+                      prepend-icon="mdi-calendar"
+                      readonly
+                      :rules="required"
+                      color="teal"
+                      v-bind="attrs"
+                      v-on="on"
+                  ></v-text-field>
+                </template>
+                <v-date-picker
+                    v-model="deliveryDate"
+                    @input="menuDelivery = false"
+                    color="teal"
+                ></v-date-picker>
+              </v-menu>
               <v-text-field
                   v-model="productWidth"
                   color="teal"
@@ -70,32 +123,14 @@
                   prepend-icon="mdi-arrow-expand-vertical"
               ></v-text-field>
 
-              <v-menu
-                  v-model="menu"
-                  :close-on-content-click="false"
-                  :nudge-right="40"
-                  transition="scale-transition"
-                  offset-y
-                  min-width="auto"
-              >
-                <template v-slot:activator="{ on, attrs }">
-                  <v-text-field
-                      v-model="date"
-                      label="Wstępny termin dostarczenia"
-                      prepend-icon="mdi-calendar"
-                      readonly
-                      :rules="required"
-                      color="teal"
-                      v-bind="attrs"
-                      v-on="on"
-                  ></v-text-field>
-                </template>
-                <v-date-picker
-                    v-model="date"
-                    @input="menu = false"
-                    color="teal"
-                ></v-date-picker>
-              </v-menu>
+              <v-text-field
+                  v-model="productLength"
+                  color="teal"
+                  :rules="required"
+                  type="number"
+                  label="Długość towaru - cm"
+                  prepend-icon="mdi-arrow-collapse-right "
+              ></v-text-field>
             </v-col>
             <v-btn
                 class="white--text"
@@ -140,8 +175,10 @@ export default {
   name: "TheOrder",
   data() {
     return {
-      date: '',
-      menu: false,
+      deliveryDate: '',
+      receptionDate: '',
+      menuDelivery: false,
+      menuReceipt: false,
       valid: true,
       snackBarError: false,
       snackbarSuccess: false,
@@ -149,8 +186,9 @@ export default {
       productWeight: '',
       productWidth: '',
       productHeight: '',
-      receptionVenue: '',
-      destination: '',
+      productLength: '',
+      receptionPlace: '',
+      deliveryPlace: '',
       required: [
         v => !!v || 'Pole jest wymagane',
       ],
@@ -165,10 +203,12 @@ export default {
           productWeight: this.productWeight,
           productWidth: this.productWidth,
           productHeight: this.productHeight,
-          receptionVenue: this.receptionVenue,
-          destination: this.destination,
+          productLength: this.productLength,
+          receptionPlace: this.receptionPlace,
+          deliveryPlace: this.deliveryPlace,
           status: "created",
-          deadline: this.date,
+          deliveryDate: this.deliveryDate,
+          receptionDate: this.receptionDate,
           user: currentUser
         })
         this.$refs.form.reset()
