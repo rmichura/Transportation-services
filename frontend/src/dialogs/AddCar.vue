@@ -34,18 +34,6 @@
                     md="4"
                 >
                   <v-text-field
-                      v-model="car.brand"
-                      color="teal"
-                      label="Marka"
-                      :rules="required"
-                  ></v-text-field>
-                </v-col>
-                <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
-                >
-                  <v-text-field
                       v-model="car.type"
                       color="teal"
                       label="Typ"
@@ -58,10 +46,9 @@
                     md="4"
                 >
                   <v-text-field
-                      v-model="car.capacity"
+                      v-model="car.numberCar"
                       color="teal"
-                      label="Ładowność - t"
-                      type="number"
+                      label="Tablica rejestracyjna"
                       :rules="required"
                   ></v-text-field>
                 </v-col>
@@ -71,9 +58,10 @@
                     md="4"
                 >
                   <v-text-field
-                      v-model="car.numberCar"
+                      v-model="car.capacity"
                       color="teal"
-                      label="Tablica rejestracyjna"
+                      label="Ładowność - kg"
+                      type="number"
                       :rules="required"
                   ></v-text-field>
                 </v-col>
@@ -99,6 +87,19 @@
                       v-model="car.maxHeight"
                       color="teal"
                       label="Dopuszczalna wysokość - cm"
+                      type="number"
+                      :rules="required"
+                  ></v-text-field>
+                </v-col>
+                <v-col
+                    cols="12"
+                    sm="6"
+                    md="4"
+                >
+                  <v-text-field
+                      v-model="car.maxLength"
+                      color="teal"
+                      label="Dopuszczalna długość - cm"
                       type="number"
                       :rules="required"
                   ></v-text-field>
@@ -194,12 +195,12 @@ export default {
     addNewCar() {
       const formData = new FormData();
       formData.append('img', this.car.img, this.car.img.name)
-      formData.append('brand', this.car.brand)
       formData.append('type', this.car.type)
       formData.append('numberCar', this.car.numberCar)
       formData.append('capacity', this.car.capacity)
       formData.append('maxWidth', this.car.maxWidth)
       formData.append('maxHeight', this.car.maxHeight)
+      formData.append('maxLength', this.car.maxLength)
       formData.append('status', 'wolny')
 
       if (this.$refs.form.validate()) {

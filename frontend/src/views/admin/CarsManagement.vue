@@ -30,21 +30,21 @@
     >
       <v-select
           dense
-          label="Marka"
           class="navigation"
+          label="Typ"
           color="teal"
-          :items="selectBrand"
-          v-model="selectedBrand"
+          :items="selectType"
+          v-model="selectedType"
           item-color="teal"
       ></v-select>
 
       <v-select
           dense
-          label="Typ"
-          class="ma-2"
+          label="Ładowność"
           color="teal"
-          :items="selectType"
-          v-model="selectedType"
+          class="ma-2"
+          :items="selectCapacity"
+          v-model="selectedCapacity"
           item-color="teal"
       ></v-select>
 
@@ -86,7 +86,7 @@
             :src="`http://127.0.0.1:8887/backend/${car.img}`"
         >
         </v-img>
-        <p>{{ car.brand }} * {{ car.type }} * {{ car.status }}</p>
+        <p>{{ car.type }} * {{ car.capacity }}kg * {{ car.status }}</p>
       </v-sheet>
     </v-row>
 
@@ -111,10 +111,10 @@ export default {
       dialogCar: false,
       currentCar: [],
       cars: [],
-      selectBrand: [],
+      selectCapacity: [],
       selectType: [],
       selectStatus: [],
-      selectedBrand: null,
+      selectedCapacity: null,
       selectedType: null,
       selectedStatus: null,
     }
@@ -136,11 +136,11 @@ export default {
       this.dialog = true;
     },
     openDrawer() {
-      this.selectBrand = []
+      this.selectCapacity = []
       this.selectType = []
       this.selectStatus = []
       this.cars.forEach(data => {
-        this.selectBrand.push(data.brand)
+        this.selectCapacity.push(data.capacity)
         this.selectType.push(data.type)
         this.selectStatus.push(data.status)
       })
@@ -149,12 +149,11 @@ export default {
     search() {
       this.drawer = false
       const selected = [];
-      console.log(this.selectedBrand)
-      if (this.selectedBrand === null && this.selectedType === null && this.selectedStatus === null) {
+      if (this.selectCapacity === null && this.selectedType === null && this.selectedStatus === null) {
         this.cars = this.$store.getters.cars
       } else {
         this.cars.forEach((car) => {
-          if (car.brand === this.selectedBrand || car.type === this.selectedType
+          if (car.capacity === this.selectCapacity || car.type === this.selectedType
               || car.status === this.selectedStatus) {
             selected.push(car)
           }
@@ -164,7 +163,7 @@ export default {
       this.resetSearch()
     },
     resetSearch() {
-      this.selectedBrand = null
+      this.selectedCapacity = null
       this.selectedType = null
       this.selectedStatus = null
     }

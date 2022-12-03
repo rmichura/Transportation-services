@@ -7,7 +7,7 @@
           width="300"
           class="sheet"
       >
-        <p><span>Z</span>arządzaj zamówieniami<span>!</span></p>
+        <p><span>W</span>yceń zamówienia<span>!</span></p>
         <v-row class="justify-center margin-top-6em">
           <v-btn
               class="white--text"
@@ -16,7 +16,7 @@
               large
               @click="goToOrdersManagement"
           >
-            Obsługa zamówień
+            Wycena zamówień
           </v-btn>
         </v-row>
       </v-sheet>

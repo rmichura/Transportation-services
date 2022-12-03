@@ -34,18 +34,6 @@
                     md="4"
                 >
                   <v-text-field
-                      v-model="currentCar.brand"
-                      color="teal"
-                      :rules="required"
-                      label="Marka"
-                  ></v-text-field>
-                </v-col>
-                <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
-                >
-                  <v-text-field
                       v-model="currentCar.type"
                       color="teal"
                       :rules="required"
@@ -89,6 +77,19 @@
                       :rules="required"
                       type="number"
                       label="Dopuszczalna wysokość - cm"
+                  ></v-text-field>
+                </v-col>
+                <v-col
+                    cols="12"
+                    sm="6"
+                    md="4"
+                >
+                  <v-text-field
+                      v-model="currentCar.maxLength"
+                      color="teal"
+                      :rules="required"
+                      type="number"
+                      label="Dopuszczalna długość - cm"
                   ></v-text-field>
                 </v-col>
                 <v-col
@@ -222,12 +223,12 @@ export default {
         if (this.newImg !== null) {
           formData.append('img', this.newImg, this.newImg.name)
         }
-        formData.append('brand', this.currentCar.brand)
         formData.append('type', this.currentCar.type)
         formData.append('numberCar', this.currentCar.numberCar)
         formData.append('capacity', this.currentCar.capacity)
         formData.append('maxWidth', this.currentCar.maxWidth)
         formData.append('maxHeight', this.currentCar.maxHeight)
+        formData.append('maxLength', this.currentCar.maxLength)
         formData.append('status', this.currentCar.status)
         this.$store.dispatch('updateCar', [this.currentCar._id, formData])
             .then(() => {

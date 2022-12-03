@@ -109,9 +109,17 @@
                       v-model="currentOrder.receptionDate"
                       label="Termin odbioru"
                       prepend-icon="mdi-calendar"
+                      readonly
                       color="teal"
+                      v-bind="attrs"
+                      v-on="on"
                   ></v-text-field>
                 </template>
+                <v-date-picker
+                    v-model="currentOrder.receptionDate"
+                    @input="menuReceipt = false"
+                    color="teal"
+                ></v-date-picker>
               </v-menu>
             </v-col>
             <v-col
@@ -143,9 +151,17 @@
                       v-model="currentOrder.deliveryDate"
                       label="Termin dostarczenia"
                       prepend-icon="mdi-calendar"
+                      readonly
                       color="teal"
+                      v-bind="attrs"
+                      v-on="on"
                   ></v-text-field>
                 </template>
+                <v-date-picker
+                    v-model="currentOrder.deliveryDate"
+                    @input="menuDelivery = false"
+                    color="teal"
+                ></v-date-picker>
               </v-menu>
             </v-col>
             <v-col
