@@ -113,7 +113,7 @@
               <span>Usuń zamówienie</span>
             </v-tooltip>
           </td>
-          <td v-else-if="order.status === 'priced'">
+          <td v-else-if="order.status === 'priced'" v-bind:show="action = true">
             <v-tooltip top>
               <template v-slot:activator="{ on, attrs }">
                 <v-btn
