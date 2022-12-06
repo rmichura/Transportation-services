@@ -6,6 +6,7 @@ const userController = require('../controllers/user-controller')
 const loginController = require('../controllers/login-controller')
 const orderController = require('../controllers/order-controller')
 const carController = require('../controllers/car-controller')
+const driverController = require('../controllers/driver-controller')
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -49,5 +50,12 @@ router.get('/cars', carController.getCarAll)
 router.get('/car/:id', carController.getCarId)
 router.delete('/car/:id', carController.deleteCar)
 router.put('/car/:id', upload.single('img'), carController.editCar)
+
+router.post('/driver', driverController.creatDriver)
+router.get('/drivers', driverController.getDriverAll)
+router.get('/driver/:id', driverController.getDriverId)
+router.delete('/driver/:id', driverController.deleteDriver)
+router.put('/driver/:id', driverController.editDriver)
+
 
 module.exports = router
