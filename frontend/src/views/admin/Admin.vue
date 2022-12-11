@@ -58,6 +58,25 @@
           </v-btn>
         </v-row>
       </v-sheet>
+      <v-sheet
+          elevation="8"
+          height="420"
+          width="300"
+          class="sheet-white"
+      >
+        <p><span>D</span>odaj nowych kierowców<span>!</span></p>
+        <v-row class="justify-center margin-top-6em">
+          <v-btn
+              class="white--text"
+              color="grey"
+              elevation="7"
+              large
+              @click="goToDriversManagement"
+          >
+            Dodawanie kierowców
+          </v-btn>
+        </v-row>
+      </v-sheet>
     </v-row>
   </v-container>
 </template>
@@ -79,6 +98,9 @@ export default {
     },
     goToCarsManagement() {
       router.push('admin/management/cars')
+    },
+    goToDriversManagement() {
+      router.push('admin/management/drivers')
     }
   }
 }

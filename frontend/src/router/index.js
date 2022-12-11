@@ -24,6 +24,7 @@ import EmployeeOrderState from "@/views/employee/EmployeeOrderState";
 import EmployeeUsersManagement from "@/views/employee/EmployeeUsersManagement";
 import EmployeeOrdersManagement from "@/views/employee/EmployeeOrdersManagement";
 import UsersAndEmployeesManagement from "@/views/admin/UsersAndEmployeesManagement";
+import DriversManagement from "@/views/admin/DriversManagement.vue";
 
 Vue.use(VueRouter)
 
@@ -132,6 +133,12 @@ const routes = [
         path: '/admin/management/users',
         name: 'AdminManagementUsers',
         component: UsersAndEmployeesManagement,
+        beforeEnter: adminGuard
+    },
+    {
+        path: '/admin/management/drivers',
+        name: 'AdminManagementDrivers',
+        component: DriversManagement,
         beforeEnter: adminGuard
     },
     // {

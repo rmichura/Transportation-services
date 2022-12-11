@@ -17,6 +17,7 @@ export default new Vuex.Store({
         users: [],
         allOrders: [],
         cars: [],
+        drivers: [],
     },
     getters: {
         isAuth: state => state.token !== null,
@@ -26,6 +27,7 @@ export default new Vuex.Store({
         users: state => state.users,
         allOrders: state => state.allOrders,
         cars: state => state.cars,
+        drivers: state => state.drivers,
     },
     mutations: {
         auth(state, payload) {
@@ -42,6 +44,7 @@ export default new Vuex.Store({
             state.users = [];
             state.allOrders = [];
             state.cars = [];
+            state.drivers = [];
         },
         user(state, payload) {
             state.user = payload.user
@@ -57,6 +60,9 @@ export default new Vuex.Store({
         },
         cars(state, payload) {
             state.cars = payload.cars
+        },
+        drivers(state, payload) {
+            state.drivers = payload.drivers
         }
     },
     actions: {
@@ -282,6 +288,46 @@ export default new Vuex.Store({
                 state.cars.forEach((data, value) => {
                     if (id === data._id) {
                         state.cars.splice(value, 1)
+                    }
+                })
+            } catch (e) {
+                console.log(e)
+            }
+        },
+
+        async getDrivers({commit}) {
+            try {
+                let response = await axios.get(`${API}drivers`)
+                commit('drivers', {
+                    drivers: response.data.drivers
+                })
+            } catch (e) {
+                console.log(e)
+            }
+        },
+
+        async saveDriver({commit}, payload) {
+            try {
+                await axios.post(`${API}driver`, payload)
+            } catch (e) {
+                console.log(e)
+            }
+        },
+
+        async updateDriver({commit}, [id, payload]) {
+            try {
+                await axios.put(`${API}driver/${id}`, payload)
+            } catch (e) {
+                console.log(e)
+            }
+        },
+
+        async removeDriver({state}, id) {
+            try {
+                await axios.delete(`${API}driver/${id}`)
+                state.drivers.forEach((data, value) => {
+                    if (id === data._id) {
+                        state.drivers.splice(value, 1)
                     }
                 })
             } catch (e) {
