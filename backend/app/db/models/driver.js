@@ -18,6 +18,10 @@ const driverSchema = new mongoose.Schema({
     driverLicense: {
         type: String,
         required: true
+    },
+    assignedToCar: {
+        type: String,
+        required: true
     }
 
 })

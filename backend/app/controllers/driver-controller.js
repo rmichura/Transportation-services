@@ -8,7 +8,8 @@ class DriverController {
             name: req.body.name,
             lastName: req.body.lastName,
             phoneNumber: req.body.phoneNumber,
-            driverLicense: req.body.driverLicense
+            driverLicense: req.body.driverLicense,
+            assignedToCar: 'false'
         });
         await driver.save().then(result => {
             res.status(201).json({
@@ -18,7 +19,8 @@ class DriverController {
                     name: result.name,
                     lastName: result.lastName,
                     phoneNumber: result.phoneNumber,
-                    driverLicense: result.driverLicense
+                    driverLicense: result.driverLicense,
+                    assignedToCar: result.assignedToCar
                 }
             })
         })
@@ -36,6 +38,7 @@ class DriverController {
         if (req.body.lastName) driver.lastName = req.body.lastName;
         if (req.body.phoneNumber) driver.phoneNumber = req.body.phoneNumber;
         if (req.body.driverLicense) driver.driverLicense = req.body.driverLicense;
+        if (req.body.assignedToCar) driver.assignedToCar = req.body.assignedToCar;
 
         await driver.save().then(result => {
             res.status(200).json({
@@ -45,7 +48,8 @@ class DriverController {
                     name: result.name,
                     lastName: result.lastName,
                     phoneNumber: result.phoneNumber,
-                    driverLicense: result.driverLicense
+                    driverLicense: result.driverLicense,
+                    assignedToCar: result.assignedToCar
                 }
             })
         })
@@ -86,7 +90,8 @@ class DriverController {
                         name: doc.name,
                         lastName: doc.lastName,
                         phoneNumber: doc.phoneNumber,
-                        driverLicense: doc.driverLicense
+                        driverLicense: doc.driverLicense,
+                        assignedToCar: doc.assignedToCar
                     }
                 })
             }
