@@ -56,6 +56,7 @@ class CarController {
             })
             car.img = req.file.path;
         }
+        if (req.body.driver) car.driver = req.body.driver;
 
         await car.save().then(result => {
             res.status(200).json({
@@ -69,7 +70,8 @@ class CarController {
                     maxLength: result.maxLength,
                     status: result.status,
                     numberCar: result.numberCar,
-                    img: result.img
+                    img: result.img,
+                    driver: result.driver
                 }
             })
         })
@@ -114,7 +116,8 @@ class CarController {
                         maxLength: doc.maxLength,
                         status: doc.status,
                         numberCar: doc.numberCar,
-                        img: doc.img
+                        img: doc.img,
+                        driver: doc.driver
                     }
                 })
             }

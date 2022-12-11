@@ -34,7 +34,11 @@ const carSchema = new mongoose.Schema({
     img: {
         type: String,
         required: true
-    }
+    },
+    driver: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Driver',
+    },
 })
 const Car = mongoose.model('Car', carSchema)
 
