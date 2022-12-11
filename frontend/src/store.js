@@ -18,6 +18,7 @@ export default new Vuex.Store({
         allOrders: [],
         cars: [],
         drivers: [],
+        driver: [],
     },
     getters: {
         isAuth: state => state.token !== null,
@@ -28,6 +29,7 @@ export default new Vuex.Store({
         allOrders: state => state.allOrders,
         cars: state => state.cars,
         drivers: state => state.drivers,
+        driver: state => state.driver
     },
     mutations: {
         auth(state, payload) {
@@ -45,6 +47,7 @@ export default new Vuex.Store({
             state.allOrders = [];
             state.cars = [];
             state.drivers = [];
+            state.driver = []
         },
         user(state, payload) {
             state.user = payload.user
@@ -63,6 +66,9 @@ export default new Vuex.Store({
         },
         drivers(state, payload) {
             state.drivers = payload.drivers
+        },
+        driver(state, payload) {
+            state.driver = payload.driver
         }
     },
     actions: {
@@ -329,6 +335,17 @@ export default new Vuex.Store({
                     if (id === data._id) {
                         state.drivers.splice(value, 1)
                     }
+                })
+            } catch (e) {
+                console.log(e)
+            }
+        },
+
+        async getDriver({commit}, id) {
+            try {
+                let response = await axios.get(`${API}driver/${id}`)
+                commit('driver', {
+                    driver: response.data.driver
                 })
             } catch (e) {
                 console.log(e)

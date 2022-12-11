@@ -92,7 +92,7 @@
 
     <add-car :dialog.sync="dialog"/>
 
-    <edit-car :dialog-car.sync="dialogCar" :current-car="currentCar"/>
+    <edit-car :dialog-car.sync="dialogCar" :current-car="currentCar" :current-driver="currentDriver"/>
 
   </v-container>
 </template>
@@ -110,6 +110,7 @@ export default {
       dialog: false,
       dialogCar: false,
       currentCar: [],
+      currentDriver: [],
       cars: [],
       selectCapacity: [],
       selectType: [],
@@ -130,6 +131,11 @@ export default {
   methods: {
     openDialogCar(index) {
       this.currentCar = this.cars[index]
+      if (this.currentCar.driver) {
+        this.$store.dispatch('getDriver', this.currentCar.driver).then(() => {
+          this.currentDriver = this.$store.getters.driver
+        })
+      }
       this.dialogCar = true
     },
     openDialog() {

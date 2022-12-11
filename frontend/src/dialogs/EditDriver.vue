@@ -80,6 +80,22 @@
                       item-color="teal"
                   ></v-select>
                 </v-col>
+                <v-col
+                    cols="12"
+                    sm="6"
+                    md="4"
+                >
+                  <v-select
+                      v-model="editedDriver.assignedToCar"
+                      color="teal"
+                      label="Przypisany do samochodu"
+                      :rules="[required.req]"
+                      dense
+                      class="navigation"
+                      :items="boolean"
+                      item-color="teal"
+                  ></v-select>
+                </v-col>
               </v-row>
             </v-container>
           </v-card-text>
@@ -152,6 +168,7 @@ export default {
       snackbarSuccess: false,
       dialogValue: this.dialog,
       selectCategory: ['B', 'B+E', 'C', 'C+E', 'C1', 'C1+E'],
+      boolean: ['true', 'false'],
       required: {
         req: v => !!v || 'Pole jest wymagane',
         phone: v => /^\d{9}$/.test(v) || 'Błędny numer telefonu',

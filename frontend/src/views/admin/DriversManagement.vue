@@ -58,7 +58,7 @@
               <v-icon>mdi-pencil</v-icon>
             </v-btn>
           </template>
-          <span>Edytuj pracownika</span>
+          <span>Edytuj kierowcę</span>
         </v-tooltip>
       </template>
     </v-data-table>
@@ -70,7 +70,7 @@
         color="teal"
     ></v-pagination>
 
-    <add-driver :dialog-add.sync="dialogAdd" />
+    <add-driver :dialog-add.sync="dialogAdd"/>
 
     <edit-driver :dialog.sync="dialog" :edited-driver="currentDriver"/>
 

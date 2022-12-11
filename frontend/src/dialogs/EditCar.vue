@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container v-if="getDrivers">
     <v-form
         ref="form"
         v-model="valid"
@@ -136,6 +136,82 @@
             </v-container>
           </v-card-text>
 
+          <div v-if="refreshDriver"></div>
+          <div v-if="getCurrentDriver"></div>
+
+          <v-card-text>
+            <v-container>
+              <v-row>
+                <v-col
+                    cols="12"
+                    sm="6"
+                    md="4"
+                >
+                  <v-select
+                      dense
+                      color="teal"
+                      :items="itemDrivers"
+                      item-color="teal"
+                      class="margin-select"
+                      label="Wybierz kierowcę"
+                      @change="selectedDriver($event)"
+                      v-model="select"
+                  ></v-select>
+                </v-col>
+                <template v-if="driver.assignedToCar === 'true' || select !== null">
+                  <v-col
+                      cols="12"
+                      sm="6"
+                      md="4"
+                  >
+                    <v-text-field
+                        color="teal"
+                        label="Imię"
+                        v-model="driver.name"
+                        readonly
+                    ></v-text-field>
+                  </v-col>
+                  <v-col
+                      cols="12"
+                      sm="6"
+                      md="4"
+                  >
+                    <v-text-field
+                        color="teal"
+                        label="Nazwisko"
+                        v-model="driver.lastName"
+                        readonly
+                    ></v-text-field>
+                  </v-col>
+                  <v-col
+                      cols="12"
+                      sm="6"
+                      md="4"
+                  >
+                    <v-text-field
+                        color="teal"
+                        label="Numer telefonu"
+                        v-model="driver.phoneNumber"
+                        readonly
+                    ></v-text-field>
+                  </v-col>
+                  <v-col
+                      cols="12"
+                      sm="6"
+                      md="4"
+                  >
+                    <v-text-field
+                        v-model="driver.driverLicense"
+                        color="teal"
+                        label="Kategoria"
+                        readonly
+                    ></v-text-field>
+                  </v-col>
+                </template>
+              </v-row>
+            </v-container>
+          </v-card-text>
+
           <v-card-actions>
             <v-btn
                 class="button-remove"
@@ -196,7 +272,7 @@
 <script>
 export default {
   name: "EditCar",
-  props: ['dialogCar', 'currentCar'],
+  props: ['dialogCar', 'currentCar', 'currentDriver'],
   data() {
     return {
       valid: true,
@@ -206,9 +282,31 @@ export default {
       dialogValue: this.dialogCar,
       items: ['wolny', 'zajęty'],
       newImg: null,
+      driver: [],
+      drivers: [],
+      select: null,
+      itemDrivers: [],
       required: [
         v => !!v || 'Pole jest wymagane',
       ]
+    }
+  },
+  computed: {
+    getDrivers() {
+      return this.$store.dispatch('getDrivers')
+    },
+    refreshDriver() {
+      this.drivers = this.$store.getters.drivers
+      this.itemDrivers = [];
+      this.drivers.forEach(data => {
+        if (data.assignedToCar === 'false') {
+          this.itemDrivers.push([data.name + " " + data.lastName])
+        }
+      })
+      return this.itemDrivers
+    },
+    getCurrentDriver() {
+      this.driver = this.currentDriver
     }
   },
   methods: {
@@ -216,6 +314,7 @@ export default {
       this.dialogValue = false
       this.$emit('update:dialogCar', this.dialogValue)
       this.$refs.form.resetValidation()
+      this.select = null;
     },
     editCar() {
       if (this.$refs.form.validate()) {
@@ -230,10 +329,14 @@ export default {
         formData.append('maxHeight', this.currentCar.maxHeight)
         formData.append('maxLength', this.currentCar.maxLength)
         formData.append('status', this.currentCar.status)
+        if (this.driver.driver) {
+          formData.append('driver', this.driver.driver)
+        }
         this.$store.dispatch('updateCar', [this.currentCar._id, formData])
             .then(() => {
               this.$store.dispatch('getCars')
             })
+        this.$store.dispatch('updateDriver', [this.driver._id, {assignedToCar: 'true'}])
         this.newImg = null;
         this.closeDialog()
         this.snackbarSuccess = true;
@@ -243,7 +346,18 @@ export default {
     },
     removeCar() {
       this.$store.dispatch('removeCar', this.currentCar._id)
+      this.$store.dispatch('updateDriver', [this.driver._id, {assignedToCar: 'false'}])
       this.closeDialog()
+    },
+    selectedDriver(value) {
+      this.driver = [];
+      this.drivers.forEach(data => {
+        if (value[0].split(" ")[0] === data.name && value[0].split(" ")[1] === data.lastName) {
+          this.driver.push(data)
+          this.driver = this.driver[0]
+          this.driver.driver = data._id
+        }
+      })
     }
   }
 }
