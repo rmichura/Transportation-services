@@ -132,6 +132,7 @@
                     <v-date-picker
                         v-model="editedOrder.receptionDate"
                         @input="menuReceipt = false"
+                        :allowed-dates="allowedDates"
                         color="teal"
                     ></v-date-picker>
                   </v-menu>
@@ -176,6 +177,7 @@
                     <v-date-picker
                         v-model="editedOrder.deliveryDate"
                         @input="menuDelivery = false"
+                        :allowed-dates="allowedDates"
                         color="teal"
                     ></v-date-picker>
                   </v-menu>
@@ -263,7 +265,8 @@ export default {
     closeDialog() {
       this.dialogValue = false
       this.$emit('update:dialog', this.dialogValue)
-    }
+    },
+    allowedDates: val => val >= (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
   }
 }
 </script>

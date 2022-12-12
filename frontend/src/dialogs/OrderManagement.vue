@@ -203,18 +203,6 @@
                     md="4"
                 >
                   <v-text-field
-                      v-model="currentCar.brand"
-                      color="teal"
-                      readonly
-                      label="Marka"
-                  ></v-text-field>
-                </v-col>
-                <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
-                >
-                  <v-text-field
                       v-model="currentCar.type"
                       color="teal"
                       label="Typ"
@@ -260,11 +248,33 @@
                       readonly
                   ></v-text-field>
                 </v-col>
+                <v-col
+                    cols="12"
+                    sm="6"
+                    md="4"
+                >
+                  <v-text-field
+                      v-model="currentCar.maxLength"
+                      color="teal"
+                      readonly
+                      type="number"
+                      label="Dopuszczalna długość - cm"
+                  ></v-text-field>
+                </v-col>
               </v-row>
             </v-container>
           </v-card-text>
 
           <v-card-actions>
+            <v-btn
+                class="simulate-button"
+                color="orange"
+                elevation="3"
+                large
+                @click="carSelectionSimulation"
+            >
+              Symulacja
+            </v-btn>
             <v-spacer></v-spacer>
             <div class="buttons-dialog">
               <v-btn
@@ -398,13 +408,16 @@ export default {
     validationsOrderToCar() {
       if (this.currentCar.capacity >= this.currentOrder.productWeight &&
           this.currentCar.maxWidth >= this.currentOrder.productWidth &&
-          this.currentCar.maxHeight >= this.currentOrder.productHeight) {
-        console.log(this.currentCar.capacity)
+          this.currentCar.maxHeight >= this.currentOrder.productHeight &&
+          this.currentCar.maxLength >= this.currentOrder.maxLength) {
         return true
       } else {
         this.snackBarErrorValidation = true
         return false
       }
+    },
+    carSelectionSimulation() {
+      console.log("Symulacja algorytmu")
     }
   }
 }
@@ -429,5 +442,10 @@ export default {
 
 .margin-select {
   margin-top: 1.4em
+}
+
+.simulate-button {
+  margin: -1em 1em 1em 1.5em;
+  color: white;
 }
 </style>

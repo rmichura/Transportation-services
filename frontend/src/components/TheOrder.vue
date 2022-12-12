@@ -64,6 +64,7 @@
                 <v-date-picker
                     v-model="receptionDate"
                     @input="menuReceipt = false"
+                    :allowed-dates="allowedDates"
                     color="teal"
                 ></v-date-picker>
               </v-menu>
@@ -103,6 +104,7 @@
                 <v-date-picker
                     v-model="deliveryDate"
                     @input="menuDelivery = false"
+                    :allowed-dates="allowedDates"
                     color="teal"
                 ></v-date-picker>
               </v-menu>
@@ -217,6 +219,7 @@ export default {
         this.snackBarError = true
       }
     },
+    allowedDates: val => val >= (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
   }
 }
 </script>
