@@ -266,15 +266,6 @@
           </v-card-text>
 
           <v-card-actions>
-            <v-btn
-                class="simulate-button"
-                color="orange"
-                elevation="3"
-                large
-                @click="carSelectionSimulation"
-            >
-              Symulacja
-            </v-btn>
             <v-spacer></v-spacer>
             <div class="buttons-dialog">
               <v-btn
@@ -409,16 +400,13 @@ export default {
       if (this.currentCar.capacity >= this.currentOrder.productWeight &&
           this.currentCar.maxWidth >= this.currentOrder.productWidth &&
           this.currentCar.maxHeight >= this.currentOrder.productHeight &&
-          this.currentCar.maxLength >= this.currentOrder.maxLength) {
+          this.currentCar.maxLength >= this.currentOrder.productLength) {
         return true
       } else {
         this.snackBarErrorValidation = true
         return false
       }
     },
-    carSelectionSimulation() {
-      console.log("Symulacja algorytmu")
-    }
   }
 }
 </script>
