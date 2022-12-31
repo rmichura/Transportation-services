@@ -49,6 +49,12 @@ const orderSchema = new mongoose.Schema({
     orderPrice: {
         type: Number
     },
+    distanceTransportation: {
+        type: Number
+    },
+    durationTransportation: {
+        type: Number
+    },
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',

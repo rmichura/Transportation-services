@@ -19,6 +19,8 @@ class OrderController {
             receptionDate: req.body.receptionDate,
             numberOrder: req.body.numberOrder = generateNumber,
             orderPrice: 0,
+            distanceTransportation: 0,
+            durationTransportation: 0,
             user: req.body.user
         });
         await order.save().then(result => {
@@ -38,6 +40,8 @@ class OrderController {
                     receptionDate: result.receptionDate,
                     numberOrder: result.numberOrder,
                     orderPrice: result.orderPrice,
+                    distanceTransportation: result.distanceTransportation,
+                    durationTransportation: result.durationTransportation,
                     user: result.user
                 }
             })
@@ -61,6 +65,8 @@ class OrderController {
         if (req.body.deliveryPlace) order.deliveryPlace = req.body.deliveryPlace;
         if (req.body.status) order.status = req.body.status;
         if (req.body.orderPrice) order.orderPrice = req.body.orderPrice;
+        if (req.body.durationTransportation) order.durationTransportation = req.body.durationTransportation;
+        if (req.body.distanceTransportation) order.distanceTransportation = req.body.distanceTransportation;
         if (req.body.deliveryDate) order.deliveryDate = req.body.deliveryDate;
         if (req.body.receptionDate) order.receptionDate = req.body.receptionDate;
         if (req.body.car) order.car = req.body.car;
@@ -82,6 +88,8 @@ class OrderController {
                     receptionDate: result.receptionDate,
                     numberOrder: result.numberOrder,
                     orderPrice: result.orderPrice,
+                    distanceTransportation: result.distanceTransportation,
+                    durationTransportation: result.durationTransportation,
                     car: result.car
                 }
             })
@@ -132,6 +140,8 @@ class OrderController {
                         receptionDate: doc.receptionDate,
                         numberOrder: doc.numberOrder,
                         orderPrice: doc.orderPrice,
+                        distanceTransportation: doc.distanceTransportation,
+                        durationTransportation: doc.durationTransportation,
                         user: doc.user,
                         car: doc.car
                     }
