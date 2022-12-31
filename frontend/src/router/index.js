@@ -16,7 +16,6 @@ import CustomerOrder from "@/views/user/CustomerOrder";
 import CustomerOrderState from "@/views/user/CustomerOrderState";
 import CustomerOrderHistory from "@/views/user/CustomerOrderHistory";
 import OrdersManagement from "@/views/admin/OrdersManagement";
-import EmployeesManagement from "@/views/admin/EmployeesManagement";
 import CarsManagement from "@/views/admin/CarsManagement";
 import EmployeeOrder from "@/views/employee/EmployeeOrder";
 import EmployeeOrderHistory from "@/views/employee/EmployeeOrderHistory";
@@ -25,6 +24,7 @@ import EmployeeUsersManagement from "@/views/employee/EmployeeUsersManagement";
 import EmployeeOrdersManagement from "@/views/employee/EmployeeOrdersManagement";
 import UsersAndEmployeesManagement from "@/views/admin/UsersAndEmployeesManagement";
 import DriversManagement from "@/views/admin/DriversManagement.vue";
+import EmployeeScheduler from "@/views/employee/EmployeeScheduler.vue";
 
 Vue.use(VueRouter)
 
@@ -141,12 +141,6 @@ const routes = [
         component: DriversManagement,
         beforeEnter: adminGuard
     },
-    // {
-    //     path: '/admin/management/employees',
-    //     name: 'AdminManagementEmployees',
-    //     component: EmployeesManagement,
-    //     beforeEnter: adminGuard
-    // },
     {
         path: '/admin/management/cars',
         name: 'AdminManagementCars',
@@ -193,6 +187,12 @@ const routes = [
         path: '/employee/management/users',
         name: 'EmployeeManagementUsers',
         component: EmployeeUsersManagement,
+        beforeEnter: employeeGuard
+    },
+    {
+        path: '/employee/scheduler',
+        name: 'EmployeeScheduler',
+        component: EmployeeScheduler,
         beforeEnter: employeeGuard
     },
     {

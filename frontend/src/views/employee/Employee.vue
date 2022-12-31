@@ -1,63 +1,6 @@
 <template>
   <v-container class="fill-height color-container">
     <v-row class="justify-center">
-<!--      <v-sheet-->
-<!--          elevation="8"-->
-<!--          height="420"-->
-<!--          width="300"-->
-<!--          class="sheet"-->
-<!--      >-->
-<!--        <p><span>Z</span>łóż nowe zamówienie<span>!</span></p>-->
-<!--        <v-row class="justify-center margin-top-6em">-->
-<!--          <v-btn-->
-<!--              class="white&#45;&#45;text"-->
-<!--              color="teal"-->
-<!--              elevation="7"-->
-<!--              large-->
-<!--              @click="goToOrder"-->
-<!--          >-->
-<!--            Złóż zamówienie-->
-<!--          </v-btn>-->
-<!--        </v-row>-->
-<!--      </v-sheet>-->
-<!--      <v-sheet-->
-<!--          elevation="8"-->
-<!--          height="420"-->
-<!--          width="300"-->
-<!--          class="sheet-white"-->
-<!--      >-->
-<!--        <p><span>S</span>prawdź jaki masz status zamówienia<span>!</span></p>-->
-<!--        <v-row class="justify-center margin-top-6em">-->
-<!--          <v-btn-->
-<!--              class="white&#45;&#45;text"-->
-<!--              color="grey"-->
-<!--              elevation="7"-->
-<!--              large-->
-<!--              @click="goToOrderState"-->
-<!--          >-->
-<!--            Sprawdź zamówienie-->
-<!--          </v-btn>-->
-<!--        </v-row>-->
-<!--      </v-sheet>-->
-<!--      <v-sheet-->
-<!--          elevation="8"-->
-<!--          height="420"-->
-<!--          width="300"-->
-<!--          class="sheet"-->
-<!--      >-->
-<!--        <p><span>Z</span>oabcz historię swoich zamówień<span>!</span></p>-->
-<!--        <v-row class="justify-center margin-top-6em">-->
-<!--          <v-btn-->
-<!--              class="white&#45;&#45;text"-->
-<!--              color="teal"-->
-<!--              elevation="7"-->
-<!--              large-->
-<!--              @click="goToOrderHistory"-->
-<!--          >-->
-<!--            Zobacz historię-->
-<!--          </v-btn>-->
-<!--        </v-row>-->
-<!--      </v-sheet>-->
       <v-sheet
           elevation="8"
           height="420"
@@ -96,6 +39,25 @@
           </v-btn>
         </v-row>
       </v-sheet>
+      <v-sheet
+          elevation="8"
+          height="420"
+          width="300"
+          class="sheet-white"
+      >
+        <p><span>S</span>prawdź harmonogram dnia<span>!</span></p>
+        <v-row class="justify-center margin-top-6em">
+          <v-btn
+              class="white--text"
+              color="grey"
+              elevation="7"
+              large
+              @click="goToScheduler"
+          >
+            Harmonogram
+          </v-btn>
+        </v-row>
+      </v-sheet>
     </v-row>
   </v-container>
 </template>
@@ -109,20 +71,14 @@ export default {
     return {}
   },
   methods: {
-    // goToOrder() {
-    //   router.push('employee/order')
-    // },
-    // goToOrderState() {
-    //   router.push('employee/order/state')
-    // },
-    // goToOrderHistory() {
-    //   router.push('employee/order/history')
-    // },
     goToOrdersManagement() {
       router.push('employee/management/orders')
     },
     goToUsersManagement() {
       router.push('employee/management/users')
+    },
+    goToScheduler() {
+      router.push('employee/scheduler')
     }
   }
 }
