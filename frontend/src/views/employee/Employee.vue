@@ -1,5 +1,7 @@
 <template>
   <v-container class="fill-height color-container">
+    <div v-if="getCars"></div>
+    <div v-if="getOrders"></div>
     <v-row class="justify-center">
       <v-sheet
           elevation="8"
@@ -69,6 +71,14 @@ export default {
   name: "Employee",
   data() {
     return {}
+  },
+  computed: {
+    getCars() {
+      return this.$store.dispatch('getCars')
+    },
+    getOrders() {
+      return this.$store.dispatch('getAllOrders')
+    },
   },
   methods: {
     goToOrdersManagement() {

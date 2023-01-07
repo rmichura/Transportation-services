@@ -81,6 +81,7 @@ export default {
     selectedEvent: {},
     deliveryPlace: '',
     receptionPlace: '',
+    carsBusy: [],
   }),
   mounted() {
     this.$refs.calendar.checkChange()
@@ -95,10 +96,13 @@ export default {
     setCars() {
       this.carsCategory = [];
       this.cars = [];
+      this.carsBusy = [];
       const cars = this.$store.getters.cars
       cars.forEach(data => {
         if (data.status === 'wolny') {
           this.cars.push(data)
+        } else {
+          this.carsBusy.push(data)
         }
         this.carsCategory.push(data.numberCar)
       })
@@ -120,22 +124,24 @@ export default {
       return event.color
     },
     showDetail({nativeEvent, event}) {
-      const open = () => {
-        this.selectedEvent = event
-        this.deliveryPlace = this.selectedEvent.order.deliveryPlace
-        this.receptionPlace = this.selectedEvent.order.receptionPlace
-        this.selectedElement = nativeEvent.target
-        requestAnimationFrame(() => requestAnimationFrame(() => this.selectedOpen = true))
-      }
+      try {
+        const open = () => {
+          this.selectedEvent = event
+          this.deliveryPlace = this.selectedEvent.order.deliveryPlace
+          this.receptionPlace = this.selectedEvent.order.receptionPlace
+          this.selectedElement = nativeEvent.target
+          requestAnimationFrame(() => requestAnimationFrame(() => this.selectedOpen = true))
+        }
 
-      if (this.selectedOpen) {
-        this.selectedOpen = false
-        requestAnimationFrame(() => requestAnimationFrame(() => open()))
-      } else {
-        open()
+        if (this.selectedOpen) {
+          this.selectedOpen = false
+          requestAnimationFrame(() => requestAnimationFrame(() => open()))
+        } else {
+          open()
+        }
+        nativeEvent.stopPropagation()
+      } catch (error) {
       }
-
-      nativeEvent.stopPropagation()
     },
     fetchEvents({start}) {
       const events = []
@@ -143,7 +149,7 @@ export default {
       let arraySelectedCars = [];
 
       const min = new Date(`${start.date}T05:00:00`)
-      const max = new Date(`${start.date}T15:59:59`)
+      const max = new Date(`${start.date}T07:00:00`)
 
       for (let i = 0; i < this.ordersName.length; i++) {
         const firstTimestamp = this.rnd(min.getTime(), max.getTime())
@@ -172,20 +178,72 @@ export default {
         const intersection = carsCount.filter(i => arraySelectedCars.includes(i))
         const difference = union.filter(i => !intersection.includes(i))
 
-        events.forEach(data => {
-          if (data.category === selectedCar) {
-            first = data.end.getTime() + 1800000
-            second = new Date(first + secondTimestamp)
-            console.log(first)
+        for (let i = 0; i < events.length; i++) {
+          if (events[i].category === arraySelectedCars[i] && arraySelectedCars[i] === selectedCar) {
             selectedRnd = this.rnd(0, difference.length - 1)
             selectedCar = difference[selectedRnd]
-            // while (data.category === currentCar) {
-            //   selectedCar = this.rnd(0, carsCount.length - 2)
-            //   currentCar = this.cars[selectedCar]?.numberCar
-            // }
+            first = new Date(events[i].end.getTime() + 1800000)
+            second = new Date(first.getTime() + secondTimestamp)
+          }
+        }
+
+        events.forEach(data => {
+          if (data.category === selectedCar) {
+            first = new Date(data.end.getTime() + 1800000)
+            second = new Date(first.getTime() + secondTimestamp)
+            selectedRnd = this.rnd(0, difference.length - 1)
+            selectedCar = difference[selectedRnd]
           }
         })
 
+
+        if (arraySelectedCars.length <= carsCount.length) {
+          for (let i = 0; i < events.length; i++) {
+            if (events[i].category === selectedCar) {
+              difference.forEach(data => {
+                if (events[i].category !== data) {
+                  selectedCar = data
+                }
+              })
+            }
+          }
+        }
+
+
+        if (arraySelectedCars.length > carsCount.length) {
+          const orderTimes = [];
+          for (let i = 0; i < events.length; i++) {
+            if (events[i].timed) {
+              orderTimes.push({
+                orderTime: events[i].end - events[i].start,
+                numberCar: events[i].category,
+                startTime: events[i].start,
+                endTime: events[i].end,
+                timed: events[i].timed
+              })
+            }
+          }
+          orderTimes.reverse()
+          let shortestOrder = orderTimes.slice(-(arraySelectedCars.length - carsCount.length))
+          selectedCar = shortestOrder[0].numberCar
+          first = new Date(shortestOrder[0].endTime.getTime() + 1800000)
+          second = new Date(first.getTime() + secondTimestamp)
+        }
+
+        if (this.carsBusy.length > 0 && i === 1) {
+          for (let i = 0; i < this.carsBusy.length; i++) {
+            let carBusy = [...this.carsBusy]
+            events.push({
+              name: 'Zajęty',
+              color: 'red',
+              start: new Date(),
+              end: new Date(),
+              timed: false,
+              category: carBusy[i].numberCar,
+              outside: false
+            })
+          }
+        }
 
         events.push({
           name: this.ordersName[i],
@@ -194,11 +252,11 @@ export default {
           color: this.colors[this.rnd(0, this.colors.length - 1)],
           timed: true,
           category: selectedCar,
-          order: this.orders[i]
+          order: this.orders[i],
+          outside: false
         })
       }
       this.events = events
-      // console.log(this.events)
     },
     rnd(a, b) {
       return Math.floor((b - a + 1) * Math.random()) + a
