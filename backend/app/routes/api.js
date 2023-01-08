@@ -7,6 +7,7 @@ const loginController = require('../controllers/login-controller')
 const orderController = require('../controllers/order-controller')
 const carController = require('../controllers/car-controller')
 const driverController = require('../controllers/driver-controller')
+const checkAuth = require('./check-auth')
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -33,29 +34,29 @@ const upload = multer({
 
 router.post('/login', loginController.login)
 
-router.get('/user/:id', userController.getUserId)
-router.delete('/user/:id', userController.deleteUser)
+router.get('/user/:id', checkAuth, userController.getUserId)
+router.delete('/user/:id', checkAuth, userController.deleteUser)
 router.post('/user', userController.createUser)
-router.get('/users', userController.getUserAll)
-router.put('/user/:id', userController.editUser)
+router.get('/users', checkAuth, userController.getUserAll)
+router.put('/user/:id', checkAuth, userController.editUser)
 
-router.post('/order', orderController.createOrder)
-router.get('/orders', orderController.getOrderAll)
-router.get('/order/:id', orderController.getOrderId)
-router.delete('/order/:id', orderController.deleteOrder)
-router.put('/order/:id', orderController.editOrder)
+router.post('/order', checkAuth, orderController.createOrder)
+router.get('/orders', checkAuth, orderController.getOrderAll)
+router.get('/order/:id', checkAuth, orderController.getOrderId)
+router.delete('/order/:id', checkAuth, orderController.deleteOrder)
+router.put('/order/:id', checkAuth, orderController.editOrder)
 
-router.post('/car', upload.single('img'), carController.createCar)
-router.get('/cars', carController.getCarAll)
-router.get('/car/:id', carController.getCarId)
-router.delete('/car/:id', carController.deleteCar)
-router.put('/car/:id', upload.single('img'), carController.editCar)
+router.post('/car', checkAuth, upload.single('img'), carController.createCar)
+router.get('/cars', checkAuth, carController.getCarAll)
+router.get('/car/:id', checkAuth, carController.getCarId)
+router.delete('/car/:id', checkAuth, carController.deleteCar)
+router.put('/car/:id', checkAuth, upload.single('img'), carController.editCar)
 
-router.post('/driver', driverController.creatDriver)
-router.get('/drivers', driverController.getDriverAll)
-router.get('/driver/:id', driverController.getDriverId)
-router.delete('/driver/:id', driverController.deleteDriver)
-router.put('/driver/:id', driverController.editDriver)
+router.post('/driver', checkAuth, driverController.creatDriver)
+router.get('/drivers', checkAuth, driverController.getDriverAll)
+router.get('/driver/:id', checkAuth, driverController.getDriverId)
+router.delete('/driver/:id', checkAuth, driverController.deleteDriver)
+router.put('/driver/:id', checkAuth, driverController.editDriver)
 
 
 module.exports = router
