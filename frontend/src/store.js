@@ -4,6 +4,7 @@ import axios from "axios";
 import router from "@/router";
 
 const API = `http://localhost:3000/api/`
+const TOKEN = localStorage.getItem('token')
 
 Vue.use(Vuex)
 
@@ -159,7 +160,11 @@ export default new Vuex.Store({
         async updateUser({commit}, payload) {
             let id = payload._id
             try {
-                await axios.put(`${API}user/${id}`, payload)
+                await axios.put(`${API}user/${id}`, payload, {
+                    headers: {
+                        'Authorization': `Bearer ${TOKEN}`
+                    }
+                })
             } catch (e) {
                 console.log(e)
             }
@@ -168,7 +173,11 @@ export default new Vuex.Store({
         async getCurrentUser({commit}) {
             try {
                 let id = localStorage.getItem('userId')
-                let response = await axios.get(`${API}user/${id}`)
+                let response = await axios.get(`${API}user/${id}`, {
+                    headers: {
+                        'Authorization': `Bearer ${TOKEN}`
+                    }
+                })
                 commit('user', {
                     user: response.data.user
                 })
@@ -180,7 +189,11 @@ export default new Vuex.Store({
 
         async saveOrder({commit}, payload) {
             try {
-                await axios.post(`${API}order`, payload)
+                await axios.post(`${API}order`, payload, {
+                    headers: {
+                        'Authorization': `Bearer ${TOKEN}`
+                    }
+                })
             } catch (e) {
                 console.log(e)
             }
@@ -190,7 +203,11 @@ export default new Vuex.Store({
             try {
                 let order = []
                 let id = localStorage.getItem('userId')
-                let response = await axios.get(`${API}orders`)
+                let response = await axios.get(`${API}orders`, {
+                    headers: {
+                        'Authorization': `Bearer ${TOKEN}`
+                    }
+                })
                 response.data.orders.forEach(data => {
                     if (data.user === id) {
                         order.push(data)
@@ -206,7 +223,11 @@ export default new Vuex.Store({
 
         async getAllOrders({commit}) {
             try {
-                let response = await axios.get(`${API}orders`)
+                let response = await axios.get(`${API}orders`, {
+                    headers: {
+                        'Authorization': `Bearer ${TOKEN}`
+                    }
+                })
                 commit('allOrders', {
                     allOrders: response.data.orders
                 })
@@ -218,7 +239,11 @@ export default new Vuex.Store({
         async removeOrder({state}, id) {
             try {
                 let idOrder = state.orders[id]._id
-                await axios.delete(`${API}order/${idOrder}`)
+                await axios.delete(`${API}order/${idOrder}`, {
+                    headers: {
+                        'Authorization': `Bearer ${TOKEN}`
+                    }
+                })
                 state.orders.splice(id, 1)
             } catch (e) {
                 console.log(e)
@@ -227,7 +252,11 @@ export default new Vuex.Store({
 
         async updateOrder({commit}, [id, payload]) {
             try {
-                await axios.put(`${API}order/${id}`, payload)
+                await axios.put(`${API}order/${id}`, payload, {
+                    headers: {
+                        'Authorization': `Bearer ${TOKEN}`
+                    }
+                })
             } catch (e) {
                 console.log(e)
             }
@@ -235,7 +264,11 @@ export default new Vuex.Store({
 
         async getUsers({commit}) {
             try {
-                let response = await axios.get(`${API}users`)
+                let response = await axios.get(`${API}users`, {
+                    headers: {
+                        'Authorization': `Bearer ${TOKEN}`
+                    }
+                })
                 commit('users', {
                     users: response.data.users
                 })
@@ -246,7 +279,11 @@ export default new Vuex.Store({
 
         async removeUser({state}, user) {
             try {
-                await axios.delete(`${API}user/${user._id}`)
+                await axios.delete(`${API}user/${user._id}`, {
+                    headers: {
+                        'Authorization': `Bearer ${TOKEN}`
+                    }
+                })
                 state.users.forEach((data, value) => {
                     if (user._id === data._id) {
                         state.users.splice(value, 1)
@@ -261,7 +298,8 @@ export default new Vuex.Store({
             try {
                 await axios.post(`${API}car`, payload, {
                     headers: {
-                        'Content-Type': 'multipart/form-data'
+                        'Content-Type': 'multipart/form-data',
+                        'Authorization': `Bearer ${TOKEN}`
                     }
                 })
             } catch (e) {
@@ -271,7 +309,11 @@ export default new Vuex.Store({
 
         async getCars({commit}) {
             try {
-                let response = await axios.get(`${API}cars`)
+                let response = await axios.get(`${API}cars`, {
+                    headers: {
+                        'Authorization': `Bearer ${TOKEN}`
+                    }
+                })
                 commit('cars', {
                     cars: response.data.cars
                 })
@@ -282,7 +324,11 @@ export default new Vuex.Store({
 
         async updateCar({commit}, [id, payload]) {
             try {
-                await axios.put(`${API}car/${id}`, payload)
+                await axios.put(`${API}car/${id}`, payload, {
+                    headers: {
+                        'Authorization': `Bearer ${TOKEN}`
+                    }
+                })
             } catch (e) {
                 console.log(e)
             }
@@ -290,7 +336,11 @@ export default new Vuex.Store({
 
         async removeCar({state}, id) {
             try {
-                await axios.delete(`${API}car/${id}`)
+                await axios.delete(`${API}car/${id}`, {
+                    headers: {
+                        'Authorization': `Bearer ${TOKEN}`
+                    }
+                })
                 state.cars.forEach((data, value) => {
                     if (id === data._id) {
                         state.cars.splice(value, 1)
@@ -303,7 +353,11 @@ export default new Vuex.Store({
 
         async getDrivers({commit}) {
             try {
-                let response = await axios.get(`${API}drivers`)
+                let response = await axios.get(`${API}drivers`, {
+                    headers: {
+                        'Authorization': `Bearer ${TOKEN}`
+                    }
+                })
                 commit('drivers', {
                     drivers: response.data.drivers
                 })
@@ -314,7 +368,11 @@ export default new Vuex.Store({
 
         async saveDriver({commit}, payload) {
             try {
-                await axios.post(`${API}driver`, payload)
+                await axios.post(`${API}driver`, payload, {
+                    headers: {
+                        'Authorization': `Bearer ${TOKEN}`
+                    }
+                })
             } catch (e) {
                 console.log(e)
             }
@@ -322,7 +380,11 @@ export default new Vuex.Store({
 
         async updateDriver({commit}, [id, payload]) {
             try {
-                await axios.put(`${API}driver/${id}`, payload)
+                await axios.put(`${API}driver/${id}`, payload, {
+                    headers: {
+                        'Authorization': `Bearer ${TOKEN}`
+                    }
+                })
             } catch (e) {
                 console.log(e)
             }
@@ -330,7 +392,11 @@ export default new Vuex.Store({
 
         async removeDriver({state}, id) {
             try {
-                await axios.delete(`${API}driver/${id}`)
+                await axios.delete(`${API}driver/${id}`, {
+                    headers: {
+                        'Authorization': `Bearer ${TOKEN}`
+                    }
+                })
                 state.drivers.forEach((data, value) => {
                     if (id === data._id) {
                         state.drivers.splice(value, 1)
@@ -343,7 +409,11 @@ export default new Vuex.Store({
 
         async getDriver({commit}, id) {
             try {
-                let response = await axios.get(`${API}driver/${id}`)
+                let response = await axios.get(`${API}driver/${id}`, {
+                    headers: {
+                        'Authorization': `Bearer ${TOKEN}`
+                    }
+                })
                 commit('driver', {
                     driver: response.data.driver
                 })

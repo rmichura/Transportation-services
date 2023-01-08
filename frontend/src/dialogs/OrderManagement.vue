@@ -366,13 +366,22 @@ export default {
       if (this.$refs.form.validate()) {
         if (this.validationsOrderToCar()) {
           const formData = new FormData();
+          const orders = this.$store.getters.allOrders
+          let sumTime = 0;
           this.currentOrder.car = this.currentCar._id
           this.currentOrder.status = 'in_road'
-          formData.append('status', 'zajęty')
           this.$store.dispatch('updateOrder', [this.currentOrder._id, this.currentOrder])
-          this.$store.dispatch('updateCar', [this.currentCar._id, formData]).then(() => {
-            this.$store.dispatch('getCars')
+          formData.append('status', 'zajęty')
+          orders.forEach(data => {
+            if (data.car === this.currentCar._id) {
+              sumTime += data.durationTransportation
+            }
           })
+          if (sumTime >= 8) {
+            this.$store.dispatch('updateCar', [this.currentCar._id, formData]).then(() => {
+              this.$store.dispatch('getCars')
+            })
+          }
           this.closeDialog()
           this.snackbarSuccess = true
         }

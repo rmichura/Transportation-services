@@ -129,9 +129,20 @@ export default {
       this.dialog = true;
     },
     orderFinish(index) {
+      const formData = new FormData();
       const id = this.orders[index]._id
+      let idCar = null;
       this.orders[index].status = 'finished'
+      formData.append('status', 'wolny')
+      this.orders.forEach(data => {
+        if (data._id === id) {
+          idCar = data.car
+        }
+      })
       this.$store.dispatch('updateOrder', [id, this.orders[index]])
+      this.$store.dispatch('updateCar', [idCar, formData]).then(() => {
+        this.$store.dispatch('getCars')
+      })
     }
   }
 }
