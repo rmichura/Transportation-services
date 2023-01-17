@@ -55,7 +55,7 @@
                   color="secondary"
                   @click="selectedOpen = false"
               >
-                Cancel
+                Zamknij
               </v-btn>
             </v-card-actions>
           </v-card>
@@ -71,11 +71,12 @@ export default {
   data: () => ({
     focus: '',
     events: [],
-    colors: ['blue', 'indigo', 'deep-purple', 'cyan', 'green', 'orange', 'grey darken-1'],
+    colors: ['blue', 'indigo', 'deep-purple', 'cyan', 'green', 'orange'],
     ordersName: [],
     carsCategory: [],
     cars: [],
     orders: [],
+    ordersInRoad: [],
     selectedElement: null,
     selectedOpen: false,
     selectedEvent: {},
@@ -110,11 +111,14 @@ export default {
     setOrders() {
       this.ordersName = [];
       this.orders = [];
+      this.ordersInRoad = []
       const orders = this.$store.getters.allOrders
       orders.forEach(data => {
         if (data.status === 'in_progress') {
           this.orders.push(data)
           this.ordersName.push(data.productType)
+        } else if (data.status === 'in_road') {
+          this.ordersInRoad.push(data)
         }
       })
     }
@@ -148,17 +152,28 @@ export default {
       let selectedCar = null;
       let arraySelectedCars = [];
 
-      const min = new Date(`${start.date}T05:00:00`)
-      const max = new Date(`${start.date}T07:00:00`)
+      const min = new Date(`${start.date}T08:00:00`)
+      const max = new Date(`${start.date}T09:00:00`)
+      const now = new Date()
+
+      this.orders.sort((a, b) => {
+        return a.deliveryDate - b.deliveryDate;
+      })
 
       for (let i = 0; i < this.ordersName.length; i++) {
-        const firstTimestamp = this.rnd(min.getTime(), max.getTime())
+        let firstTimestamp = null
+        if (now > min) {
+          firstTimestamp = now.getTime() + 900000
+        } else {
+          firstTimestamp = this.rnd(min.getTime(), max.getTime())
+        }
         let first = new Date(firstTimestamp - (firstTimestamp % 900000))
         const secondTimestamp = this.orders[i].durationTransportation * 3600000
         let second = new Date(first.getTime() + secondTimestamp)
-        const carsCount = []
+        let carsCount = []
         let index = null
         let selectedRnd = null
+        let countBusyCarNumber = []
 
         for (let j = 0; j < this.carsCategory.length; j++) {
           this.orders.forEach(data => {
@@ -169,7 +184,7 @@ export default {
           })
           carsCount.push(index)
         }
-        carsCount.pop()
+        carsCount = [...new Set(carsCount)]
         selectedRnd = this.rnd(0, carsCount.length - 2)
         selectedCar = this.cars[selectedRnd].numberCar
         arraySelectedCars.push(selectedCar)
@@ -178,72 +193,204 @@ export default {
         const intersection = carsCount.filter(i => arraySelectedCars.includes(i))
         const difference = union.filter(i => !intersection.includes(i))
 
+        if (this.ordersInRoad.length > 0 && i === 0) {
+          for (let i = 0; i < this.ordersInRoad.length; i++) {
+            let allCars = [...this.cars, ...this.carsBusy]
+            allCars.forEach(data => {
+              if (this.ordersInRoad[i].car === data._id) {
+                countBusyCarNumber.push(data.numberCar)
+                countBusyCarNumber = [...new Set(countBusyCarNumber)]
+                let test = new Date(`${start.date}T${this.ordersInRoad[i].startTimeOrder}`)
+                events.push({
+                  name: this.ordersInRoad[i].productType + ' -W drodze',
+                  color: 'grey',
+                  start: test,
+                  end: new Date(test.getTime() + this.ordersInRoad[i].durationTransportation * 3600000),
+                  order: this.ordersInRoad[i],
+                  timed: true,
+                  category: data.numberCar,
+                  outside: false
+                })
+              }
+            })
+          }
+        }
+
         for (let i = 0; i < events.length; i++) {
           if (events[i].category === arraySelectedCars[i] && arraySelectedCars[i] === selectedCar) {
             selectedRnd = this.rnd(0, difference.length - 1)
             selectedCar = difference[selectedRnd]
-            first = new Date(events[i].end.getTime() + 1800000)
-            second = new Date(first.getTime() + secondTimestamp)
           }
         }
 
         events.forEach(data => {
           if (data.category === selectedCar) {
-            first = new Date(data.end.getTime() + 1800000)
-            second = new Date(first.getTime() + secondTimestamp)
             selectedRnd = this.rnd(0, difference.length - 1)
             selectedCar = difference[selectedRnd]
           }
         })
 
-
-        if (arraySelectedCars.length <= carsCount.length) {
-          for (let i = 0; i < events.length; i++) {
-            if (events[i].category === selectedCar) {
-              difference.forEach(data => {
-                if (events[i].category !== data) {
-                  selectedCar = data
-                }
-              })
+        if (this.ordersInRoad.length > 0) {
+          if (arraySelectedCars.length <= carsCount.length) {
+            for (let i = 0; i < events.length; i++) {
+              if (events[i].category === selectedCar) {
+                difference.forEach(data => {
+                  if (events[i].category !== data) {
+                    selectedCar = data
+                  }
+                })
+              }
             }
           }
-        }
-
-
-        if (arraySelectedCars.length > carsCount.length) {
-          const orderTimes = [];
-          for (let i = 0; i < events.length; i++) {
-            if (events[i].timed) {
-              orderTimes.push({
-                orderTime: events[i].end - events[i].start,
-                numberCar: events[i].category,
-                startTime: events[i].start,
-                endTime: events[i].end,
-                timed: events[i].timed
-              })
+          if (arraySelectedCars.length >= carsCount.length) {
+            let orderTimes = [];
+            for (let i = 0; i < events.length; i++) {
+              if (events[i].timed) {
+                orderTimes.push({
+                  orderTime: events[i].end - events[i].start,
+                  numberCar: events[i].category,
+                  startTime: events[i].start,
+                  endTime: events[i].end,
+                  timed: events[i].timed
+                })
+              }
             }
-          }
-          orderTimes.reverse()
-          let shortestOrder = orderTimes.slice(-(arraySelectedCars.length - carsCount.length))
-          selectedCar = shortestOrder[0].numberCar
-          first = new Date(shortestOrder[0].endTime.getTime() + 1800000)
-          second = new Date(first.getTime() + secondTimestamp)
-        }
-
-        if (this.carsBusy.length > 0 && i === 1) {
-          for (let i = 0; i < this.carsBusy.length; i++) {
-            let carBusy = [...this.carsBusy]
-            events.push({
-              name: 'Zajęty',
-              color: 'red',
-              start: new Date(),
-              end: new Date(),
-              timed: false,
-              category: carBusy[i].numberCar,
-              outside: false
+            orderTimes.sort((a, b) => {
+              return b.orderTime - a.orderTime;
             })
+            let shortestOrder;
+            orderTimes = [...new Map(orderTimes.map(item => [item.numberCar, item])).values()]
+            shortestOrder = orderTimes.slice(-((arraySelectedCars.length + this.ordersInRoad.length) - carsCount.length))
+            if (shortestOrder.length > 1) {
+              shortestOrder.sort((a, b) => {
+                return a.orderTime - b.orderTime;
+              })
+              selectedCar = shortestOrder[shortestOrder.length - 1].numberCar
+              first = new Date(shortestOrder[shortestOrder.length - 1].endTime.getTime() + 1800000)
+              second = new Date(first.getTime() + secondTimestamp)
+            } else {
+              selectedCar = shortestOrder[0].numberCar
+              first = new Date(shortestOrder[0].endTime.getTime() + 1800000)
+              second = new Date(first.getTime() + secondTimestamp)
+            }
+          } else {
+            let orderTimes = [];
+            for (let i = 0; i < events.length; i++) {
+              if (events[i].timed) {
+                orderTimes.push({
+                  orderTime: events[i].end - events[i].start,
+                  numberCar: events[i].category,
+                  startTime: events[i].start,
+                  endTime: events[i].end,
+                  timed: events[i].timed
+                })
+              }
+            }
+            orderTimes.sort((a, b) => {
+              return a.orderTime - b.orderTime;
+            })
+            const lookup = orderTimes.reduce((a, e) => {
+              a[e.numberCar] = ++a[e.numberCar] || 0;
+              return a;
+            }, {});
+            let elementsToRemove = orderTimes.filter(e => lookup[e.numberCar])
+            let orderTimesWithoutDuplicates = orderTimes.filter(x => !elementsToRemove.includes(x));
+            if (arraySelectedCars.length + 1 >= carsCount.length) {
+              selectedCar = orderTimesWithoutDuplicates[0]?.numberCar
+              if (now > orderTimesWithoutDuplicates[0]?.endTime.getTime()) {
+                firstTimestamp = now.getTime() + 900000
+                first = new Date(firstTimestamp - (firstTimestamp % 900000))
+                second = new Date(first.getTime() + secondTimestamp)
+              } else {
+                first = new Date(orderTimesWithoutDuplicates[0]?.endTime.getTime() + 1800000)
+                second = new Date(first.getTime() + secondTimestamp)
+              }
+            } else {
+              if (arraySelectedCars.length < orderTimesWithoutDuplicates.length && this.orders.length > 1) {
+                selectedCar = orderTimesWithoutDuplicates[0]?.numberCar
+                if (now > orderTimesWithoutDuplicates[0]?.endTime.getTime()) {
+                  firstTimestamp = now.getTime() + 900000
+                  first = new Date(firstTimestamp - (firstTimestamp % 900000))
+                  second = new Date(first.getTime() + secondTimestamp)
+                } else {
+                  first = new Date(orderTimesWithoutDuplicates[0]?.endTime.getTime() + 1800000)
+                  second = new Date(first.getTime() + secondTimestamp)
+                }
+              }
+            }
+          }
+        } else {
+          if (arraySelectedCars.length + this.ordersInRoad.length <= carsCount.length) {
+            for (let i = 0; i < events.length; i++) {
+              if (events[i].category === selectedCar) {
+                difference.forEach(data => {
+                  if (events[i].category !== data) {
+                    selectedCar = data
+                  }
+                })
+              }
+            }
+          }
+
+          if (arraySelectedCars.length + this.ordersInRoad.length > carsCount.length) {
+            let orderTimes = [];
+            let shortestOrder;
+            for (let i = 0; i < events.length; i++) {
+              if (events[i].timed) {
+                orderTimes.push({
+                  orderTime: events[i].end - events[i].start,
+                  numberCar: events[i].category,
+                  startTime: events[i].start,
+                  endTime: events[i].end,
+                  timed: events[i].timed
+                })
+              }
+            }
+            if (carsCount.length <= 2) {
+              orderTimes.sort((a, b) => {
+                return a.orderTime - b.orderTime;
+              })
+              if (orderTimes.length === this.ordersName.length - 1) {
+                selectedCar = orderTimes[1]?.numberCar
+                first = new Date(orderTimes[i - 1]?.endTime.getTime() + 1800000)
+                second = new Date(first.getTime() + secondTimestamp)
+              } else {
+                selectedCar = orderTimes[i - 2]?.numberCar
+                first = new Date(orderTimes[i - 2]?.endTime.getTime() + 1800000)
+                second = new Date(first.getTime() + secondTimestamp)
+              }
+            } else {
+              orderTimes.sort((a, b) => {
+                return b.orderTime - a.orderTime;
+              })
+              orderTimes.splice(0, 1)
+              orderTimes = [...new Map(orderTimes.map(item => [item.numberCar, item])).values()]
+              if (this.ordersInRoad.length === 1) {
+                shortestOrder = orderTimes.slice(-((arraySelectedCars.length) - carsCount.length))
+              } else {
+                shortestOrder = orderTimes.slice(-((arraySelectedCars.length + this.ordersInRoad.length) - carsCount.length))
+              }
+              selectedCar = shortestOrder[0].numberCar
+              first = new Date(shortestOrder[0].endTime.getTime() + 1800000)
+              second = new Date(first.getTime() + secondTimestamp)
+            }
           }
         }
+
+        // if (this.carsBusy.length > 0 && i === 1 || i === 0) {
+        //   for (let i = 0; i < this.carsBusy.length; i++) {
+        //     let carBusy = [...this.carsBusy]
+        //     events.push({
+        //       name: 'Zajęty',
+        //       color: 'red',
+        //       start: new Date(),
+        //       end: new Date(),
+        //       timed: false,
+        //       category: carBusy[i].numberCar,
+        //       outside: false
+        //     })
+        //   }
+        // }
 
         events.push({
           name: this.ordersName[i],
@@ -255,6 +402,20 @@ export default {
           order: this.orders[i],
           outside: false
         })
+      }
+      if (this.carsBusy.length > 0) {
+        for (let i = 0; i < this.carsBusy.length; i++) {
+          let carBusy = [...this.carsBusy]
+          events.push({
+            name: 'Zajęty',
+            color: 'red',
+            start: new Date(),
+            end: new Date(),
+            timed: false,
+            category: carBusy[i].numberCar,
+            outside: false
+          })
+        }
       }
       this.events = events
     },
