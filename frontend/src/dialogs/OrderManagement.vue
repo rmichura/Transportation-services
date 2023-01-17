@@ -110,30 +110,56 @@
                       label="Miejsce odbioru"
                   ></v-text-field>
                 </v-col>
-                <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
-                >
-                  <v-menu
-                      v-model="menuReceipt"
-                      :close-on-content-click="false"
-                      :nudge-right="40"
-                      transition="scale-transition"
-                      offset-y
-                      min-width="auto"
-                  >
-                    <template v-slot:activator="{ on, attrs }">
-                      <v-text-field
-                          v-model="currentOrder.receptionDate"
-                          label="Termin odbioru"
-                          prepend-icon="mdi-calendar"
-                          readonly
-                          color="teal"
-                      ></v-text-field>
-                    </template>
-                  </v-menu>
-                </v-col>
+                <!--                <v-col-->
+                <!--                    cols="12"-->
+                <!--                    sm="6"-->
+                <!--                    md="4"-->
+                <!--                >-->
+                <!--                  <v-menu-->
+                <!--                      v-model="menuReceipt"-->
+                <!--                      :close-on-content-click="false"-->
+                <!--                      :nudge-right="40"-->
+                <!--                      transition="scale-transition"-->
+                <!--                      offset-y-->
+                <!--                      min-width="auto"-->
+                <!--                  >-->
+                <!--                    <template v-slot:activator="{ on, attrs }">-->
+                <!--                      <v-text-field-->
+                <!--                          v-model="currentOrder.receptionDate"-->
+                <!--                          label="Termin odbioru"-->
+                <!--                          prepend-icon="mdi-calendar"-->
+                <!--                          readonly-->
+                <!--                          color="teal"-->
+                <!--                      ></v-text-field>-->
+                <!--                    </template>-->
+                <!--                  </v-menu>-->
+                <!--                  <v-menu-->
+                <!--                      v-model="menuTime"-->
+                <!--                      :close-on-content-click="false"-->
+                <!--                      :nudge-right="40"-->
+                <!--                      transition="scale-transition"-->
+                <!--                      offset-y-->
+                <!--                      max-width="290px"-->
+                <!--                      min-width="290px"-->
+                <!--                  >-->
+                <!--                    <template v-slot:activator="{ on, attrs }">-->
+                <!--                      <v-text-field-->
+                <!--                          v-model="timeStartOrder"-->
+                <!--                          label="Godzina rozpoczęcia zlecenia"-->
+                <!--                          prepend-icon="mdi-clock-time-four-outline"-->
+                <!--                          readonly-->
+                <!--                          v-bind="attrs"-->
+                <!--                          v-on="on"-->
+                <!--                      ></v-text-field>-->
+                <!--                    </template>-->
+                <!--                    <v-time-picker-->
+                <!--                        v-if="menuTime"-->
+                <!--                        v-model="timeStartOrder"-->
+                <!--                        full-width-->
+                <!--                        format="24hr"-->
+                <!--                    ></v-time-picker>-->
+                <!--                  </v-menu>-->
+                <!--                </v-col>-->
                 <v-col
                     cols="12"
                     sm="6"
@@ -147,30 +173,30 @@
                       label="Miejsce docelowe"
                   ></v-text-field>
                 </v-col>
-                <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
-                >
-                  <v-menu
-                      v-model="menuDelivery"
-                      :close-on-content-click="false"
-                      :nudge-right="40"
-                      transition="scale-transition"
-                      offset-y
-                      min-width="auto"
-                  >
-                    <template v-slot:activator="{ on, attrs }">
-                      <v-text-field
-                          v-model="currentOrder.deliveryDate"
-                          label="Termin dostarczenia"
-                          prepend-icon="mdi-calendar"
-                          readonly
-                          color="teal"
-                      ></v-text-field>
-                    </template>
-                  </v-menu>
-                </v-col>
+                <!--                <v-col-->
+                <!--                    cols="12"-->
+                <!--                    sm="6"-->
+                <!--                    md="4"-->
+                <!--                >-->
+                <!--                  <v-menu-->
+                <!--                      v-model="menuDelivery"-->
+                <!--                      :close-on-content-click="false"-->
+                <!--                      :nudge-right="40"-->
+                <!--                      transition="scale-transition"-->
+                <!--                      offset-y-->
+                <!--                      min-width="auto"-->
+                <!--                  >-->
+                <!--                    <template v-slot:activator="{ on, attrs }">-->
+                <!--                      <v-text-field-->
+                <!--                          v-model="currentOrder.deliveryDate"-->
+                <!--                          label="Termin dostarczenia"-->
+                <!--                          prepend-icon="mdi-calendar"-->
+                <!--                          readonly-->
+                <!--                          color="teal"-->
+                <!--                      ></v-text-field>-->
+                <!--                    </template>-->
+                <!--                  </v-menu>-->
+                <!--                </v-col>-->
               </v-row>
             </v-container>
           </v-card-text>
@@ -261,6 +287,41 @@
                       label="Dopuszczalna długość - cm"
                   ></v-text-field>
                 </v-col>
+                <v-col
+                    cols="12"
+                    sm="6"
+                    md="4"
+                >
+                  <v-menu
+                      v-model="menuTime"
+                      :close-on-content-click="false"
+                      :nudge-right="40"
+                      transition="scale-transition"
+                      offset-y
+                      max-width="290px"
+                      min-width="290px"
+                  >
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-text-field
+                          v-model="timeStartOrder"
+                          label="Godzina rozpoczęcia zlecenia"
+                          prepend-icon="mdi-clock-time-four-outline"
+                          readonly
+                          :rules="required"
+                          color="teal"
+                          v-bind="attrs"
+                          v-on="on"
+                      ></v-text-field>
+                    </template>
+                    <v-time-picker
+                        v-if="menuTime"
+                        v-model="timeStartOrder"
+                        full-width
+                        format="24hr"
+                        color="teal"
+                    ></v-time-picker>
+                  </v-menu>
+                </v-col>
               </v-row>
             </v-container>
           </v-card-text>
@@ -341,6 +402,8 @@ export default {
       cars: [],
       currentCar: [],
       items: [],
+      menuTime: '',
+      timeStartOrder: '',
       required: [
         v => !!v || 'Pole jest wymagane',
       ]
@@ -369,6 +432,7 @@ export default {
           const orders = this.$store.getters.allOrders
           let sumTime = 0;
           this.currentOrder.car = this.currentCar._id
+          this.currentOrder.startTimeOrder = this.timeStartOrder
           this.currentOrder.status = 'in_road'
           this.$store.dispatch('updateOrder', [this.currentOrder._id, this.currentOrder])
           formData.append('status', 'zajęty')
@@ -394,6 +458,7 @@ export default {
       this.$emit('update:dialog', this.dialogValue)
       this.$refs.form.resetValidation()
       this.currentCar = [];
+      this.timeStartOrder = null;
       this.select = null;
     },
     selectedCar(value) {
