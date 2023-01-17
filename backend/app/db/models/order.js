@@ -55,6 +55,9 @@ const orderSchema = new mongoose.Schema({
     durationTransportation: {
         type: Number
     },
+    startTimeOrder: {
+        type: String
+    },
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',

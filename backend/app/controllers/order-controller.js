@@ -17,6 +17,7 @@ class OrderController {
             status: req.body.status,
             deliveryDate: req.body.deliveryDate,
             receptionDate: req.body.receptionDate,
+            startTimeOrder: req.body.startTimeOrder,
             numberOrder: req.body.numberOrder = generateNumber,
             orderPrice: 0,
             distanceTransportation: 0,
@@ -38,6 +39,7 @@ class OrderController {
                     status: result.status,
                     deliveryDate: result.deliveryDate,
                     receptionDate: result.receptionDate,
+                    startTimeOrder: result.startTimeOrder,
                     numberOrder: result.numberOrder,
                     orderPrice: result.orderPrice,
                     distanceTransportation: result.distanceTransportation,
@@ -64,6 +66,7 @@ class OrderController {
         if (req.body.receptionPlace) order.receptionPlace = req.body.receptionPlace;
         if (req.body.deliveryPlace) order.deliveryPlace = req.body.deliveryPlace;
         if (req.body.status) order.status = req.body.status;
+        if (req.body.startTimeOrder) order.startTimeOrder = req.body.startTimeOrder;
         if (req.body.orderPrice) order.orderPrice = req.body.orderPrice;
         if (req.body.durationTransportation) order.durationTransportation = req.body.durationTransportation;
         if (req.body.distanceTransportation) order.distanceTransportation = req.body.distanceTransportation;
@@ -88,6 +91,7 @@ class OrderController {
                     receptionDate: result.receptionDate,
                     numberOrder: result.numberOrder,
                     orderPrice: result.orderPrice,
+                    startTimeOrder: result.startTimeOrder,
                     distanceTransportation: result.distanceTransportation,
                     durationTransportation: result.durationTransportation,
                     car: result.car
@@ -140,6 +144,7 @@ class OrderController {
                         receptionDate: doc.receptionDate,
                         numberOrder: doc.numberOrder,
                         orderPrice: doc.orderPrice,
+                        startTimeOrder: doc.startTimeOrder,
                         distanceTransportation: doc.distanceTransportation,
                         durationTransportation: doc.durationTransportation,
                         user: doc.user,
