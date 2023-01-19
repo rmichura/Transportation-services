@@ -265,9 +265,17 @@ export default {
               shortestOrder.sort((a, b) => {
                 return a.orderTime - b.orderTime;
               })
+              //
+              if (now > shortestOrder[0]?.endTime.getTime()) {
+                firstTimestamp = now.getTime() + 900000
+                first = new Date(firstTimestamp - (firstTimestamp % 900000))
+                second = new Date(first.getTime() + secondTimestamp)
+              }
               selectedCar = shortestOrder[shortestOrder.length - 1].numberCar
-              first = new Date(shortestOrder[shortestOrder.length - 1].endTime.getTime() + 1800000)
-              second = new Date(first.getTime() + secondTimestamp)
+              if (now < shortestOrder[shortestOrder.length - 1].endTime.getTime()) {
+                first = new Date(shortestOrder[shortestOrder.length - 1].endTime.getTime() + 1800000)
+                second = new Date(first.getTime() + secondTimestamp)
+              }
             } else {
               selectedCar = shortestOrder[0].numberCar
               first = new Date(shortestOrder[0].endTime.getTime() + 1800000)
@@ -296,13 +304,14 @@ export default {
             let elementsToRemove = orderTimes.filter(e => lookup[e.numberCar])
             let orderTimesWithoutDuplicates = orderTimes.filter(x => !elementsToRemove.includes(x));
             if (arraySelectedCars.length + 1 >= carsCount.length) {
-              selectedCar = orderTimesWithoutDuplicates[0]?.numberCar
+              if (orderTimesWithoutDuplicates.length >= arraySelectedCars.length + 1) {
+                selectedCar = orderTimesWithoutDuplicates[0]?.numberCar
+                first = new Date(orderTimesWithoutDuplicates[0]?.endTime.getTime() + 1800000)
+                second = new Date(first.getTime() + secondTimestamp)
+              }
               if (now > orderTimesWithoutDuplicates[0]?.endTime.getTime()) {
                 firstTimestamp = now.getTime() + 900000
                 first = new Date(firstTimestamp - (firstTimestamp % 900000))
-                second = new Date(first.getTime() + secondTimestamp)
-              } else {
-                first = new Date(orderTimesWithoutDuplicates[0]?.endTime.getTime() + 1800000)
                 second = new Date(first.getTime() + secondTimestamp)
               }
             } else {
