@@ -154,11 +154,9 @@ export default {
 
       const min = new Date(`${start.date}T08:00:00`)
       const max = new Date(`${start.date}T09:00:00`)
-      const now = new Date()
+      const now = new Date(`${start.date}T11:00:00`)
 
-      this.orders.sort((a, b) => {
-        return a.deliveryDate - b.deliveryDate;
-      })
+      this.sortOrdersByDate();
 
       for (let i = 0; i < this.ordersName.length; i++) {
         let firstTimestamp = null
@@ -171,19 +169,11 @@ export default {
         const secondTimestamp = this.orders[i].durationTransportation * 3600000
         let second = new Date(first.getTime() + secondTimestamp)
         let carsCount = []
-        let index = null
         let selectedRnd = null
         let countBusyCarNumber = []
 
-        for (let j = 0; j < this.carsCategory.length; j++) {
-          this.orders.forEach(data => {
-            if (this.cars[j]?.maxHeight >= data.productHeight && this.cars[j]?.maxLength >= data.productLength
-                && this.cars[j]?.maxWidth >= data.productWidth && this.cars[j]?.capacity >= data.productWeight) {
-              index = this.cars[j].numberCar
-            }
-          })
-          carsCount.push(index)
-        }
+        this.validationsCarToOrders(carsCount)
+
         carsCount = [...new Set(carsCount)]
         selectedRnd = this.rnd(0, carsCount.length - 2)
         selectedCar = this.cars[selectedRnd].numberCar
@@ -194,26 +184,7 @@ export default {
         const difference = union.filter(i => !intersection.includes(i))
 
         if (this.ordersInRoad.length > 0 && i === 0) {
-          for (let i = 0; i < this.ordersInRoad.length; i++) {
-            let allCars = [...this.cars, ...this.carsBusy]
-            allCars.forEach(data => {
-              if (this.ordersInRoad[i].car === data._id) {
-                countBusyCarNumber.push(data.numberCar)
-                countBusyCarNumber = [...new Set(countBusyCarNumber)]
-                let test = new Date(`${start.date}T${this.ordersInRoad[i].startTimeOrder}`)
-                events.push({
-                  name: this.ordersInRoad[i].productType + ' -W drodze',
-                  color: 'grey',
-                  start: test,
-                  end: new Date(test.getTime() + this.ordersInRoad[i].durationTransportation * 3600000),
-                  order: this.ordersInRoad[i],
-                  timed: true,
-                  category: data.numberCar,
-                  outside: false
-                })
-              }
-            })
-          }
+          this.addCarsWhichAreInRoadToEvent(countBusyCarNumber, events, start)
         }
 
         for (let i = 0; i < events.length; i++) {
@@ -242,19 +213,12 @@ export default {
               }
             }
           }
+
           if (arraySelectedCars.length >= carsCount.length) {
             let orderTimes = [];
-            for (let i = 0; i < events.length; i++) {
-              if (events[i].timed) {
-                orderTimes.push({
-                  orderTime: events[i].end - events[i].start,
-                  numberCar: events[i].category,
-                  startTime: events[i].start,
-                  endTime: events[i].end,
-                  timed: events[i].timed
-                })
-              }
-            }
+
+            this.ordersTimeDuration(events, orderTimes)
+
             orderTimes.sort((a, b) => {
               return b.orderTime - a.orderTime;
             })
@@ -265,17 +229,19 @@ export default {
               shortestOrder.sort((a, b) => {
                 return a.orderTime - b.orderTime;
               })
-              //
+
               if (now > shortestOrder[0]?.endTime.getTime()) {
                 firstTimestamp = now.getTime() + 900000
                 first = new Date(firstTimestamp - (firstTimestamp % 900000))
                 second = new Date(first.getTime() + secondTimestamp)
               }
+
               selectedCar = shortestOrder[shortestOrder.length - 1].numberCar
               if (now < shortestOrder[shortestOrder.length - 1].endTime.getTime()) {
                 first = new Date(shortestOrder[shortestOrder.length - 1].endTime.getTime() + 1800000)
                 second = new Date(first.getTime() + secondTimestamp)
               }
+
             } else {
               selectedCar = shortestOrder[0].numberCar
               first = new Date(shortestOrder[0].endTime.getTime() + 1800000)
@@ -283,20 +249,11 @@ export default {
             }
           } else {
             let orderTimes = [];
-            for (let i = 0; i < events.length; i++) {
-              if (events[i].timed) {
-                orderTimes.push({
-                  orderTime: events[i].end - events[i].start,
-                  numberCar: events[i].category,
-                  startTime: events[i].start,
-                  endTime: events[i].end,
-                  timed: events[i].timed
-                })
-              }
-            }
-            orderTimes.sort((a, b) => {
-              return a.orderTime - b.orderTime;
-            })
+
+            this.ordersTimeDuration(events, orderTimes)
+
+            this.sortOrdersByTime(orderTimes)
+
             const lookup = orderTimes.reduce((a, e) => {
               a[e.numberCar] = ++a[e.numberCar] || 0;
               return a;
@@ -309,6 +266,7 @@ export default {
                 first = new Date(orderTimesWithoutDuplicates[0]?.endTime.getTime() + 1800000)
                 second = new Date(first.getTime() + secondTimestamp)
               }
+
               if (now > orderTimesWithoutDuplicates[0]?.endTime.getTime()) {
                 firstTimestamp = now.getTime() + 900000
                 first = new Date(firstTimestamp - (firstTimestamp % 900000))
@@ -344,21 +302,12 @@ export default {
           if (arraySelectedCars.length + this.ordersInRoad.length > carsCount.length) {
             let orderTimes = [];
             let shortestOrder;
-            for (let i = 0; i < events.length; i++) {
-              if (events[i].timed) {
-                orderTimes.push({
-                  orderTime: events[i].end - events[i].start,
-                  numberCar: events[i].category,
-                  startTime: events[i].start,
-                  endTime: events[i].end,
-                  timed: events[i].timed
-                })
-              }
-            }
+
+            this.ordersTimeDuration(events, orderTimes)
+
             if (carsCount.length <= 2) {
-              orderTimes.sort((a, b) => {
-                return a.orderTime - b.orderTime;
-              })
+              this.sortOrdersByTime(orderTimes)
+
               if (orderTimes.length === this.ordersName.length - 1) {
                 selectedCar = orderTimes[1]?.numberCar
                 first = new Date(orderTimes[i - 1]?.endTime.getTime() + 1800000)
@@ -386,21 +335,6 @@ export default {
           }
         }
 
-        // if (this.carsBusy.length > 0 && i === 1 || i === 0) {
-        //   for (let i = 0; i < this.carsBusy.length; i++) {
-        //     let carBusy = [...this.carsBusy]
-        //     events.push({
-        //       name: 'Zajęty',
-        //       color: 'red',
-        //       start: new Date(),
-        //       end: new Date(),
-        //       timed: false,
-        //       category: carBusy[i].numberCar,
-        //       outside: false
-        //     })
-        //   }
-        // }
-
         events.push({
           name: this.ordersName[i],
           start: first,
@@ -412,6 +346,23 @@ export default {
           outside: false
         })
       }
+      this.addCarsBusyToEvent(events)
+      this.events = events
+    },
+    rnd(a, b) {
+      return Math.floor((b - a + 1) * Math.random()) + a
+    },
+    sortOrdersByDate() {
+      this.orders.sort((a, b) => {
+        return a.deliveryDate - b.deliveryDate;
+      })
+    },
+    sortOrdersByTime(orderTimes) {
+      orderTimes.sort((a, b) => {
+        return a.orderTime - b.orderTime;
+      })
+    },
+    addCarsBusyToEvent(events) {
       if (this.carsBusy.length > 0) {
         for (let i = 0; i < this.carsBusy.length; i++) {
           let carBusy = [...this.carsBusy]
@@ -426,11 +377,55 @@ export default {
           })
         }
       }
-      this.events = events
     },
-    rnd(a, b) {
-      return Math.floor((b - a + 1) * Math.random()) + a
+    addCarsWhichAreInRoadToEvent(countBusyCarNumber, events, start) {
+      for (let i = 0; i < this.ordersInRoad.length; i++) {
+        let allCars = [...this.cars, ...this.carsBusy]
+        allCars.forEach(data => {
+          if (this.ordersInRoad[i].car === data._id) {
+            countBusyCarNumber.push(data.numberCar)
+            countBusyCarNumber = [...new Set(countBusyCarNumber)]
+            let startTime = new Date(`${start.date}T${this.ordersInRoad[i].startTimeOrder}`)
+            events.push({
+              name: this.ordersInRoad[i].productType + ' -W drodze',
+              color: 'grey',
+              start: startTime,
+              end: new Date(startTime.getTime() + this.ordersInRoad[i].durationTransportation * 3600000),
+              order: this.ordersInRoad[i],
+              timed: true,
+              category: data.numberCar,
+              outside: false
+            })
+          }
+        })
+      }
     },
+    validationsCarToOrders(carsCount) {
+      let index = null
+      for (let j = 0; j < this.carsCategory.length; j++) {
+        this.orders.forEach(data => {
+          if (this.cars[j]?.maxHeight >= data.productHeight && this.cars[j]?.maxLength >= data.productLength
+              && this.cars[j]?.maxWidth >= data.productWidth && this.cars[j]?.capacity >= data.productWeight) {
+            index = this.cars[j].numberCar
+          }
+        })
+        carsCount.push(index)
+      }
+    },
+
+    ordersTimeDuration(events, orderTimes) {
+      for (let i = 0; i < events.length; i++) {
+        if (events[i].timed) {
+          orderTimes.push({
+            orderTime: events[i].end - events[i].start,
+            numberCar: events[i].category,
+            startTime: events[i].start,
+            endTime: events[i].end,
+            timed: events[i].timed
+          })
+        }
+      }
+    }
   },
 }
 </script>
