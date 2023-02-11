@@ -6,6 +6,7 @@
 
 <script>
 import TheHistory from "@/components/TheHistory";
+
 export default {
   name: "CustomerOrderHistory",
   components: {TheHistory}

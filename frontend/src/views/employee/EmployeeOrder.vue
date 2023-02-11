@@ -4,6 +4,7 @@
 
 <script>
 import TheOrder from "@/components/TheOrder";
+
 export default {
   name: "EmployeeOrder",
   components: {TheOrder}

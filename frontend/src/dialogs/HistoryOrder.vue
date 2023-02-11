@@ -199,7 +199,7 @@
 <script>
 export default {
   name: "HistoryOrder",
-  props: [ 'currentOrder', 'dialog'],
+  props: ['currentOrder', 'dialog'],
   data() {
     return {
       menuDelivery: false,

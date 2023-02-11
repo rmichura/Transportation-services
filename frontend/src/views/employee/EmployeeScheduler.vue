@@ -154,7 +154,7 @@ export default {
 
       const min = new Date(`${start.date}T08:00:00`)
       const max = new Date(`${start.date}T09:00:00`)
-      const now = new Date(`${start.date}T11:00:00`)
+      const now = new Date()
 
       this.sortOrdersByDate();
 

@@ -6,6 +6,7 @@
 
 <script>
 import StateOrder from "@/components/StateOrder";
+
 export default {
   name: "EmployeeOrderState",
   components: {StateOrder}
